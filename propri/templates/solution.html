@@ -34,14 +34,12 @@
       --radius-sm: 8px;
       --glass: rgba(255, 255, 255, 0.9);
     }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
-
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
@@ -49,7 +47,6 @@
       overflow-x: hidden;
       position: relative;
     }
-
     body::before {
       content: '';
       position: fixed;
@@ -62,12 +59,10 @@
         radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
       z-index: -1;
     }
-
     /* Utilities */
     .hidden { 
       display: none !important;
     }
-    
     .flex { display: flex; }
     .flex-col { flex-direction: column; }
     .items-center { align-items: center; }
@@ -109,60 +104,49 @@
     .mb-4 { margin-bottom: 1rem; }
     .mb-6 { margin-bottom: 1.5rem; }
     .my-6 { margin: 1.5rem 0; }
-
     /* Animations */
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    
     @keyframes slideUp {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(-10px); }
       to { opacity: 1; transform: translateX(0); }
     }
-    
     @keyframes ripple {
       0% { transform: scale(0); opacity: 0.5; }
       20% { transform: scale(25); opacity: 0.3; }
       100% { transform: scale(40); opacity: 0; }
     }
-    
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
     }
-    
     @keyframes glow {
       0%, 100% { box-shadow: 0 0 5px rgba(67, 97, 238, 0.5); }
       50% { box-shadow: 0 0 20px rgba(67, 97, 238, 0.8); }
     }
-    
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
-    
     @keyframes shimmer {
       0% { background-position: -200% center; }
       100% { background-position: 200% center; }
     }
-    
     @keyframes bounceIn {
       0% { opacity: 0; transform: scale(0.8); }
       70% { opacity: 1; transform: scale(1.05); }
       100% { opacity: 1; transform: scale(1); }
     }
-
     .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
     .animate-slideUp { animation: slideUp 0.5s ease-out; }
     .animate-slideDown { animation: slideDown 0.4s ease-out; }
@@ -171,7 +155,6 @@
     .animate-glow { animation: glow 2s infinite; }
     .animate-float { animation: float 3s ease-in-out infinite; }
     .animate-bounceIn { animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-
     /* Buttons */
     .btn {
       padding: 0.75rem 1.5rem;
@@ -189,7 +172,6 @@
       overflow: hidden;
       backdrop-filter: blur(10px);
     }
-    
     .btn::before {
       content: '';
       position: absolute;
@@ -200,76 +182,63 @@
       background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
       transition: left 0.5s;
     }
-    
     .btn:hover::before {
       left: 100%;
     }
-    
     .btn-primary {
       background: var(--primary-gradient);
       color: white;
       box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
     }
-    
     .btn-primary:hover {
       transform: translateY(-3px);
       box-shadow: var(--shadow-hover);
     }
-    
     .btn-secondary {
       background: var(--secondary-gradient);
       color: white;
       box-shadow: 0 4px 12px rgba(114, 9, 183, 0.3);
     }
-    
     .btn-secondary:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 25px rgba(114, 9, 183, 0.25);
     }
-    
     .btn-outline {
       background: transparent;
       border: 2px solid var(--primary);
       color: var(--primary);
     }
-    
     .btn-outline:hover {
       background: var(--primary);
       color: white;
       transform: translateY(-3px);
     }
-    
     .btn-glass {
       background: var(--glass);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: var(--dark);
     }
-    
     .btn-glass:hover {
       background: white;
       transform: translateY(-3px);
       box-shadow: var(--shadow-hover);
     }
-    
     .btn-back {
       background: var(--gray-light);
       color: var(--gray);
       padding: 0.6rem 1.2rem;
     }
-    
     .btn-back:hover {
       background: #dee2e6;
       transform: translateX(-3px);
     }
-    
     .btn-icon {
       padding: 0.6rem;
       border-radius: 50%;
       width: 2.5rem;
       height: 2.5rem;
     }
-    
     .btn-shimmer {
       background: linear-gradient(90deg, 
         var(--primary) 0%, 
@@ -280,7 +249,6 @@
       background-size: 200% auto;
       animation: shimmer 3s infinite linear;
     }
-
     /* Alerts */
     .alert {
       padding: 0.875rem 1rem;
@@ -294,37 +262,31 @@
       border-left: 4px solid;
       backdrop-filter: blur(10px);
     }
-    
     .alert-success {
       background: linear-gradient(90deg, #d1e7dd, #c3e6cb);
       color: #0f5132;
       border-left-color: #198754;
     }
-    
     .alert-error {
       background: linear-gradient(90deg, #f8d7da, #f5c6cb);
       color: #842029;
       border-left-color: #dc3545;
     }
-    
     .alert-warning {
       background: linear-gradient(90deg, #fff3cd, #ffeaa7);
       color: #664d03;
       border-left-color: #ffc107;
     }
-    
     .alert-info {
       background: linear-gradient(90deg, #cff4fc, #b8e6f9);
       color: #055160;
       border-left-color: #0dcaf0;
     }
-
     /* Form Controls */
     .form-group {
       margin-bottom: 1.25rem;
       position: relative;
     }
-    
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
@@ -332,7 +294,6 @@
       color: var(--dark);
       font-size: 0.9rem;
     }
-    
     .form-control {
       width: 100%;
       padding: 0.875rem 1rem;
@@ -343,18 +304,15 @@
       background: white;
       backdrop-filter: blur(10px);
     }
-    
     .form-control:focus {
       outline: none;
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
       transform: translateY(-2px);
     }
-    
     .form-control::placeholder {
       color: #a0aec0;
     }
-    
     select.form-control {
       appearance: none;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
@@ -363,7 +321,6 @@
       background-size: 16px 12px;
       padding-right: 2.5rem;
     }
-
     /* Layout */
     #authScreen,
     #appContainer {
@@ -372,7 +329,6 @@
       flex-direction: column;
       animation: fadeIn 0.6s ease-out;
     }
-
     /* Auth Screen */
     #authScreen {
       background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
@@ -380,7 +336,6 @@
       justify-content: center;
       padding: 2rem 1rem;
     }
-    
     .auth-container {
       background: var(--glass);
       border-radius: var(--radius);
@@ -393,13 +348,11 @@
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .app-logo {
       text-align: center;
       margin-bottom: 2rem;
       animation: float 3s ease-in-out infinite;
     }
-    
     .app-logo h1 {
       font-size: 2.5rem;
       font-weight: 800;
@@ -409,19 +362,16 @@
       gap: 0.5rem;
       color: var(--primary);
     }
-    
     .app-logo h1 .gradient-text {
       background: var(--primary-gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    
     .app-logo p {
       color: var(--gray);
       font-size: 1rem;
     }
-
     /* Header */
     .app-header {
       background: var(--glass);
@@ -436,7 +386,6 @@
       backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .logo {
       font-size: 1.75rem;
       font-weight: 800;
@@ -445,13 +394,11 @@
       gap: 0.75rem;
       color: var(--primary);
     }
-    
     .logo i {
       font-size: 1.5rem;
       animation: pulse 2s infinite;
       color: var(--primary);
     }
-    
     .user-info {
       font-weight: 600;
       color: var(--gray);
@@ -463,11 +410,9 @@
       gap: 0.5rem;
       backdrop-filter: blur(10px);
     }
-    
     .user-info i {
       color: var(--primary);
     }
-
     /* Navigation */
     .nav-breadcrumb {
       display: flex;
@@ -481,7 +426,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .breadcrumb-item {
       color: var(--gray);
       display: flex;
@@ -491,27 +435,22 @@
       padding: 0.25rem 0.5rem;
       border-radius: var(--radius-sm);
     }
-    
     .breadcrumb-item:hover {
       background: var(--primary-light);
       color: var(--primary);
     }
-    
     .breadcrumb-item.active {
       color: var(--primary);
       font-weight: 600;
     }
-    
     .breadcrumb-separator {
       color: #ced4da;
     }
-    
     .nav-controls {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1.5rem;
     }
-
     /* Main Menu */
     #mainMenu {
       display: grid;
@@ -519,7 +458,6 @@
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
-    
     .menu-card {
       background: var(--glass);
       border-radius: var(--radius);
@@ -533,7 +471,6 @@
       overflow: hidden;
       backdrop-filter: blur(10px);
     }
-    
     .menu-card::before {
       content: '';
       position: absolute;
@@ -546,46 +483,38 @@
       transform-origin: left;
       transition: transform 0.4s ease;
     }
-    
     .menu-card:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: var(--shadow-hover);
       border-color: var(--primary);
     }
-    
     .menu-card:hover::before {
       transform: scaleX(1);
     }
-    
     .menu-card i {
       font-size: 3rem;
       margin-bottom: 1rem;
       color: var(--primary);
       animation: float 3s ease-in-out infinite;
     }
-    
     .menu-card h3 {
       font-size: 1.375rem;
       margin-bottom: 0.75rem;
       color: var(--dark);
     }
-    
     .menu-card p {
       color: var(--gray);
       font-size: 0.95rem;
       line-height: 1.5;
     }
-
     /* Content Areas */
     .content-area {
       display: none;
     }
-    
     .content-area.active {
       display: block;
       animation: slideUp 0.5s ease-out;
     }
-
     .content-header {
       margin-bottom: 2rem;
       background: var(--glass);
@@ -595,7 +524,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .content-header h2 {
       font-size: 1.875rem;
       color: var(--primary);
@@ -604,12 +532,10 @@
       align-items: center;
       gap: 0.75rem;
     }
-    
     .content-header p {
       color: var(--gray);
       font-size: 1rem;
     }
-
     /* Patient List */
     .patients-list-container {
       background: var(--glass);
@@ -621,7 +547,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .patient-search-card {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--gray-light);
@@ -631,33 +556,27 @@
       align-items: center;
       transition: var(--transition);
     }
-    
     .patient-search-card:hover {
       background: var(--primary-light);
       transform: translateX(5px);
       border-radius: var(--radius-sm);
     }
-    
     .patient-search-card:last-child {
       border-bottom: none;
     }
-    
     .patient-search-card .patient-info h4 {
       font-size: 1.1rem;
       margin-bottom: 0.25rem;
       color: var(--dark);
     }
-    
     .patient-search-card .patient-info p {
       color: var(--gray);
       font-size: 0.9rem;
     }
-    
     .patient-search-card .patient-actions {
       display: flex;
       gap: 0.5rem;
     }
-    
     .loading-spinner {
       width: 40px;
       height: 40px;
@@ -667,11 +586,9 @@
       animation: spin 1s linear infinite;
       margin: 2rem auto;
     }
-    
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-
     /* Patient Details */
     #patientDetails {
       background: var(--glass);
@@ -682,33 +599,28 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .details-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1rem;
       margin-bottom: 1.5rem;
     }
-    
     .detail-item {
       background: var(--primary-light);
       padding: 1rem;
       border-radius: var(--radius-sm);
       backdrop-filter: blur(10px);
     }
-    
     .detail-item label {
       font-size: 0.85rem;
       color: var(--gray);
       margin-bottom: 0.25rem;
       display: block;
     }
-    
     .detail-item p {
       font-weight: 600;
       color: var(--dark);
     }
-    
     .details-section-header {
       margin: 1.5rem 0 1rem;
       padding-bottom: 0.75rem;
@@ -719,7 +631,6 @@
       align-items: center;
       gap: 0.5rem;
     }
-    
     .consultation-item {
       background: var(--glass);
       padding: 1.25rem;
@@ -730,17 +641,14 @@
       transition: var(--transition);
       backdrop-filter: blur(10px);
     }
-    
     .consultation-item:hover {
       transform: translateX(5px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    
     .consultation-item.other-service {
       border-left-color: var(--secondary);
       background: var(--secondary-light);
     }
-    
     .consultation-item .consultation-header {
       display: flex;
       justify-content: space-between;
@@ -748,12 +656,10 @@
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-    
     .consultation-item .consultation-date {
       font-weight: 600;
       color: var(--primary);
     }
-    
     .consultation-item .consultation-service {
       background: var(--gray-light);
       color: var(--gray);
@@ -761,7 +667,6 @@
       border-radius: 50px;
       font-size: 0.85rem;
     }
-
     /* Prescription Editor */
     #prescriptionContent {
       font-family: 'Courier New', 'Consolas', monospace;
@@ -778,20 +683,17 @@
       transition: var(--transition);
       backdrop-filter: blur(10px);
     }
-    
     #prescriptionContent:focus {
       border-color: var(--primary);
       background: white;
       transform: translateY(-2px);
     }
-    
     .editor-toolbar {
       display: flex;
       gap: 0.75rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
-
     /* Registry Stats */
     .stats-grid {
       display: grid;
@@ -799,7 +701,6 @@
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
-    
     .stat-card {
       background: var(--glass);
       padding: 1.5rem;
@@ -812,12 +713,10 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .stat-card:hover {
       transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
-    
     .stat-card::before {
       content: '';
       position: absolute;
@@ -827,14 +726,12 @@
       height: 4px;
       background: var(--primary-gradient);
     }
-    
     .stat-icon {
       font-size: 2rem;
       margin-bottom: 1rem;
       color: var(--primary);
       animation: float 3s ease-in-out infinite;
     }
-    
     .stat-value {
       font-size: 2.5rem;
       font-weight: 800;
@@ -842,12 +739,10 @@
       margin: 0.5rem 0;
       line-height: 1;
     }
-    
     .stat-label {
       color: var(--gray);
       font-size: 0.95rem;
     }
-    
     .disease-stats-table {
       width: 100%;
       background: var(--glass);
@@ -857,7 +752,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .disease-stats-table pre {
       margin: 0;
       padding: 1.5rem;
@@ -865,7 +759,6 @@
       font-size: 0.9rem;
       overflow-x: auto;
     }
-
     /* Filters */
     .filters-container {
       background: var(--glass);
@@ -876,13 +769,11 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
-    
     .filters-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1rem;
     }
-
     /* Footer */
     .app-footer {
       margin-top: auto;
@@ -894,7 +785,6 @@
       border-top: 1px solid rgba(255, 255, 255, 0.3);
       backdrop-filter: blur(20px);
     }
-
     /* Notification */
     .notification {
       position: fixed;
@@ -913,20 +803,16 @@
       gap: 0.75rem;
       max-width: 400px;
     }
-    
     .notification.success {
       background: linear-gradient(135deg, #198754 0%, #146c43 100%);
     }
-    
     .notification.error {
       background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
     }
-    
     .notification.warning {
       background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
       color: #212529;
     }
-
     /* Progress Bar */
     .progress-bar {
       height: 4px;
@@ -935,21 +821,18 @@
       overflow: hidden;
       margin: 1rem 0;
     }
-    
     .progress-fill {
       height: 100%;
       background: var(--primary-gradient);
       border-radius: 2px;
       transition: width 0.3s ease;
     }
-
     /* Responsive */
     @media (max-width: 1024px) {
       .filters-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    
     @media (max-width: 768px) {
       .app-header {
         flex-direction: column;
@@ -976,7 +859,6 @@
         flex-wrap: wrap;
       }
     }
-
     @media (max-width: 480px) {
       .content-header h2 {
         font-size: 1.5rem;
@@ -991,7 +873,6 @@
         max-width: none;
       }
     }
-
     /* Scrollbar Styling */
     ::-webkit-scrollbar {
       width: 8px;
@@ -1010,7 +891,6 @@
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(161, 161, 161, 0.9);
     }
-
     /* Grid utilities */
     .grid {
       display: grid;
@@ -1021,11 +901,9 @@
     .grid-cols-2 {
       grid-template-columns: repeat(2, 1fr);
     }
-    
     .min-w-\[200px\] {
       min-width: 200px;
     }
-
     /* Hover effects */
     .hover-lift {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1034,7 +912,6 @@
       transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
-
     /* Glass effect */
     .glass {
       background: var(--glass);
@@ -1046,7 +923,6 @@
 <body>
   <!-- Notification System -->
   <div id="notificationContainer"></div>
-
   <!-- Auth Screen -->
   <div id="authScreen" class="flex items-center justify-center">
     <div class="auth-container">
@@ -1054,7 +930,6 @@
         <h1><i class="fas fa-heartbeat"></i> <span class="gradient-text">MediTrack Pro</span></h1>
         <p>Système de gestion médicale intelligent et sécurisé</p>
       </div>
-
       <div id="registerView" class="hidden">
         <h2 class="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
         <form id="registerForm">
@@ -1068,7 +943,6 @@
               <input type="text" id="regLastName" class="form-control" required />
             </div>
           </div>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="form-group">
               <label>Nom d'utilisateur *</label>
@@ -1079,7 +953,6 @@
               <input type="email" id="regEmail" class="form-control" required />
             </div>
           </div>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div class="form-group">
               <label>Téléphone</label>
@@ -1095,7 +968,6 @@
               </select>
             </div>
           </div>
-          
           <div class="form-group mb-4">
             <label>Service *</label>
             <select id="regService" class="form-control">
@@ -1137,7 +1009,6 @@
               <option>Autre</option>
             </select>
           </div>
-          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="form-group">
               <label>Mot de passe *</label>
@@ -1148,7 +1019,6 @@
               <input type="password" id="regConfirmPassword" class="form-control" required />
             </div>
           </div>
-          
           <div id="authAlert"></div>
           <button type="submit" class="btn btn-primary w-full animate-pulse">
             <i class="fas fa-user-plus"></i> S'inscrire
@@ -1160,7 +1030,6 @@
           </div>
         </form>
       </div>
-
       <div id="loginView">
         <h2 class="text-2xl font-bold mb-6 text-center animate-bounceIn">Se connecter</h2>
         <form id="loginForm">
@@ -1185,7 +1054,6 @@
       </div>
     </div>
   </div>
-
   <!-- App Container -->
   <div id="appContainer" class="hidden flex-col">
     <div class="app-header animate-slideDown">
@@ -1195,13 +1063,11 @@
       </div>
       <div class="user-info" id="currentUserInfo"></div>
     </div>
-
     <div class="p-6 flex-1">
       <!-- Navigation Breadcrumb -->
       <div id="navBreadcrumb" class="nav-breadcrumb hidden">
         <div id="breadcrumbContent"></div>
       </div>
-
       <!-- Navigation Controls -->
       <div id="navControls" class="nav-controls hidden">
         <button class="btn btn-back" onclick="goBack()">
@@ -1211,7 +1077,6 @@
           <i class="fas fa-home"></i> Accueil
         </button>
       </div>
-
       <!-- Main Menu -->
       <div id="mainMenu">
         <div class="menu-card animate-bounceIn" onclick="showSection('newConsultation')">
@@ -1240,7 +1105,6 @@
           <p>Quitter la session</p>
         </div>
       </div>
-
       <!-- New Consultation -->
       <div id="newConsultation" class="content-area">
         <div class="content-header">
@@ -1259,7 +1123,6 @@
                 <input type="number" id="patientAge" class="form-control" required min="0" max="120" />
               </div>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group">
                 <label>Sexe *</label>
@@ -1273,7 +1136,6 @@
                 <input type="text" id="patientProfession" class="form-control" />
               </div>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group">
                 <label>Téléphone</label>
@@ -1284,7 +1146,6 @@
                 <input type="text" id="patientAddress" class="form-control" />
               </div>
             </div>
-            
             <div class="form-group mb-6">
               <label>Service d'enregistrement initial *</label>
               <select id="serviceType" class="form-control" required>
@@ -1326,7 +1187,6 @@
                 <option>Autre</option>
               </select>
             </div>
-            
             <div id="newConsultAlert"></div>
             <div class="flex gap-4">
               <button type="submit" class="btn btn-primary animate-glow">
@@ -1339,7 +1199,6 @@
           </form>
         </div>
       </div>
-
       <!-- Prescription Editor -->
       <div id="prescriptionEditor" class="content-area">
         <div class="content-header">
@@ -1358,7 +1217,6 @@
               <i class="fas fa-edit"></i> Modifier Patient
             </button>
           </div>
-          
           <form id="prescriptionForm">
             <textarea id="prescriptionContent" class="w-full" placeholder="Commencez à rédiger la prescription ici..."></textarea>
             <div id="editorAlert" class="mt-3"></div>
@@ -1373,7 +1231,6 @@
           </form>
         </div>
       </div>
-
       <!-- Medical Summary -->
       <div id="medicalSummary" class="content-area">
         <div class="content-header">
@@ -1386,12 +1243,10 @@
               <label>Type de maladie *</label>
               <input type="text" id="diseaseType" class="form-control" required />
             </div>
-            
             <div class="form-group mb-6">
               <label>Observations utiles</label>
               <textarea id="summaryText" class="form-control" rows="3" placeholder="Notes additionnelles sur l'état du patient..."></textarea>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group">
                 <label>Nom du soignant *</label>
@@ -1402,7 +1257,6 @@
                 <input type="text" id="doctorContact" class="form-control" />
               </div>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group">
                 <label>Service (Consultation) *</label>
@@ -1413,7 +1267,6 @@
                 <input type="text" id="consultationCenter" class="form-control" required />
               </div>
             </div>
-            
             <div class="flex gap-3 mt-4">
               <button type="submit" class="btn btn-primary animate-glow">
                 <i class="fas fa-save"></i> Enregistrer Consultation
@@ -1425,14 +1278,12 @@
           </form>
         </div>
       </div>
-
       <!-- Old Consultation -->
       <div id="oldConsultation" class="content-area">
         <div class="content-header">
           <h2><i class="fas fa-history"></i> Ancienne Consultation</h2>
           <p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p>
         </div>
-        
         <div class="filters-container mb-6 animate-slideIn">
           <div class="form-group">
             <label><i class="fas fa-search"></i> Rechercher un patient (nom, ID, téléphone)</label>
@@ -1440,32 +1291,26 @@
                    placeholder="Entrez au moins 2 caractères..." />
           </div>
         </div>
-        
         <div id="searchLoader" class="hidden text-center">
           <div class="loading-spinner"></div>
           <p class="text-gray mt-2">Recherche en cours...</p>
         </div>
-        
         <div id="patientsListContainer" class="hidden">
           <div id="patientListContent"></div>
         </div>
-        
         <div id="patientDetails" class="hidden"></div>
-        
         <div id="noResults" class="hidden text-center py-12">
           <i class="fas fa-user-md text-5xl text-gray-300 mb-4 animate-float"></i>
           <h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun patient trouvé</h3>
           <p class="text-gray-500">Aucun patient ne correspond à votre recherche dans ce service.</p>
         </div>
       </div>
-
       <!-- Registry -->
       <div id="registry" class="content-area">
         <div class="content-header">
           <h2><i class="fas fa-chart-bar"></i> Registre & Statistiques</h2>
           <p>Filtrez et analysez les données médicales</p>
         </div>
-        
         <div class="filters-container animate-slideIn">
           <div class="filters-grid">
             <div class="form-group">
@@ -1499,7 +1344,6 @@
             </div>
           </div>
         </div>
-        
         <div class="stats-grid my-6">
           <div class="stat-card hover-lift">
             <div class="stat-icon">
@@ -1530,7 +1374,6 @@
             <div class="stat-value" id="diseaseCount">0</div>
           </div>
         </div>
-        
         <div class="glass p-6 rounded-xl shadow hover-lift">
           <h3 class="font-bold text-xl mb-4 flex items-center gap-2">
             <i class="fas fa-ranking-star text-primary animate-pulse"></i>
@@ -1539,7 +1382,6 @@
           <div id="diseaseStats" class="disease-stats-table"></div>
         </div>
       </div>
-
       <!-- Settings -->
       <div id="settings" class="content-area">
         <div id="settingsMenu" class="content-header">
@@ -1557,7 +1399,6 @@
             </button>
           </div>
         </div>
-
         <div id="profileSection" class="hidden">
           <div class="glass p-6 rounded-xl shadow hover-lift mt-4">
             <h3 class="font-bold text-xl mb-4">Modifier votre profil</h3>
@@ -1572,7 +1413,6 @@
                   <input type="text" id="editLastName" class="form-control" disabled />
                 </div>
               </div>
-              
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="form-group">
                   <label>Nom d'utilisateur</label>
@@ -1583,12 +1423,10 @@
                   <input type="email" id="editEmail" class="form-control" required />
                 </div>
               </div>
-              
               <div class="form-group mb-6">
                 <label>Téléphone</label>
                 <input type="text" id="editPhone" class="form-control" />
               </div>
-              
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="form-group">
                   <label>Rôle</label>
@@ -1599,7 +1437,6 @@
                   <input type="text" id="editService" class="form-control" disabled />
                 </div>
               </div>
-              
               <div id="profileAlert"></div>
               <div class="flex gap-3">
                 <button type="submit" class="btn btn-primary">
@@ -1612,7 +1449,6 @@
             </form>
           </div>
         </div>
-
         <div id="passwordSection" class="hidden">
           <div class="glass p-6 rounded-xl shadow hover-lift mt-4">
             <h3 class="font-bold text-xl mb-4">Changer le mot de passe</h3>
@@ -1621,7 +1457,6 @@
                 <label>Ancien mot de passe</label>
                 <input type="password" id="oldPassword" class="form-control" required />
               </div>
-              
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="form-group">
                   <label>Nouveau mot de passe</label>
@@ -1632,7 +1467,6 @@
                   <input type="password" id="confirmNewPassword" class="form-control" required />
                 </div>
               </div>
-              
               <div id="securityAlert"></div>
               <div class="flex gap-3">
                 <button type="submit" class="btn btn-primary">
@@ -1647,13 +1481,11 @@
         </div>
       </div>
     </div>
-
     <div class="app-footer">
       <p><i class="fas fa-heartbeat text-primary"></i> MediTrack Pro &copy; 2025 — Système de gestion médicale sécurisé</p>
       <p class="text-sm mt-2 text-gray-500">Version 2.0 • <span id="currentYear"></span></p>
     </div>
   </div>
-
   <script>
     // ==================================
     // DONNÉES ET FONCTIONS PRINCIPALES
@@ -1667,7 +1499,6 @@
     let searchTimeout = null;
     let statsTimeout = null;
     let currentSection = 'mainMenu';
-
     // ================================
     // FONCTIONS UTILITAIRES
     // ================================
@@ -1682,7 +1513,6 @@
         timeout = setTimeout(later, wait);
       };
     }
-
     function showNotification(message, type = 'success') {
       const notification = document.createElement('div');
       notification.className = `notification ${type}`;
@@ -1690,21 +1520,17 @@
         <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
         <span>${message}</span>
       `;
-      
       const container = document.getElementById('notificationContainer');
       container.appendChild(notification);
-      
       setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transform = 'translateX(100px)';
         setTimeout(() => notification.remove(), 300);
       }, 3000);
     }
-
     function showAlert(elementId, message, type = 'info') {
       const alertDiv = document.getElementById(elementId);
       if (!alertDiv) return;
-      
       alertDiv.innerHTML = `
         <div class="alert alert-${type}">
           <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
@@ -1712,12 +1538,10 @@
         </div>
       `;
     }
-
     function updateStoredUser(user) {
       storedUser = user;
       localStorage.setItem('storedUser', JSON.stringify(user));
     }
-
     // ================================
     // FONCTIONS D'AUTHENTIFICATION
     // ================================
@@ -1730,28 +1554,23 @@
         toggleAuthView('register');
       }
     }
-    
     function toggleAuthView(view) {
       const authAlert = document.getElementById('authAlert');
       if (authAlert) authAlert.innerHTML = '';
-      
       document.getElementById('registerView').classList.add('hidden');
       document.getElementById('loginView').classList.add('hidden');
-      
       if (view === 'register') {
         document.getElementById('registerView').classList.remove('hidden');
       } else if (view === 'login') {
         document.getElementById('loginView').classList.remove('hidden');
       }
     }
-    
     function clearAuthData() {
       localStorage.removeItem('isLoggedIn');
       navigationHistory = [];
       showAuthScreen();
       showNotification('Déconnexion réussie !', 'success');
     }
-    
     function checkAuth() {
       if (localStorage.getItem('isLoggedIn') === 'true' && storedUser) {
         startApp();
@@ -1759,7 +1578,6 @@
         showAuthScreen();
       }
     }
-
     // ================================
     // GESTION DES FORMULAIRES
     // ================================
@@ -1767,7 +1585,6 @@
       e.preventDefault();
       const emailOrUsername = document.getElementById('userEmail').value;
       const password = document.getElementById('userPassword').value;
-      
       if (storedUser && 
           (storedUser.email === emailOrUsername || storedUser.username === emailOrUsername) && 
           storedUser.password === password) {
@@ -1779,12 +1596,10 @@
         showAlert('authAlert', 'Identifiants incorrects. Veuillez vérifier vos informations ou vous inscrire.', 'error');
       }
     };
-
     document.getElementById('registerForm').onsubmit = function(e) {
       e.preventDefault();
       const password = document.getElementById('regPassword').value;
       const confirmPassword = document.getElementById('regConfirmPassword').value;
-      
       if (password !== confirmPassword) {
         showAlert('authAlert', 'Le mot de passe et sa confirmation ne correspondent pas.', 'error');
         return;
@@ -1793,7 +1608,6 @@
         showAlert('authAlert', 'Le mot de passe doit contenir au moins 6 caractères.', 'error');
         return;
       }
-      
       const newUser = {
         firstName: document.getElementById('regFirstName').value,
         lastName: document.getElementById('regLastName').value,
@@ -1804,13 +1618,11 @@
         service: document.getElementById('regService').value,
         password: password,
       };
-      
       updateStoredUser(newUser);
       showAlert('authAlert', 'Inscription réussie ! Veuillez vous connecter.', 'success');
       document.getElementById('registerForm').reset();
       toggleAuthView('login');
     };
-
     document.getElementById('profileForm').onsubmit = function(e) {
       e.preventDefault();
       const updatedUser = {
@@ -1823,13 +1635,11 @@
       document.getElementById('currentUserInfo').textContent = `${storedUser.firstName} ${storedUser.lastName} (${storedUser.role} - ${storedUser.service})`;
       setTimeout(() => showSettingsSubSection(''), 2000);
     };
-
     document.getElementById('passwordForm').onsubmit = function(e) {
       e.preventDefault();
       const oldPassword = document.getElementById('oldPassword').value;
       const newPassword = document.getElementById('newPassword').value;
       const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-      
       if (!storedUser) {
         showAlert('securityAlert', 'Erreur utilisateur. Veuillez vous déconnecter et réessayer.', 'error');
         return;
@@ -1846,25 +1656,21 @@
         showAlert('securityAlert', 'Le nouveau mot de passe doit contenir au moins 6 caractères.', 'error');
         return;
       }
-      
       const updatedUser = { ...storedUser, password: newPassword };
       updateStoredUser(updatedUser);
       document.getElementById('passwordForm').reset();
       showAlert('securityAlert', 'Mot de passe mis à jour avec succès ! Veuillez vous reconnecter.', 'success');
       setTimeout(clearAuthData, 2000); 
     };
-
     // ================================
     // NAVIGATION ET ANIMATIONS
     // ================================
     function navigateTo(sectionId) {
       if (currentSection === sectionId) return;
-      
       navigationHistory.push(currentSection);
       updateBreadcrumb(sectionId);
       showSection(sectionId);
     }
-
     function goBack() {
       if (navigationHistory.length > 0) {
         const previousSection = navigationHistory.pop();
@@ -1874,21 +1680,17 @@
         showMainMenu();
       }
     }
-
     function updateBreadcrumb(sectionId) {
       const breadcrumbContent = document.getElementById('breadcrumbContent');
       const navControls = document.getElementById('navControls');
       const navBreadcrumb = document.getElementById('navBreadcrumb');
-      
       if (sectionId === 'mainMenu') {
         navBreadcrumb.classList.add('hidden');
         navControls.classList.add('hidden');
         return;
       }
-      
       navBreadcrumb.classList.remove('hidden');
       navControls.classList.remove('hidden');
-      
       let breadcrumb = '';
       const sections = {
         'newConsultation': 'Nouvelle Consultation',
@@ -1898,7 +1700,6 @@
         'registry': 'Registre & Statistiques',
         'settings': 'Paramètres'
       };
-      
       breadcrumb = `
         <div class="breadcrumb-item" onclick="showMainMenu()">
           <i class="fas fa-home"></i> Accueil
@@ -1908,10 +1709,8 @@
           <i class="fas fa-${getSectionIcon(sectionId)}"></i> ${sections[sectionId]}
         </div>
       `;
-      
       breadcrumbContent.innerHTML = breadcrumb;
     }
-
     function getSectionIcon(sectionId) {
       const icons = {
         'newConsultation': 'user-plus',
@@ -1923,31 +1722,25 @@
       };
       return icons[sectionId] || 'folder';
     }
-
     function showSection(sectionId) {
       // Cacher toutes les sections de contenu
       document.querySelectorAll('.content-area').forEach(area => {
         area.classList.remove('active');
       });
-
       // Cacher le menu principal
       document.getElementById('mainMenu').classList.add('hidden');
       document.getElementById('mainMenu').classList.remove('visible');
-
       // Afficher la section demandée
       const section = document.getElementById(sectionId);
       if (section) {
         section.classList.add('active');
       }
-
       // Mettre à jour la navigation
       currentSection = sectionId;
       updateBreadcrumb(sectionId);
-      
       // Logique spécifique à chaque section
       handleSectionSpecificLogic(sectionId);
     }
-
     function handleSectionSpecificLogic(sectionId) {
       switch(sectionId) {
         case 'oldConsultation':
@@ -1972,41 +1765,34 @@
           break;
       }
     }
-
     function showMainMenu() {
       navigationHistory = [];
       currentSection = 'mainMenu';
-      
       // Cacher toutes les sections
       document.querySelectorAll('.content-area').forEach(section => {
         section.classList.remove('active');
       });
-      
       // Cacher les contrôles de navigation
       const navControls = document.getElementById('navControls');
       const navBreadcrumb = document.getElementById('navBreadcrumb');
       if (navControls) navControls.classList.add('hidden');
       if (navBreadcrumb) navBreadcrumb.classList.add('hidden');
-      
       // Afficher le menu principal
       const mainMenu = document.getElementById('mainMenu');
       if (mainMenu) {
         mainMenu.classList.remove('hidden');
       }
     }
-
     function showSettingsSubSection(subSectionId) {
       const settingsMenu = document.getElementById('settingsMenu');
       if (settingsMenu) {
         settingsMenu.classList.add('hidden');
       }
-      
       document.querySelectorAll('#settings > div').forEach(div => {
         if (div.id !== 'settingsMenu') {
           div.classList.add('hidden');
         }
       });
-      
       if (subSectionId) {
         const subSection = document.getElementById(subSectionId);
         if (subSection) {
@@ -2018,7 +1804,6 @@
         }
       }
     }
-
     // ================================
     // FONCTIONS DE L'APPLICATION
     // ================================
@@ -2026,58 +1811,73 @@
       loadData();
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
-      
       document.getElementById('currentUserInfo').textContent = `${storedUser.firstName} ${storedUser.lastName} (${storedUser.role} - ${storedUser.service})`;
       document.getElementById('listServiceDisplay').textContent = storedUser.service;
       document.getElementById('currentYear').textContent = new Date().getFullYear();
-      
       showMainMenu();
       updateStats();
       populateRegistryFilters();
-      
       // Initialiser les débounceurs
       window.debouncedSearch = debounce(searchPatients, 300);
       window.debouncedUpdateStats = debounce(updateStats, 300);
     }
-
     // ================================
-    // GESTION DES PATIENTS
+    // GESTION DES PATIENTS → ✅ COMMUNICATION DJANGO ACTIVE
     // ================================
-    document.getElementById('newPatientForm').onsubmit = function(e) {
+    document.getElementById('newPatientForm').onsubmit = async function(e) {
       e.preventDefault();
       const patientName = document.getElementById('patientName').value.trim();
-      const patientId = patientName.substring(0, 3).toUpperCase() + Date.now().toString().slice(-4);
-      
-      const existingPatient = patients.find(p => p.name.toLowerCase() === patientName.toLowerCase());
-      
-      const patient = {
-        id: patientId,
-        name: patientName,
-        age: document.getElementById('patientAge').value,
-        gender: document.getElementById('patientGender').value,
-        profession: document.getElementById('patientProfession').value,
-        phone: document.getElementById('patientPhone').value,
-        address: document.getElementById('patientAddress').value,
-        service: document.getElementById('serviceType').value,
-        createdAt: new Date().toISOString()
-      };
-      
-      if (existingPatient) {
-        showAlert('newConsultAlert', `Le patient "${patient.name}" (ID: ${existingPatient.id}) existe déjà. Veuillez utiliser la section 'Ancienne Consultation'.`, 'error');
+      if (!patientName) {
+        showAlert('newConsultAlert', 'Le nom du patient est requis.', 'error');
         return;
       }
 
-      currentPatient = patient;
-      patients.push(patient);
-      saveData();
+      // Découper en prénom + nom
+      const parts = patientName.split(' ');
+      const prenom = parts[0] || '';
+      const nom = parts.length > 1 ? parts.slice(1).join(' ') : prenom;
 
-      document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.name} (ID: ${currentPatient.id})`;
-      document.getElementById('newPatientForm').reset();
-      currentPrescription = '';
+      // Préparer les données pour l'API
+      const patientData = {
+        nom: nom,
+        prenom: prenom,
+        age: document.getElementById('patientAge').value || null,
+        sexe: document.getElementById('patientGender').value || null,
+        profession: document.getElementById('patientProfession').value || null,
+        telephone: document.getElementById('patientPhone').value || null,
+        adresse: document.getElementById('patientAddress').value || null,
+        service: document.getElementById('serviceType').value || null,
+        // Ajoute ici groupe_sanguin, reshus si tu les ajoutes dans le HTML
+      };
 
-      navigateTo('prescriptionEditor');
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/patients/", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(patientData)
+        });
+
+        if (response.ok) {
+          const saved = await response.json();
+          currentPatient = {
+            id: saved.id,
+            name: patientName,
+            ...patientData
+          };
+          document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.name} (ID: ${currentPatient.id})`;
+          document.getElementById('newPatientForm').reset();
+          currentPrescription = '';
+          navigateTo('prescriptionEditor');
+        } else {
+          const error = await response.text();
+          console.error("Erreur API:", error);
+          showAlert('newConsultAlert', "Erreur serveur : patient non enregistré.", 'error');
+        }
+      } catch (err) {
+        console.error("Erreur réseau:", err);
+        showAlert('newConsultAlert', "Impossible de joindre Django (127.0.0.1:8000).", 'error');
+      }
     };
-
     // ================================
     // PRESCRIPTION
     // ================================
@@ -2085,43 +1885,34 @@
       e.preventDefault();
       goToSummary();
     };
-
     function goToSummary() {
       currentPrescription = document.getElementById('prescriptionContent').value;
-      
       const patientNameDisplay = document.getElementById('currentPatientNameDisplay3');
       if (patientNameDisplay) {
         patientNameDisplay.textContent = `${currentPatient.name} (ID: ${currentPatient.id})`;
       }
-      
       document.getElementById('doctorName').value = `${storedUser.firstName} ${storedUser.lastName}`;
       document.getElementById('doctorContact').value = storedUser.phone || storedUser.email;
       document.getElementById('doctorService').value = storedUser.service;
       document.getElementById('consultationCenter').value = 'Centre de Consultation par défaut (Modifiez si nécessaire)';
-
       const editorAlert = document.getElementById('editorAlert');
       if (editorAlert) editorAlert.innerHTML = '';
-      
       navigateTo('medicalSummary');
     }
-
     function saveConsultation() {
       if (!currentPatient) {
         showNotification('Erreur: Le patient actuel n\'est pas défini. Veuillez recommencer la consultation.', 'error');
         navigateTo('newConsultation');
         return;
       }
-      
       const diseaseType = document.getElementById('diseaseType').value;
       const doctorName = document.getElementById('doctorName').value;
       const doctorService = document.getElementById('doctorService').value;
       const consultationCenter = document.getElementById('consultationCenter').value;
-      
       if (!diseaseType || !doctorName || !doctorService || !consultationCenter) {
         showNotification('Veuillez remplir tous les champs obligatoires du Résumé Médical (marqués par *).', 'error');
         return;
       }
-
       const consultation = {
         id: 'CONS-' + Date.now(),
         patientId: currentPatient.id,
@@ -2137,31 +1928,25 @@
         center: consultationCenter,
         createdAt: new Date().toISOString()
       };
-
       consultations.push(consultation);
       saveData();
-      
       currentPatient = null;
       currentPrescription = '';
-
       showNotification(`Consultation enregistrée pour le patient ${consultation.patientId} !`, 'success');
       document.getElementById('medicalSummary').reset();
-      
       // Animation de succès
       const saveBtn = document.querySelector('#medicalSummary .btn-primary');
       const originalHTML = saveBtn.innerHTML;
       saveBtn.innerHTML = '<i class="fas fa-check"></i> Enregistré !';
       saveBtn.classList.add('animate-glow');
-      
       setTimeout(() => {
         saveBtn.innerHTML = originalHTML;
         saveBtn.classList.remove('animate-glow');
         showMainMenu();
       }, 1500);
     }
-
     // ================================
-    // RECHERCHE DE PATIENTS
+    // RECHERCHE DE PATIENTS → ✅ À CHANGER PLUS TARD POUR ALLER CHERCHER SUR DJANGO
     // ================================
     function searchPatients() {
       const query = document.getElementById('searchInput').value.toLowerCase();
@@ -2169,25 +1954,20 @@
       const patientsListContainer = document.getElementById('patientsListContainer');
       const searchLoader = document.getElementById('searchLoader');
       const noResults = document.getElementById('noResults');
-      
       const serviceDuSoignant = storedUser ? storedUser.service : 'Consultation générale';
       const listServiceDisplay = document.getElementById('listServiceDisplay');
       if (listServiceDisplay) {
         listServiceDisplay.textContent = serviceDuSoignant;
       }
-
       // Afficher le loader
       if (patientsListContainer) patientsListContainer.classList.add('hidden');
       if (noResults) noResults.classList.add('hidden');
       if (searchLoader) searchLoader.classList.remove('hidden');
-
       setTimeout(() => {
         const patientIdsInService = new Set(
           consultations.filter(c => c.service === serviceDuSoignant).map(c => c.patientId)
         );
-        
         const patientsInService = patients.filter(p => patientIdsInService.has(p.id));
-        
         let patientsToShow = patientsInService.slice().sort((a, b) => {
           const lastA = consultations.filter(c => c.patientId === a.id && c.service === serviceDuSoignant)
             .sort((x, y) => new Date(y.date) - new Date(x.date))[0]?.date || '1970-01-01';
@@ -2195,7 +1975,6 @@
             .sort((x, y) => new Date(y.date) - new Date(x.date))[0]?.date || '1970-01-01';
           return new Date(lastB) - new Date(lastA);
         });
-        
         if (query.length >= 2) {
           patientsToShow = patientsToShow.filter(p => 
             p.name.toLowerCase().includes(query) || 
@@ -2205,9 +1984,7 @@
         } else {
           patientsToShow = patientsToShow.slice(0, 10);
         }
-
         if (searchLoader) searchLoader.classList.add('hidden');
-
         if (patientsInService.length === 0 || patientsToShow.length === 0) {
           if (noResults) {
             noResults.classList.remove('hidden');
@@ -2220,9 +1997,7 @@
             const lastConsultation = consultations
               .filter(c => c.patientId === p.id && c.service === serviceDuSoignant)
               .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-              
             const lastConsultDate = lastConsultation ? new Date(lastConsultation.date).toLocaleDateString('fr-FR') : 'N/A';
-            
             return `
             <div class="patient-search-card" onclick="showPatientDetails('${p.id}')">
               <div class="patient-info">
@@ -2240,7 +2015,6 @@
             </div>
             `;
           }).join('');
-          
           if (listContentDiv) {
             listContentDiv.innerHTML = resultsHtml;
           }
@@ -2248,22 +2022,18 @@
             patientsListContainer.classList.remove('hidden');
           }
         }
-
         const patientDetails = document.getElementById('patientDetails');
         if (patientDetails) {
           patientDetails.classList.add('hidden');
         }
       }, 300);
     }
-
     function showPatientDetails(patientId, showAll = false) {
       currentPatient = patients.find(p => p.id === patientId);
-
       if (!currentPatient) {
         showNotification("Patient non trouvé.", "error");
         return;
       }
-
       const patientDetails = document.getElementById('patientDetails');
       if (patientDetails) {
         patientDetails.classList.remove('hidden');
@@ -2313,14 +2083,11 @@
           </div>
         `;
       }
-
       renderHistory(patientId, showAll);
     }
-
     function continueConsultation(patientId) {
       currentPatient = patients.find(p => p.id === patientId);
       if (!currentPatient) return;
-      
       const display = document.getElementById('currentPatientNameDisplay2');
       if (display) {
         display.textContent = `${currentPatient.name} (ID: ${currentPatient.id})`;
@@ -2330,29 +2097,23 @@
       if (prescriptionContent) {
         prescriptionContent.value = '';
       }
-      
       navigateTo('prescriptionEditor');
     }
-
     function renderHistory(patientId, showAll = false) {
       const serviceDuSoignant = storedUser ? storedUser.service : 'Consultation générale';
       const historyDiv = document.getElementById('consultationHistory');
       if (!historyDiv) return;
-      
       let patientConsultations = consultations
         .filter(c => c.patientId === patientId)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
-
       if (!showAll) {
         patientConsultations = patientConsultations.filter(c => c.service === serviceDuSoignant);
       }
-      
       let historyHtml = `<h3 class="details-section-header">
         <i class="fas fa-calendar-check"></i>
         ${showAll ? 'Historique complet' : `Historique (${serviceDuSoignant})`} 
         <span class="badge">${patientConsultations.length}</span>
       </h3>`;
-      
       if (patientConsultations.length === 0) {
         historyHtml += `<p class="text-gray text-center py-4">Aucune consultation trouvée.</p>`;
       } else {
@@ -2360,7 +2121,6 @@
           const isOtherService = c.service !== serviceDuSoignant;
           const cardClass = `consultation-item ${isOtherService ? 'other-service' : ''}`;
           const serviceNote = isOtherService ? `<span class="consultation-service">${c.service}</span>` : '';
-          
           historyHtml += `
           <div class="${cardClass}">
             <div class="consultation-header">
@@ -2388,30 +2148,23 @@
           `;
         });
       }
-      
       historyDiv.innerHTML = historyHtml;
     }
-
     function showAllHistory(patientId) {
       renderHistory(patientId, true);
     }
-
     // ================================
     // ÉDITEUR DE PRESCRIPTION
     // ================================
     function addTable() {
       const contentArea = document.getElementById('prescriptionContent');
       if (!contentArea) return;
-      
       let columns = parseInt(prompt("Nombre de colonnes (max 4):", 3)) || 3;
       let rows = parseInt(prompt("Nombre de lignes (max 10):", 4)) || 4;
-
       if (isNaN(columns) || columns < 1 || columns > 4) columns = 3;
       if (isNaN(rows) || rows < 1 || rows > 10) rows = 4;
-
       const cellWidth = 15;
       let tableContent = '\n';
-      
       const createSeparator = (cols) => {
         let sep = '+';
         for (let i = 0; i < cols; i++) {
@@ -2419,7 +2172,6 @@
         }
         return sep;
       };
-
       const createRow = (cols, isHeader = false, rowNum = 0) => {
         let row = '|';
         for (let i = 0; i < cols; i++) {
@@ -2433,7 +2185,6 @@
         }
         return row;
       };
-
       tableContent += createSeparator(columns) + '\n';
       tableContent += createRow(columns, true) + '\n';
       tableContent += createSeparator(columns) + '\n';
@@ -2441,21 +2192,17 @@
         tableContent += createRow(columns, false, i) + '\n';
       }
       tableContent += createSeparator(columns) + '\n';
-      
       contentArea.value += tableContent;
     }
-
     function addSection() {
       const contentArea = document.getElementById('prescriptionContent');
       if (!contentArea) return;
-      
       const sectionTitle = prompt("Titre de la section:", "NOUVELLE SECTION");
       if (sectionTitle) {
-        const newSection = `\n\n=== ${sectionTitle.toUpperCase()} ===\n\n`;
+        const newSection = `\n=== ${sectionTitle.toUpperCase()} ===\n`;
         contentArea.value += newSection;
       }
     }
-
     // ================================
     // REGISTRE ET STATISTIQUES
     // ================================
@@ -2468,7 +2215,6 @@
           centerFilter.innerHTML += `<option value="${center}">${center}</option>`;
         });
       }
-
       const allServices = [
         'Urgences', 'Consultation générale', 'Médecine Interne', 'Cardiologie', 'Pneumologie', 
         'Rhumatologie', 'Neurologie', 'Néphrologie', 'Dermatologie', 'Hématologie', 
@@ -2479,7 +2225,6 @@
         'Chirurgie générale', 'Chirurgie pédiatrique', 'Chirurgie Viscérale', 
         'Réanimation médicale et polysalle', 'Scanner', 'Transfusion sanguine', 'Administration', 'Autre'
       ];
-      
       const serviceFilter = document.getElementById('serviceFilter');
       if (serviceFilter) {
         serviceFilter.innerHTML = '<option value="all">Tous les services</option>';
@@ -2488,14 +2233,12 @@
         });
       }
     }
-
     function updateStats() {
       const diseaseSearch = document.getElementById('diseaseSearchInput')?.value.toLowerCase() || '';
       const dateStart = document.getElementById('dateFilterStart')?.value || '';
       const dateEnd = document.getElementById('dateFilterEnd')?.value || '';
       const centerFilterValue = document.getElementById('centerFilter')?.value || 'all';
       const serviceFilterValue = document.getElementById('serviceFilter')?.value || 'all';
-      
       let filteredConsultations = consultations.filter(c => {
         const consultDate = new Date(c.date);
         if (diseaseSearch && !c.disease.toLowerCase().includes(diseaseSearch)) return false;
@@ -2509,24 +2252,19 @@
         if (serviceFilterValue !== 'all' && c.service !== serviceFilterValue) return false;
         return true;
       });
-      
       const totalConsultations = filteredConsultations.length;
       const urgencesCount = filteredConsultations.filter(c => c.service === 'Urgences').length;
       const patientIds = new Set(filteredConsultations.map(c => c.patientId));
       const totalPatients = patientIds.size;
-      
       const totalPatientsEl = document.getElementById('totalPatients');
       const totalConsultationsEl = document.getElementById('totalConsultations');
       const urgencesCountEl = document.getElementById('urgencesCount');
       const diseaseCountEl = document.getElementById('diseaseCount');
-      
       if (totalPatientsEl) totalPatientsEl.textContent = totalPatients;
       if (totalConsultationsEl) totalConsultationsEl.textContent = totalConsultations;
       if (urgencesCountEl) urgencesCountEl.textContent = urgencesCount;
-      
       const diseaseCount = {};
       const diseaseServiceMap = {};
-      
       filteredConsultations.forEach(c => {
         const normalizedDisease = c.disease.trim().toUpperCase();
         diseaseCount[normalizedDisease] = (diseaseCount[normalizedDisease] || 0) + 1;
@@ -2534,47 +2272,37 @@
           diseaseServiceMap[normalizedDisease] = { service: c.service, center: c.center };
         }
       });
-      
       if (diseaseCountEl) diseaseCountEl.textContent = Object.keys(diseaseCount).length;
-      
       const diseaseStatsDiv = document.getElementById('diseaseStats');
       const sortedDiseases = Object.entries(diseaseCount).sort(([, a], [, b]) => b - a);
-      
       let tableContent = '';
       const col1Width = 25;
       const col2Width = 15;
       const col3Width = 12;
       const col4Width = 12;
-      
       const createSeparator = () => {
-        return '+'.padEnd(col1Width + 1, '-') + '+'.padEnd(col2Width + 1, '-') + '+'.padEnd(col3Width + 1, '-') + '+'.padEnd(col4Width + 1, '-') + '+\n';
+        return '+'.padEnd(col1Width + 1, '-') + '+'.padEnd(col2Width + 1, '-') + '+'.padEnd(col3Width + 1, '-') + '+'.padEnd(col4Width + 1, '-') + '\n';
       };
-      
       if (sortedDiseases.length === 0) {
         tableContent = '<p class="text-center py-4 text-gray">Aucune donnée correspondante</p>';
       } else {
         tableContent += createSeparator();
         tableContent += '| ' + 'Maladie'.padEnd(col1Width - 1) + '| ' + 'Total'.padEnd(col2Width - 1) + '| ' + 'Service'.padEnd(col3Width - 1) + '| ' + 'Centre'.padEnd(col4Width - 1) + '|\n';
         tableContent += createSeparator();
-        
         sortedDiseases.slice(0, 10).forEach(([disease, count]) => {
           const info = diseaseServiceMap[disease] || {};
           const maladieDisplay = disease.length > col1Width ? disease.substring(0, col1Width - 2) + '..' : disease.padEnd(col1Width);
           const countDisplay = String(count).padEnd(col2Width);
           const serviceDisplay = (info.service || 'N/A').substring(0, col3Width - 2).padEnd(col3Width);
           const centerDisplay = (info.center || 'N/A').substring(0, col4Width - 2).padEnd(col4Width);
-          
           tableContent += `| ${maladieDisplay} | ${countDisplay} | ${serviceDisplay} | ${centerDisplay} |\n`;
         });
-        
         tableContent += createSeparator();
       }
-      
       if (diseaseStatsDiv) {
         diseaseStatsDiv.innerHTML = `<pre class="font-mono text-sm">${tableContent}</pre>`;
       }
     }
-
     // ================================
     // SAUVEGARDE ET CHARGEMENT
     // ================================
@@ -2584,7 +2312,6 @@
       updateStats();
       populateRegistryFilters();
     }
-
     function loadData() {
       const saved = localStorage.getItem('medicalData');
       if (saved) {
@@ -2599,7 +2326,6 @@
         }
       }
     }
-
     // ================================
     // EXPORT CSV
     // ================================
@@ -2609,7 +2335,6 @@
       const dateEnd = document.getElementById('dateFilterEnd')?.value || '';
       const centerFilterValue = document.getElementById('centerFilter')?.value || 'all';
       const serviceFilterValue = document.getElementById('serviceFilter')?.value || 'all';
-      
       const filteredConsultations = consultations.filter(c => {
         if (diseaseSearch && !c.disease.toLowerCase().includes(diseaseSearch)) return false;
         if (dateStart && new Date(c.date) < new Date(dateStart)) return false;
@@ -2622,14 +2347,11 @@
         if (serviceFilterValue !== 'all' && c.service !== serviceFilterValue) return false;
         return true;
       });
-
       if (filteredConsultations.length === 0) {
         showNotification('Aucune donnée à exporter avec les filtres actuels.', 'warning');
         return;
       }
-
       let csvContent = 'ID Patient,Nom,Date,Maladie,Service,Centre,Médecin\n';
-      
       filteredConsultations.forEach(c => {
         const patient = patients.find(p => p.id === c.patientId);
         const row = [
@@ -2643,7 +2365,6 @@
         ].join(',');
         csvContent += row + '\n';
       });
-
       const BOM = "\uFEFF";
       const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -2654,16 +2375,13 @@
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      
       showNotification('Export CSV réussi !', 'success');
     }
-
     // ================================
     // PARAMÈTRES
     // ================================
     function populateProfileForm() {
       if (!storedUser) return;
-      
       const editFirstName = document.getElementById('editFirstName');
       const editLastName = document.getElementById('editLastName');
       const editUsername = document.getElementById('editUsername');
@@ -2671,7 +2389,6 @@
       const editPhone = document.getElementById('editPhone');
       const editRole = document.getElementById('editRole');
       const editService = document.getElementById('editService');
-      
       if (editFirstName) editFirstName.value = storedUser.firstName || '';
       if (editLastName) editLastName.value = storedUser.lastName || '';
       if (editUsername) editUsername.value = storedUser.username || '';
@@ -2679,17 +2396,14 @@
       if (editPhone) editPhone.value = storedUser.phone || '';
       if (editRole) editRole.value = storedUser.role || 'Autre';
       if (editService) editService.value = storedUser.service || 'Autre';
-      
       const profileAlert = document.getElementById('profileAlert');
       if (profileAlert) profileAlert.innerHTML = '';
     }
-
     // ================================
     // INITIALISATION
     // ================================
     window.onload = function() {
       checkAuth();
-      
       // Initialiser les écouteurs d'événements
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
@@ -2697,35 +2411,30 @@
           if (window.debouncedSearch) window.debouncedSearch();
         });
       }
-      
       const diseaseSearchInput = document.getElementById('diseaseSearchInput');
       if (diseaseSearchInput) {
         diseaseSearchInput.addEventListener('input', () => {
           if (window.debouncedUpdateStats) window.debouncedUpdateStats();
         });
       }
-      
       const dateFilterStart = document.getElementById('dateFilterStart');
       if (dateFilterStart) {
         dateFilterStart.addEventListener('input', () => {
           if (window.debouncedUpdateStats) window.debouncedUpdateStats();
         });
       }
-      
       const dateFilterEnd = document.getElementById('dateFilterEnd');
       if (dateFilterEnd) {
         dateFilterEnd.addEventListener('input', () => {
           if (window.debouncedUpdateStats) window.debouncedUpdateStats();
         });
       }
-      
       const centerFilter = document.getElementById('centerFilter');
       if (centerFilter) {
         centerFilter.addEventListener('change', () => {
           if (window.debouncedUpdateStats) window.debouncedUpdateStats();
         });
       }
-      
       const serviceFilter = document.getElementById('serviceFilter');
       if (serviceFilter) {
         serviceFilter.addEventListener('change', () => {

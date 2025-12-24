@@ -22,27 +22,25 @@ class Patient(models.Model):
     sexe = models.CharField(max_length=10)
     telephone = models.CharField(max_length=20)
     adresse = models.TextField()
+    groupe_sanguin = models.CharField(max_length=5, blank=True)
+    rhesus = models.CharField(max_length=1, blank=True)
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
 
-
-# Définition des Rôles pour l'utilisateur
 class Utilisateur(models.Model):
     ROLES = (
-        ('MEDECIN', 'Médecin'),
-        ('INFIRMIER', 'Infirmier'),
-        ('ADMIN', 'Administrateur'),
-        ('SECRETAIRE', 'Secrétaire'),
+        ('Professeur', 'Professeur'), ('Médecin', 'Médecin'), ('Infirmier(ère)', 'Infirmier(ère)'),
+        ('TSO', 'TSO'), ('TAR', 'TAR'), ('TRIM', 'TRIM'), ('Sage-femme', 'Sage-femme'),
+        ('Orthophoniste', 'Orthophoniste'), ('Kiné', 'Kiné'), ('Opticien', 'Opticien'),
+        ('Administrateur', 'Administrateur'),
     )
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # Utilisation des choix pour garantir la cohérence des rôles
     role = models.CharField(max_length=50, choices=ROLES)
+    service = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.user.username
-
+        return self.user.get_full_name() or self.user.username
 
 class Pathologie(models.Model):
     nom = models.CharField(max_length=100, unique=True)

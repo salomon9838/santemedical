@@ -1,35 +1,101 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.http import JsonResponse
-from .models import ThemeConfig
-
-def get_theme(request):
-    theme = ThemeConfig.objects.first() # Récupère le thème actif
-    data = {
-        "primary_color": theme.primary_color,
-        "secondary_color": theme.secondary_color,
-    }
-    return JsonResponse(data)
 
 from .models import (
-    Patient, Utilisateur, Consultation,
-    Pathologie, Prescription, RegistreMaladie
+    ThemeConfig,
+    Patient,
+    Utilisateur,
+    Consultation,
+    Pathologie,
+    Prescription,
+    RegistreMaladie
 )
 
 from .serializers import (
-    PatientSerializer, UtilisateurSerializer,
-    ConsultationSerializer, PathologieSerializer,
-    PrescriptionSerializer, RegistreMaladieSerializer
+    PatientSerializer,
+    UtilisateurSerializer,
+    ConsultationSerializer,
+    PathologieSerializer,
+    PrescriptionSerializer,
+    RegistreMaladieSerializer
 )
 
-# =========================
-# PATIENTS API
-# =========================
+
+# ========================================
+# THÈME (public - pas besoin d'auth)
+# ========================================
+def get_theme(request):
+    theme = ThemeConfig.objects.first()
+    if not theme:
+        # Valeurs par défaut si aucun thème n'existe
+        data = {
+            "primary_color": "#4361ee",
+            "secondary_color": "#7209b7",
+        }
+    else:
+        data = {
+            "primary_color": theme.primary_color,
+            "secondary_color": theme.secondary_color,
+        }
+    return JsonResponse(data)
+
+    
+
+
+# ========================================
+# INSCRIPTION (REGISTER)
+# ========================================
+@api_view(['POST'])
+@permission_classes([AllowAny])  # Accessible sans auth
+def register_user(request):
+    data = request.data
+
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email', '')
+    first_name = data.get('firstName', '')
+    last_name = data.get('lastName', '')
+    role = data.get('role')
+    service = data.get('service')
+
+    if not all([username, password, role, service]):
+        return Response({'error': 'Tous les champs obligatoires doivent être remplis'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Ce nom d\'utilisateur existe déjà'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            first_name=first_name,
+            last_name=last_name
+        )
+        Utilisateur.objects.create(
+            user=user,
+            role=role,
+            service=service
+        )
+        return Response({'message': 'Utilisateur créé avec succès'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ========================================
+# PATIENTS API (protégé)
+# ========================================
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def patients_api(request):
     if request.method == 'GET':
         patients = Patient.objects.all()
@@ -44,10 +110,11 @@ def patients_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# =========================
-# CONSULTATIONS API
-# =========================
+# ========================================
+# CONSULTATIONS API (protégé)
+# ========================================
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def consultations_api(request):
     if request.method == 'GET':
         consultations = Consultation.objects.all()
@@ -62,10 +129,11 @@ def consultations_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# =========================
-# PATHOLOGIES API
-# =========================
+# ========================================
+# PATHOLOGIES API (protégé)
+# ========================================
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def pathologies_api(request):
     if request.method == 'GET':
         pathologies = Pathologie.objects.all()
@@ -80,10 +148,11 @@ def pathologies_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# =========================
-# PRESCRIPTIONS API
-# =========================
+# ========================================
+# PRESCRIPTIONS API (protégé)
+# ========================================
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def prescriptions_api(request):
     if request.method == 'GET':
         prescriptions = Prescription.objects.all()
@@ -98,32 +167,20 @@ def prescriptions_api(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# =========================
-# REGISTRE MALADIES API
-# =========================
+# ========================================
+# REGISTRE MALADIES API (protégé)
+# ========================================
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def registre_maladies_api(request):
     registre = RegistreMaladie.objects.all()
     serializer = RegistreMaladieSerializer(registre, many=True)
     return Response(serializer.data)
 
 
-# =========================
-# UTILISATEUR (CREATION)
-# =========================
-@api_view(['POST'])
-
-    
-def creer_utilisateur(request):
-    User.objects.create_user(
-        username="sam",
-        password="sam9838*",
-        email="salomonkoumedjina@gmail.com"
-    )
-    return Response({"message": "Utilisateur créé avec succès"})
-
-# Create your views here.
-
+# ========================================
+# VUES TEMPLATES HTML (pages web)
+# ========================================
 def solution(request):
     return render(request, 'solution.html')
 
@@ -138,3 +195,6 @@ def registre_medical(request):
 
 def parametres(request):
     return render(request, 'parametres.html')
+
+
+

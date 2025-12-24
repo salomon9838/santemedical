@@ -15,4 +15,5 @@ urlpatterns = [
     path('ancienne/', views.ancienne_consultation, name='ancienne'),
     path('registre/', views.registre_medical, name='registre'),
     path('parametres/', views.parametres, name='parametres'),
+    path('register/', views.register_user),
 ]
