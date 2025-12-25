@@ -5,4 +5,4 @@ psycopg2-binary
 dj-database-url
 whitenoise
 gunicorn
-rest_framework_simplejwt
+djangorestframework-simplejwt
