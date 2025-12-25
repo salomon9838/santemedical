@@ -1573,75 +1573,42 @@
       <p class="text-sm mt-2 text-gray-500">Version 2.0 • <span id="currentYear"></span></p>
     </div>
   </div>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// Initialisation Supabase
+// ======================== SUPABASE INITIALISATION ========================
 const supabaseUrl = 'https://huhckdnnekiglhwetili.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1aGNrZG5uZWtpZ2xod2V0aWxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NTU3MjYsImV4cCI6MjA4MjIzMTcyNn0.tyFb-ICxAZmw8ktpzb8MPjw0Bwb5-2a82CCSYgS9QEU';
-
 const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 let currentSupabaseUser = null;
+let storedUser = null;
 let patients = [];
 let consultations = [];
 let currentPatient = null;
 let currentPrescription = '';
-let storedUser = null;
 let navigationHistory = [];
-let searchTimeout = null;
-let statsTimeout = null;
 let currentSection = 'mainMenu';
 
-// Liste des services triée alphabétiquement
 const servicesList = [
-  'Administration',
-  'Anatomo-pathologie',
-  'Anesthésie-Réanimation',
-  'Cardiologie',
-  'Chirurgie générale',
-  'Chirurgie pédiatrique',
-  'Chirurgie Viscérale',
-  'Consultation générale',
-  'Dermatologie',
-  'Gastroentérologie',
-  'Gynécologie',
-  'Hématologie',
-  'Infertilité',
-  'Kinésithérapie',
-  'Laboratoire',
-  'Médecine Interne',
-  'Néphrologie',
-  'Neurochirurgie',
-  'Neurologie',
-  'Odontologie/Stomatologie',
-  'Ophtalmologie',
-  'Optométrie',
-  'ORL',
-  'Pédiatrie',
-  'Pneumologie',
-  'Psychiatrie',
-  'Radiologie/Imagerie médicale',
-  'Réanimation médicale et polysalle',
-  'Rhumatologie',
-  'Sage-femme/Obstétrique',
-  'Scanner',
-  'Traumatologie',
-  'Transfusion sanguine',
-  'Urgences',
-  'Urologie',
-  'Autre'
-];
+  'Administration','Anatomo-pathologie','Anesthésie-Réanimation','Cardiologie','Chirurgie générale',
+  'Chirurgie pédiatrique','Chirurgie Viscérale','Consultation générale','Dermatologie','Gastroentérologie',
+  'Gynécologie','Hématologie','Infertilité','Kinésithérapie','Laboratoire','Médecine Interne',
+  'Néphrologie','Neurochirurgie','Neurologie','Odontologie/Stomatologie','Ophtalmologie',
+  'Optométrie','ORL','Pédiatrie','Pneumologie','Psychiatrie','Radiologie/Imagerie médicale',
+  'Réanimation médicale et polysalle','Rhumatologie','Sage-femme/Obstétrique','Scanner',
+  'Traumatologie','Transfusion sanguine','Urgences','Urologie','Autre'
+].sort();
 
-// Templates de prescription par service
 const prescriptionTemplates = {
   'Cardiologie': `=== CONSULTATION CARDIOLOGIE ===
 Patient: [NOM] Âge: [AGE] Sexe: [SEXE]
 Groupe sanguin: [GROUPE] Rhésus: [RHESUS]
 Tableau:
 +---------------+---------------+---------------+
-| Symptômes | Examens | Traitement |
+| Symptômes     | Examens       | Traitement    |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `,
   'Ophtalmologie': `=== CONSULTATION OPHTALMOLOGIE ===
@@ -1649,9 +1616,9 @@ Patient: [NOM] Âge: [AGE] Sexe: [SEXE]
 Groupe sanguin: [GROUPE] Rhésus: [RHESUS]
 Tableau:
 +---------------+---------------+---------------+
-| Vision OD | Vision OG | Prescription |
+| Vision OD     | Vision OG     | Prescription  |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `,
   'Médecine Interne': `=== CONSULTATION MÉDECINE INTERNE ===
@@ -1659,9 +1626,9 @@ Patient: [NOM] Âge: [AGE] Sexe: [SEXE]
 Groupe sanguin: [GROUPE] Rhésus: [RHESUS]
 Tableau:
 +---------------+---------------+---------------+
-| Symptômes | Diagnostic | Traitement |
+| Symptômes     | Diagnostic    | Traitement    |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `,
   'Urgences': `=== CONSULTATION URGENCES ===
@@ -1669,9 +1636,9 @@ Patient: [NOM] Âge: [AGE] Sexe: [SEXE]
 Groupe sanguin: [GROUPE] Rhésus: [RHESUS]
 Tableau:
 +---------------+---------------+---------------+
-| Urgence | Intervention | Suivi |
+| Urgence       | Intervention  | Suivi         |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `,
   'default': `=== CONSULTATION ===
@@ -1679,215 +1646,230 @@ Patient: [NOM] Âge: [AGE] Sexe: [SEXE]
 Groupe sanguin: [GROUPE] Rhésus: [RHESUS]
 Tableau:
 +---------------+---------------+---------------+
-| Symptômes | Diagnostic | Traitement |
+| Symptômes     | Diagnostic    | Traitement    |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `
 };
 
-// ================================
-// FONCTIONS UTILITAIRES
-// ================================
+// ======================== UTILITAIRES ========================
+function showNotification(message, type = 'success') {
+  const container = document.getElementById('notificationContainer');
+  const notif = document.createElement('div');
+  notif.className = `notification ${type}`;
+  notif.innerHTML = `<i class="fas fa-${type==='success'?'check-circle':type==='error'?'exclamation-triangle':'info-circle'}"></i><span>${message}</span>`;
+  container.appendChild(notif);
+  setTimeout(() => { notif.style.opacity = '0'; setTimeout(() => notif.remove(), 300); }, 3000);
+}
+
 function debounce(func, wait) {
   let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+  return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => func(...args), wait); };
 }
 
-function showNotification(message, type = 'success') {
-  const notification = document.createElement('div');
-  notification.className = `notification ${type}`;
-  notification.innerHTML = `
-    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
-    <span>${message}</span>
-  `;
-
-  const container = document.getElementById('notificationContainer');
-  container.appendChild(notification);
-
-  setTimeout(() => {
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateX(100px)';
-    setTimeout(() => notification.remove(), 300);
-  }, 3000);
-}
-
-function showAlert(elementId, message, type = 'info') {
-  const alertDiv = document.getElementById(elementId);
-  if (!alertDiv) return;
-
-  alertDiv.innerHTML = `
-    <div class="alert alert-${type}">
-      <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
-      ${message}
-    </div>
-  `;
-}
-
-// ================================
-// AUTHENTIFICATION SUPABASE
-// ================================
-document.getElementById('registerForm').onsubmit = async function(e) {
+// ======================== AUTHENTIFICATION SUPABASE ========================
+document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = document.getElementById('regEmail').value;
+  const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
-  const firstName = document.getElementById('regFirstName').value.toUpperCase();
-  const lastName = document.getElementById('regLastName').value.toUpperCase();
   const role = document.getElementById('regRole').value;
   const serviceSelect = document.getElementById('regService');
-  const service = serviceSelect.value === 'Autre' ? document.getElementById('regOtherService').value.trim().toUpperCase() : serviceSelect.value || 'Non spécifié';
+  const service = serviceSelect.value === 'Autre' ? document.getElementById('regOtherService').value.trim().toUpperCase() : serviceSelect.value;
 
   const { data, error } = await supabase.auth.signUp({ email, password });
-
   if (error) {
-    showAlert('authAlert', 'Erreur inscription : ' + error.message, 'error');
+    showNotification('Erreur inscription : ' + error.message, 'error');
   } else {
-    showAlert('authAlert', 'Inscription réussie ! Confirme ton email pour te connecter.', 'success');
+    showNotification('Inscription réussie ! Confirmez votre email pour vous connecter.', 'success');
     if (data.user) {
-      const { error: profileError } = await supabase
-        .from('sante_utilisateur')
-        .insert({
-          user_id: data.user.id,
-          role: role,
-          service: service
-        });
-      if (profileError) console.error('Erreur création profil :', profileError);
+      await supabase.from('sante_utilisateur').insert({ user_id: data.user.id, role, service });
     }
-    toggleAuthView('login');
   }
-};
+  e.target.reset();
+});
 
-document.getElementById('loginForm').onsubmit = async function(e) {
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = document.getElementById('userEmail').value;
+  const email = document.getElementById('userEmail').value.trim();
   const password = document.getElementById('userPassword').value;
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
   if (error) {
-    showAlert('authAlert', 'Erreur connexion : ' + error.message, 'error');
+    showNotification('Erreur connexion : ' + error.message, 'error');
   } else {
     currentSupabaseUser = data.user;
-    const { data: profile } = await supabase
-      .from('sante_utilisateur')
-      .select('role, service')
-      .eq('user_id', data.user.id)
-      .single();
-
-   storedUser = {
-  firstName: 'Utilisateur', // Pas de firstName disponible ici
-  lastName: '',
-  role: profile?.role || 'Médecin',
-  service: profile?.service || 'Non spécifié',
-  email: data.user.email
-};
-    await loadData();
-    startApp();
+    await loadUserProfileAndStart();
   }
-};
-
-function clearAuthData() {
-  supabase.auth.signOut().then(() => {
-    currentSupabaseUser = null;
-    storedUser = null;
-    showAuthScreen();
-    showNotification('Déconnexion réussie !', 'success');
-  });
-}
-
-function checkAuth() {
-  supabase.auth.getSession().then(({ data: { session } }) => {
-    if (session) {
-      currentSupabaseUser = session.user;
-      loadUserProfileAndStart();
-    } else {
-      showAuthScreen();
-    }
-  });
-}
+});
 
 async function loadUserProfileAndStart() {
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from('sante_utilisateur')
     .select('role, service')
     .eq('user_id', currentSupabaseUser.id)
     .single();
 
+  if (error) {
+    showNotification("Erreur chargement profil : " + error.message, 'error');
+    return;
+  }
+
   storedUser = {
-    firstName: 'Utilisateur',
-    lastName: '',
     role: profile?.role || 'Médecin',
-    service: profile?.service || 'Non spécifié',
+    service: profile?.service || 'Consultation générale',
     email: currentSupabaseUser.email
   };
 
-  await loadData();
+  await loadAllData();
   startApp();
 }
 
-// Chargement des données depuis Supabase
-async function loadData() {
-  const { data: patientsData } = await supabase.from('sante_patient').select('*');
-  patients = patientsData || [];
+async function loadAllData() {
+  const { data: p } = await supabase.from('sante_patient').select('*');
+  patients = p || [];
 
-  const { data: consultationsData } = await supabase.from('sante_consultation').select('*');
-  consultations = consultationsData || [];
+  const { data: c } = await supabase.from('sante_consultation').select('*');
+  consultations = c || [];
 
-  updateStats();
+  // Ajouter l'âge calculé (si tu as une date de naissance, sinon garder le champ âge manuel)
+  patients.forEach(p => p.age = p.age || 'N/A');
 }
 
-// Enregistrement patient
-document.getElementById('newPatientForm').onsubmit = async function(e) {
-  e.preventDefault();
-  const patientName = document.getElementById('patientName').value.trim().toUpperCase();
+function logout() {
+  supabase.auth.signOut().then(() => {
+    currentSupabaseUser = null;
+    storedUser = null;
+    patients = [];
+    consultations = [];
+    document.getElementById('appContainer').classList.add('hidden');
+    document.getElementById('authScreen').classList.remove('hidden');
+    showNotification('Déconnexion réussie', 'success');
+  });
+}
 
-  const patientData = {
-    nom: patientName,
-    prenom: '',
-    date_naissance: '2000-01-01', // À améliorer avec un champ date si tu veux
-    sexe: document.getElementById('patientGender').value,
-    telephone: document.getElementById('patientPhone').value || null,
-    adresse: document.getElementById('patientAddress').value || null,
-    groupe_sanguin: document.getElementById('patientBloodGroup').value || null,
-    rhesus: document.getElementById('patientRhesus').value || null
-  };
+async function checkAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) {
+    currentSupabaseUser = session.user;
+    await loadUserProfileAndStart();
+  } else {
+    document.getElementById('authScreen').classList.remove('hidden');
+  }
+}
+
+// ======================== APPLICATION ========================
+async function startApp() {
+  document.getElementById('authScreen').classList.add('hidden');
+  document.getElementById('appContainer').classList.remove('hidden');
+
+  document.getElementById('currentUserInfo').textContent = `${storedUser.email} (${storedUser.role} - ${storedUser.service})`;
+  document.getElementById('listServiceDisplay').textContent = storedUser.service;
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+  showMainMenu();
+  updateStats();
+  populateServiceSelects();
+  populateRegistryFilters();
+}
+
+// ======================== NAVIGATION ========================
+function showSection(sectionId) {
+  document.querySelectorAll('.content-area').forEach(s => s.classList.remove('active'));
+  document.getElementById('mainMenu')?.classList.add('hidden');
+  const target = document.getElementById(sectionId);
+  if (target) target.classList.add('active');
+  currentSection = sectionId;
+
+  if (sectionId === 'prescriptionEditor') loadPrescriptionTemplate();
+  if (sectionId === 'oldConsultation') debouncedSearch();
+}
+
+function showMainMenu() {
+  navigationHistory = [];
+  currentSection = 'mainMenu';
+  document.querySelectorAll('.content-area').forEach(s => s.classList.remove('active'));
+  document.getElementById('mainMenu')?.classList.remove('hidden');
+  document.getElementById('navControls')?.classList.add('hidden');
+  document.getElementById('navBreadcrumb')?.classList.add('hidden');
+}
+
+// ======================== NOUVEAU PATIENT ========================
+document.getElementById('newPatientForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nom = document.getElementById('patientName').value.trim().toUpperCase();
+  const age = document.getElementById('patientAge').value.trim();
+  const sexe = document.getElementById('patientGender').value;
+  const telephone = document.getElementById('patientPhone').value || null;
+  const adresse = document.getElementById('patientAddress').value || null;
+  const groupe_sanguin = document.getElementById('patientBloodGroup').value.toUpperCase() || null;
+  const rhesus = document.getElementById('patientRhesus').value || null;
+  const serviceSelect = document.getElementById('serviceType');
+  const service = serviceSelect.value === 'Autre' ? document.getElementById('otherServiceNew').value.trim().toUpperCase() : serviceSelect.value;
 
   const { data, error } = await supabase
     .from('sante_patient')
-    .insert([patientData])
+    .insert([{ nom, age, sexe, telephone, adresse, groupe_sanguin, rhesus, service }])
     .select();
 
   if (error) {
     showNotification('Erreur enregistrement patient : ' + error.message, 'error');
-    return;
+  } else {
+    currentPatient = data[0];
+    patients.push(currentPatient);
+    document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
+    showNotification('Patient créé avec succès !', 'success');
+    showSection('prescriptionEditor');
   }
+  e.target.reset();
+});
 
-  currentPatient = data[0];
-  document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
-  document.getElementById('newPatientForm').reset();
-  currentPrescription = '';
-  navigateTo('prescriptionEditor');
-};
+// ======================== PRESCRIPTION ========================
+function loadPrescriptionTemplate() {
+  if (!currentPatient) return;
 
-// Enregistrement consultation
+  const serviceKey = currentPatient.service in prescriptionTemplates ? currentPatient.service : 'default';
+  let template = prescriptionTemplates[serviceKey];
+
+  const groupeDisplay = currentPatient.groupe_sanguin ? currentPatient.groupe_sanguin + (currentPatient.rhesus || '') : 'Non spécifié';
+
+  template = template
+    .replace('[NOM]', currentPatient.nom)
+    .replace('[AGE]', currentPatient.age || 'N/A')
+    .replace('[SEXE]', currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin')
+    .replace('[GROUPE]', currentPatient.groupe_sanguin || 'Non spécifié')
+    .replace('[RHESUS]', currentPatient.rhesus || 'Non spécifié');
+
+  document.getElementById('prescriptionContent').value = template;
+
+  document.getElementById('prescriptionHeader').innerHTML = `
+    <p><strong>Patient :</strong> ${currentPatient.nom}</p>
+    <p><strong>Âge :</strong> ${currentPatient.age || 'N/A'}</p>
+    <p><strong>Sexe :</strong> ${currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin'}</p>
+    <p><strong>Groupe sanguin :</strong> ${groupeDisplay}</p>
+    <p><strong>Soignant :</strong> ${storedUser.email}</p>
+    <p><strong>Service :</strong> ${storedUser.service}</p>
+  `;
+}
+
+document.getElementById('prescriptionForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  currentPrescription = document.getElementById('prescriptionContent').value;
+  document.getElementById('currentPatientNameDisplay3').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
+  showSection('medicalSummary');
+});
+
 function saveConsultation() {
   if (!currentPatient || !currentSupabaseUser) {
-    showNotification('Erreur : patient ou utilisateur non défini.', 'error');
+    showNotification('Erreur : patient ou utilisateur manquant', 'error');
     return;
   }
 
-  const diseaseType = document.getElementById('diseaseType').value;
-  const consultationCenter = document.getElementById('consultationCenter').value;
+  const diseaseType = document.getElementById('diseaseType').value.trim();
+  const consultationCenter = document.getElementById('consultationCenter').value.trim();
 
   if (!diseaseType || !consultationCenter) {
-    showNotification('Veuillez remplir les champs obligatoires (maladie et centre).', 'error');
+    showNotification('Veuillez remplir le type de maladie et le centre', 'error');
     return;
   }
 
@@ -1895,7 +1877,10 @@ function saveConsultation() {
     symptomes: currentPrescription,
     diagnostic: diseaseType,
     patient_id: currentPatient.id,
-    personnel_responsable_id: currentSupabaseUser.id
+    personnel_responsable_id: currentSupabaseUser.id,
+    center: consultationCenter,
+    service: storedUser.service,
+    date: new Date().toISOString()
   };
 
   supabase
@@ -1903,875 +1888,150 @@ function saveConsultation() {
     .insert([consultationData])
     .then(({ error }) => {
       if (error) {
-        showNotification('Erreur consultation : ' + error.message, 'error');
+        showNotification('Erreur sauvegarde : ' + error.message, 'error');
       } else {
-        showNotification('Consultation enregistrée dans la base cloud !', 'success');
+        showNotification('Consultation enregistrée avec succès !', 'success');
         currentPatient = null;
         currentPrescription = '';
+        consultations = []; // Recharger si besoin
+        loadAllData().then(() => updateStats());
         showMainMenu();
       }
     });
 }
 
-// ================================
-// NAVIGATION ET ANIMATIONS
-// ================================
-function navigateTo(sectionId) {
-  if (currentSection === sectionId) return;
+// ======================== RECHERCHE PATIENTS ========================
+const debouncedSearch = debounce(searchPatients, 300);
 
-  navigationHistory.push(currentSection);
-  updateBreadcrumb(sectionId);
-  showSection(sectionId);
-}
-
-function goBack() {
-  if (navigationHistory.length > 0) {
-    const previousSection = navigationHistory.pop();
-    showSection(previousSection);
-    updateBreadcrumb(previousSection);
-  } else {
-    showMainMenu();
-  }
-}
-
-function updateBreadcrumb(sectionId) {
-  const breadcrumbContent = document.getElementById('breadcrumbContent');
-  const navControls = document.getElementById('navControls');
-  const navBreadcrumb = document.getElementById('navBreadcrumb');
-
-  if (sectionId === 'mainMenu') {
-    navBreadcrumb.classList.add('hidden');
-    navControls.classList.add('hidden');
-    return;
-  }
-
-  navBreadcrumb.classList.remove('hidden');
-  navControls.classList.remove('hidden');
-
-  let breadcrumb = '';
-  const sections = {
-    'newConsultation': 'Nouvelle Consultation',
-    'prescriptionEditor': 'Éditeur de Prescription',
-    'medicalSummary': 'Résumé Médical',
-    'oldConsultation': 'Ancienne Consultation',
-    'registry': 'Registre & Statistiques',
-    'settings': 'Paramètres'
-  };
-
-  breadcrumb = `
-    <div class="breadcrumb-item" onclick="showMainMenu()">
-      <i class="fas fa-home"></i> Accueil
-    </div>
-    <div class="breadcrumb-separator">/</div>
-    <div class="breadcrumb-item active">
-      <i class="fas fa-${getSectionIcon(sectionId)}"></i> ${sections[sectionId]}
-    </div>
-  `;
-
-  breadcrumbContent.innerHTML = breadcrumb;
-}
-
-function getSectionIcon(sectionId) {
-  const icons = {
-    'newConsultation': 'user-plus',
-    'prescriptionEditor': 'file-medical',
-    'medicalSummary': 'clipboard-list',
-    'oldConsultation': 'history',
-    'registry': 'chart-bar',
-    'settings': 'cog'
-  };
-  return icons[sectionId] || 'folder';
-}
-
-function showSection(sectionId) {
-  document.querySelectorAll('.content-area').forEach(area => {
-    area.classList.remove('active');
-  });
-  document.getElementById('mainMenu').classList.add('hidden');
-  const section = document.getElementById(sectionId);
-  if (section) {
-    section.classList.add('active');
-  }
-  currentSection = sectionId;
-  updateBreadcrumb(sectionId);
-  handleSectionSpecificLogic(sectionId);
-}
-
-function handleSectionSpecificLogic(sectionId) {
-  switch(sectionId) {
-    case 'oldConsultation':
-      debouncedSearch();
-      break;
-    case 'prescriptionEditor':
-      document.getElementById('prescriptionContent').value = currentPrescription || '';
-      const editorAlert = document.getElementById('editorAlert');
-      if (editorAlert) editorAlert.innerHTML = '';
-      loadPrescriptionTemplate();
-      break;
-    case 'settings':
-      const settingsMenu = document.getElementById('settingsMenu');
-      if (settingsMenu) {
-        settingsMenu.classList.remove('hidden');
-      }
-      document.querySelectorAll('#settings > div').forEach(div => {
-        if (div.id !== 'settingsMenu') {
-          div.classList.add('hidden');
-        }
-      });
-      populateProfileForm();
-      break;
-  }
-}
-
-function showMainMenu() {
-  navigationHistory = [];
-  currentSection = 'mainMenu';
-
-  document.querySelectorAll('.content-area').forEach(section => {
-    section.classList.remove('active');
-  });
-
-  const navControls = document.getElementById('navControls');
-  const navBreadcrumb = document.getElementById('navBreadcrumb');
-  if (navControls) navControls.classList.add('hidden');
-  if (navBreadcrumb) navBreadcrumb.classList.add('hidden');
-
-  const mainMenu = document.getElementById('mainMenu');
-  if (mainMenu) {
-    mainMenu.classList.remove('hidden');
-  }
-}
-
-function showSettingsSubSection(subSectionId) {
-  const settingsMenu = document.getElementById('settingsMenu');
-  if (settingsMenu) {
-    settingsMenu.classList.add('hidden');
-  }
-
-  document.querySelectorAll('#settings > div').forEach(div => {
-    if (div.id !== 'settingsMenu') {
-      div.classList.add('hidden');
-    }
-  });
-
-  if (subSectionId) {
-    const subSection = document.getElementById(subSectionId);
-    if (subSection) {
-      subSection.classList.remove('hidden');
-    }
-  } else {
-    if (settingsMenu) {
-      settingsMenu.classList.remove('hidden');
-    }
-  }
-}
-
-// ================================
-// FONCTIONS DE L'APPLICATION
-// ================================
-async function startApp() {
-  document.getElementById('authScreen').classList.add('hidden');
-  document.getElementById('appContainer').classList.remove('hidden');
-
-  document.getElementById('currentUserInfo').textContent = `${storedUser.firstName} ${storedUser.lastName} (${storedUser.role} - ${storedUser.service})`;
-  document.getElementById('listServiceDisplay').textContent = storedUser.service;
-  document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-  showMainMenu();
-  updateStats();
-  populateRegistryFilters();
-  populateServiceSelects();
-
-  window.debouncedSearch = debounce(searchPatients, 300);
-  window.debouncedUpdateStats = debounce(updateStats, 300);
-}
-
-function populateServiceSelects() {
-  const selects = [
-    document.getElementById('regService'),
-    document.getElementById('serviceType'),
-    document.getElementById('serviceFilter')
-  ];
-  selects.forEach(select => {
-    if (select) {
-      select.innerHTML = '<option value="">Non spécifié</option>' +
-        servicesList.map(s => `<option value="${s}">${s}</option>`).join('');
-    }
-  });
-  document.getElementById('regService').addEventListener('change', toggleOtherService);
-  document.getElementById('serviceType').addEventListener('change', toggleOtherServiceNew);
-}
-
-function toggleOtherService() {
-  const group = document.getElementById('otherServiceGroup');
-  if (document.getElementById('regService').value === 'Autre') {
-    group.classList.remove('hidden');
-  } else {
-    group.classList.add('hidden');
-  }
-}
-
-function toggleOtherServiceNew() {
-  const group = document.getElementById('otherServiceGroupNew');
-  if (document.getElementById('serviceType').value === 'Autre') {
-    group.classList.remove('hidden');
-  } else {
-    group.classList.add('hidden');
-  }
-}
-
-function loadPrescriptionTemplate() {
-  const templateKey = currentPatient.service in prescriptionTemplates ? currentPatient.service : 'default';
-  let template = prescriptionTemplates[templateKey];
-  const rhesusDisplay = currentPatient.rhesus ? currentPatient.rhesus : 'Non spécifié';
-  const bloodGroupDisplay = currentPatient.groupe_sanguin ? currentPatient.groupe_sanguin + currentPatient.rhesus : 'Non spécifié';
-  template = template.replace('[NOM]', currentPatient.nom || currentPatient.name)
-                     .replace('[AGE]', currentPatient.age)
-                     .replace('[SEXE]', currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin')
-                     .replace('[GROUPE]', currentPatient.groupe_sanguin || 'Non spécifié')
-                     .replace('[RHESUS]', rhesusDisplay);
-  document.getElementById('prescriptionContent').value = template;
-  document.getElementById('prescriptionHeader').innerHTML = `
-    <p><strong>Patient:</strong> ${currentPatient.nom || currentPatient.name}</p>
-    <p><strong>Âge:</strong> ${currentPatient.age}</p>
-    <p><strong>Sexe:</strong> ${currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin'}</p>
-    <p><strong>Groupe sanguin:</strong> ${bloodGroupDisplay}</p>
-    <p><strong>Soignant:</strong> ${storedUser.firstName} ${storedUser.lastName}</p>
-    <p><strong>Service:</strong> ${storedUser.service}</p>
-  `;
-}
-
-function goToSummary() {
-  currentPrescription = document.getElementById('prescriptionContent').value;
-
-  const patientNameDisplay = document.getElementById('currentPatientNameDisplay3');
-  if (patientNameDisplay) {
-    patientNameDisplay.textContent = `${currentPatient.nom || currentPatient.name} (ID: ${currentPatient.id})`;
-  }
-
-  document.getElementById('doctorName').value = `${storedUser.firstName} ${storedUser.lastName}`;
-  document.getElementById('doctorContact').value = storedUser.phone || storedUser.email || '';
-  document.getElementById('doctorService').value = storedUser.service;
-  document.getElementById('consultationCenter').value = 'Centre Médical Principal';
-  const editorAlert = document.getElementById('editorAlert');
-  if (editorAlert) editorAlert.innerHTML = '';
-
-  navigateTo('medicalSummary');
-}
-
-// ================================
-// RECHERCHE DE PATIENTS (adaptée pour Supabase plus tard si besoin)
-// Pour l'instant on garde ta version locale, mais elle sera mise à jour quand tu auras plusieurs données
 function searchPatients() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const listContentDiv = document.getElementById('patientListContent');
-  const patientsListContainer = document.getElementById('patientsListContainer');
-  const searchLoader = document.getElementById('searchLoader');
+  const query = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  const container = document.getElementById('patientsListContainer');
+  const list = document.getElementById('patientListContent');
+  const loader = document.getElementById('searchLoader');
   const noResults = document.getElementById('noResults');
 
-  const serviceDuSoignant = storedUser ? storedUser.service : 'Consultation générale';
-  const listServiceDisplay = document.getElementById('listServiceDisplay');
-  if (listServiceDisplay) {
-    listServiceDisplay.textContent = serviceDuSoignant;
-  }
-  if (patientsListContainer) patientsListContainer.classList.add('hidden');
-  if (noResults) noResults.classList.add('hidden');
-  if (searchLoader) searchLoader.classList.remove('hidden');
+  loader?.classList.remove('hidden');
+  container?.classList.add('hidden');
+  noResults?.classList.add('hidden');
 
   setTimeout(() => {
-    let patientsToShow = patients.slice().sort((a, b) => b.id - a.id); // Tri par ID récent
-
+    let results = patients.sort((a, b) => b.id - a.id);
     if (query.length >= 2) {
-      patientsToShow = patientsToShow.filter(p =>
+      results = results.filter(p =>
         p.nom.toLowerCase().includes(query) ||
         p.id.toString().includes(query) ||
         (p.telephone && p.telephone.includes(query))
       );
     } else {
-      patientsToShow = patientsToShow.slice(0, 10);
+      results = results.slice(0, 15);
     }
 
-    if (searchLoader) searchLoader.classList.add('hidden');
-
-    if (patientsToShow.length === 0) {
-      if (noResults) noResults.classList.remove('hidden');
+    loader?.classList.add('hidden');
+    if (results.length === 0) {
+      noResults?.classList.remove('hidden');
     } else {
-      const resultsHtml = patientsToShow.map(p => {
-        return `
-        <div class="patient-search-card" onclick="showPatientDetails('${p.id}')">
+      list.innerHTML = results.map(p => `
+        <div class="patient-search-card" onclick="selectPatient('${p.id}')">
           <div class="patient-info">
             <h4>${p.nom}</h4>
-            <p>${p.age || ''} ans • ${p.sexe === 'M' ? 'Homme' : 'Femme'} • ID: ${p.id}</p>
+            <p>${p.age || 'N/A'} ans • ${p.sexe === 'M' ? 'Homme' : 'Femme'} • ID: ${p.id}</p>
           </div>
-          <div class="text-right">
-            <div class="patient-actions mt-2">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); continueConsultation('${p.id}')">
-                <i class="fas fa-edit"></i> Continuer
-              </button>
-            </div>
-          </div>
+          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); selectPatient('${p.id}')">
+            <i class="fas fa-edit"></i> Consulter
+          </button>
         </div>
-        `;
-      }).join('');
-
-      if (listContentDiv) listContentDiv.innerHTML = resultsHtml;
-      if (patientsListContainer) patientsListContainer.classList.remove('hidden');
+      `).join('');
+      container?.classList.remove('hidden');
     }
   }, 300);
 }
 
-// Les autres fonctions (showPatientDetails, renderHistory, addTable, export, updateStats, etc.) restent exactement comme dans ton code original
-// Je ne les recopie pas pour ne pas alourdir, mais tu les gardes telles quelles
+function selectPatient(patientId) {
+  currentPatient = patients.find(p => p.id == patientId);
+  if (!currentPatient) return;
+  document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
+  currentPrescription = '';
+  showSection('prescriptionEditor');
+}
 
- function showPatientDetails(patientId, showAll = false) {
-      currentPatient = patients.find(p => p.id === patientId);
-      if (!currentPatient) {
-        showNotification("Patient non trouvé.", "error");
-        return;
-      }
-      const patientDetails = document.getElementById('patientDetails');
-      if (patientDetails) {
-        patientDetails.classList.remove('hidden');
-        const bloodDisplay = currentPatient.bloodGroup ? `${currentPatient.bloodGroup} ${currentPatient.rhesus || ''}`.trim() : 'Non spécifié';
-        patientDetails.innerHTML = `
-          <form id="editPatientForm" onsubmit="savePatientEdit(event, '${patientId}')">
-            <div class="details-grid">
-              <div class="detail-item">
-                <label>ID Patient</label>
-                <p>${currentPatient.id}</p>
-              </div>
-              <div class="detail-item">
-                <label>Nom Complet</label>
-                <input type="text" value="${currentPatient.name}" readonly class="form-control uppercase-input" />
-              </div>
-              <div class="detail-item">
-                <label>Âge</label>
-                <input type="text" id="editAge" value="${currentPatient.age}" class="form-control" />
-              </div>
-              <div class="detail-item">
-                <label>Sexe</label>
-                <input type="text" value="${currentPatient.gender === 'M' ? 'Masculin' : 'Féminin'}" readonly class="form-control" />
-              </div>
-              <div class="detail-item">
-                <label>Profession</label>
-                <input type="text" id="editProfession" value="${currentPatient.profession || 'N/A'}" class="form-control" />
-              </div>
-              <div class="detail-item">
-                <label>Téléphone</label>
-                <input type="text" id="editPhonePatient" value="${currentPatient.phone || 'N/A'}" class="form-control" />
-              </div>
-              <div class="detail-item">
-                <label>Adresse</label>
-                <input type="text" id="editAddress" value="${currentPatient.address || 'N/A'}" class="form-control" />
-              </div>
-              <div class="detail-item">
-                <label>Service d'Enregistrement</label>
-                <p>${currentPatient.service || 'N/A'}</p>
-              </div>
-              <div class="detail-item">
-                <label>Groupe sanguin</label>
-                <p>${bloodDisplay}</p>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Sauvegarder Modifications</button>
-          </form>
-          <div id="consultationHistory"></div>
-          <div class="flex gap-3 mt-4">
-            <button class="btn btn-primary" onclick="continueConsultation('${currentPatient.id}')">
-              <i class="fas fa-edit"></i> Continuer la consultation
-            </button>
-            <button class="btn btn-outline" onclick="showAllHistory('${currentPatient.id}')">
-              <i class="fas fa-history"></i> Voir tout l'historique
-            </button>
-          </div>
-        `;
-      }
-      renderHistory(patientId, showAll);
+// ======================== OUTILS PRESCRIPTION ========================
+function addTable() {
+  const ta = document.getElementById('prescriptionContent');
+  if (!ta) return;
+  let cols = Math.min(4, parseInt(prompt("Colonnes (max 4)", "3")) || 3);
+  let rows = Math.min(10, parseInt(prompt("Lignes (max 10)", "4")) || 4);
+  let table = '\n+' + '------------------------+'.repeat(cols) + '\n';
+  table += '|' + ' En-tête                |'.repeat(cols) + '\n';
+  table += '+' + '------------------------+'.repeat(cols) + '+\n';
+  for (let i = 0; i < rows; i++) {
+    table += '|' + '                        |'.repeat(cols) + '\n';
+    table += '+' + '------------------------+'.repeat(cols) + '+\n';
+  }
+  ta.value += table;
+}
+
+function addSection() {
+  const ta = document.getElementById('prescriptionContent');
+  const title = prompt("Titre de la section");
+  if (title) ta.value += `\n\n=== ${title.toUpperCase()} ===\n\n`;
+}
+
+function exportToPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const text = document.getElementById('prescriptionContent').value;
+  doc.text(text, 10, 10);
+  doc.save('prescription.pdf');
+}
+
+// ======================== STATISTIQUES ========================
+const debouncedUpdateStats = debounce(updateStats, 300);
+
+function updateStats() {
+  const totalPatientsEl = document.getElementById('totalPatients');
+  const totalConsultationsEl = document.getElementById('totalConsultations');
+  const urgencesCountEl = document.getElementById('urgencesCount');
+  const diseaseCountEl = document.getElementById('diseaseCount');
+
+  const uniquePatients = new Set(consultations.map(c => c.patient_id)).size;
+  const urgences = consultations.filter(c => c.service === 'Urgences').length;
+  const uniqueDiseases = new Set(consultations.map(c => c.diagnostic?.trim().toUpperCase()).filter(Boolean)).size;
+
+  if (totalPatientsEl) totalPatientsEl.textContent = uniquePatients;
+  if (totalConsultationsEl) totalConsultationsEl.textContent = consultations.length;
+  if (urgencesCountEl) urgencesCountEl.textContent = urgences;
+  if (diseaseCountEl) diseaseCountEl.textContent = uniqueDiseases;
+}
+
+function populateServiceSelects() {
+  ['regService', 'serviceType', 'serviceFilter'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (sel) {
+      sel.innerHTML = servicesList.map(s => `<option value="${s}">${s}</option>`).join('');
     }
-    function savePatientEdit(e, patientId) {
-      e.preventDefault();
-      const updatedPatient = {
-        ...currentPatient,
-        age: document.getElementById('editAge').value,
-        profession: document.getElementById('editProfession').value,
-        phone: document.getElementById('editPhonePatient').value,
-        address: document.getElementById('editAddress').value
-      };
-      const index = patients.findIndex(p => p.id === patientId);
-      if (index !== -1) {
-        patients[index] = updatedPatient;
-      }
-      saveData();
-      showNotification('Patient mis à jour !', 'success');
-      showPatientDetails(patientId);
-    }
-    function continueConsultation(patientId) {
-      currentPatient = patients.find(p => p.id === patientId);
-      if (!currentPatient) return;
-    
-      const display = document.getElementById('currentPatientNameDisplay2');
-      if (display) {
-        display.textContent = `${currentPatient.name} (ID: ${currentPatient.id})`;
-      }
-      currentPrescription = '';
-      const prescriptionContent = document.getElementById('prescriptionContent');
-      if (prescriptionContent) {
-        prescriptionContent.value = '';
-      }
-    
-      navigateTo('prescriptionEditor');
-    }
-    function renderHistory(patientId, showAll = false) {
-      const serviceDuSoignant = storedUser ? storedUser.service : 'Consultation générale';
-      const historyDiv = document.getElementById('consultationHistory');
-      if (!historyDiv) return;
-    
-      let patientConsultations = consultations
-        .filter(c => c.patientId === patientId)
-        .sort((a, b) => new Date(b.date) - new Date(a.date));
-      if (!showAll) {
-        patientConsultations = patientConsultations.filter(c => c.service === serviceDuSoignant);
-      }
-    
-      let historyHtml = `<h3 class="details-section-header">
-        <i class="fas fa-calendar-check"></i>
-        ${showAll ? 'Historique complet' : `Historique (${serviceDuSoignant})`}
-        <span class="badge">${patientConsultations.length}</span>
-      </h3>`;
-    
-      if (patientConsultations.length === 0) {
-        historyHtml += `<p class="text-gray text-center py-4">Aucune consultation trouvée.</p>`;
-      } else {
-        patientConsultations.forEach((c, index) => {
-          const isOtherService = c.service !== serviceDuSoignant;
-          const cardClass = `consultation-item ${isOtherService ? 'other-service' : ''}`;
-          const serviceNote = isOtherService ? `<span class="consultation-service">${c.service}</span>` : '';
-        
-          historyHtml += `
-          <div class="${cardClass}">
-            <div class="consultation-header">
-              <span class="consultation-date">
-                <i class="fas fa-calendar"></i> ${new Date(c.date).toLocaleDateString('fr-FR')}
-              </span>
-              ${serviceNote}
-            </div>
-            <div class="mb-3">
-              <strong><i class="fas fa-disease"></i> Type de Maladie :</strong> ${c.disease || 'N/A'}
-            </div>
-            <div class="mb-3">
-              <strong><i class="fas fa-file-prescription"></i> Prescription :</strong>
-              <div class="mt-2 p-3 bg-light rounded border">
-                <pre style="margin: 0; white-space: pre-wrap;">${c.prescriptionContent || 'N/A'}</pre>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-              <div><strong><i class="fas fa-user-md"></i> Soignant :</strong> ${c.doctorName || 'N/A'}</div>
-              <div><strong><i class="fas fa-phone"></i> Contact :</strong> ${c.doctorContact || 'N/A'}</div>
-              <div><strong><i class="fas fa-stethoscope"></i> Service :</strong> ${c.service || 'N/A'}</div>
-              <div><strong><i class="fas fa-hospital"></i> Centre :</strong> ${c.center || 'N/A'}</div>
-            </div>
-          </div>
-          `;
-        });
-      }
-    
-      historyDiv.innerHTML = historyHtml;
-    }
-    function showAllHistory(patientId) {
-      renderHistory(patientId, true);
-    }
-    // ================================
-    // ÉDITEUR DE PRESCRIPTION
-    // ================================
-    function addTable() {
-      const contentArea = document.getElementById('prescriptionContent');
-      if (!contentArea) return;
-    
-      let columns = parseInt(prompt("Nombre de colonnes (max 4):", 3)) || 3;
-      let rows = parseInt(prompt("Nombre de lignes (max 10):", 4)) || 4;
-      if (isNaN(columns) || columns < 1 || columns > 4) columns = 3;
-      if (isNaN(rows) || rows < 1 || rows > 10) rows = 4;
-      const cellWidth = 20;
-      let tableContent = '\n';
-    
-      const createSeparator = (cols) => {
-        let sep = '+';
-        for (let i = 0; i < cols; i++) {
-          sep += '-'.repeat(cellWidth + 2) + '+';
-        }
-        return sep;
-      };
-      const createRow = (cols, isHeader = false, rowNum = 0) => {
-        let row = '|';
-        for (let i = 0; i < cols; i++) {
-          let cellContent = isHeader ? `COL ${i + 1}` : `L${rowNum}C${i + 1}`;
-          if (cellContent.length > cellWidth) {
-            cellContent = cellContent.substring(0, cellWidth);
-          } else {
-            cellContent = cellContent + ' '.repeat(cellWidth - cellContent.length);
-          }
-          row += ` ${cellContent} |`;
-        }
-        return row;
-      };
-      tableContent += createSeparator(columns) + '\n';
-      tableContent += createRow(columns, true) + '\n';
-      tableContent += createSeparator(columns) + '\n';
-      for (let i = 1; i <= rows; i++) {
-        tableContent += createRow(columns, false, i) + '\n';
-        tableContent += createSeparator(columns) + '\n';
-      }
-    
-      contentArea.value += tableContent;
-    }
-    function addSection() {
-      const contentArea = document.getElementById('prescriptionContent');
-      if (!contentArea) return;
-    
-      const sectionTitle = prompt("Titre de la section:", "NOUVELLE SECTION");
-      if (sectionTitle) {
-        const newSection = `\n\n=== ${sectionTitle.toUpperCase()} ===\n\n`;
-        contentArea.value += newSection;
-      }
-    }
-    function exportToPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text(document.getElementById('prescriptionContent').value, 10, 10);
-      doc.save('prescription.pdf');
-    }
-    function exportToWord() {
-      const content = document.getElementById('prescriptionContent').value;
-      const blob = new Blob([content], { type: 'application/msword' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'prescription.doc';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-    // ================================
-    // REGISTRE ET STATISTIQUES
-    // ================================
-    function populateRegistryFilters() {
-      const uniqueCenters = [...new Set(consultations.map(c => c.center).filter(Boolean))];
-      const centerFilter = document.getElementById('centerFilter');
-      if (centerFilter) {
-        centerFilter.innerHTML = '<option value="all">Tous les centres</option>';
-        uniqueCenters.forEach(center => {
-          centerFilter.innerHTML += `<option value="${center}">${center}</option>`;
-        });
-      }
-      const serviceFilter = document.getElementById('serviceFilter');
-      if (serviceFilter) {
-        serviceFilter.innerHTML = '<option value="all">Tous les services</option>' +
-          servicesList.map(s => `<option value="${s}">${s}</option>`).join('');
-      }
-    }
-    function updateStats() {
-      const diseaseSearch = document.getElementById('diseaseSearchInput')?.value.toLowerCase() || '';
-      const dateStart = document.getElementById('dateFilterStart')?.value || '';
-      const dateEnd = document.getElementById('dateFilterEnd')?.value || '';
-      const centerFilterValue = document.getElementById('centerFilter')?.value || 'all';
-      const serviceFilterValue = document.getElementById('serviceFilter')?.value || 'all';
-    
-      let filteredConsultations = consultations.filter(c => {
-        const consultDate = new Date(c.date);
-        if (diseaseSearch && !c.disease.toLowerCase().includes(diseaseSearch)) return false;
-        if (dateStart && consultDate < new Date(dateStart)) return false;
-        if (dateEnd) {
-          const endDate = new Date(dateEnd);
-          endDate.setDate(endDate.getDate() + 1);
-          if (consultDate >= endDate) return false;
-        }
-        if (centerFilterValue !== 'all' && c.center !== centerFilterValue) return false;
-        if (serviceFilterValue !== 'all' && c.service !== serviceFilterValue) return false;
-        return true;
-      });
-    
-      const totalConsultations = filteredConsultations.length;
-      const urgencesCount = filteredConsultations.filter(c => c.service === 'Urgences').length;
-      const patientIds = new Set(filteredConsultations.map(c => c.patientId));
-      const totalPatients = patientIds.size;
-    
-      const totalPatientsEl = document.getElementById('totalPatients');
-      const totalConsultationsEl = document.getElementById('totalConsultations');
-      const urgencesCountEl = document.getElementById('urgencesCount');
-      const diseaseCountEl = document.getElementById('diseaseCount');
-    
-      if (totalPatientsEl) totalPatientsEl.textContent = totalPatients;
-      if (totalConsultationsEl) totalConsultationsEl.textContent = totalConsultations;
-      if (urgencesCountEl) urgencesCountEl.textContent = urgencesCount;
-    
-      const diseaseCount = {};
-      const diseaseServiceMap = {};
-    
-      filteredConsultations.forEach(c => {
-        const normalizedDisease = c.disease.trim().toUpperCase();
-        diseaseCount[normalizedDisease] = (diseaseCount[normalizedDisease] || 0) + 1;
-        if (!diseaseServiceMap[normalizedDisease]) {
-          diseaseServiceMap[normalizedDisease] = { service: c.service, center: c.center };
-        }
-      });
-    
-      if (diseaseCountEl) diseaseCountEl.textContent = Object.keys(diseaseCount).length;
-    
-      const diseaseStatsDiv = document.getElementById('diseaseStats');
-      const sortedDiseases = Object.entries(diseaseCount).sort(([, a], [, b]) => b - a);
-    
-      let tableContent = '';
-      const col1Width = 25;
-      const col2Width = 15;
-      const col3Width = 12;
-      const col4Width = 12;
-    
-      const createSeparator = () => {
-        return '+'.padEnd(col1Width + 1, '-') + '+'.padEnd(col2Width + 1, '-') + '+'.padEnd(col3Width + 1, '-') + '+'.padEnd(col4Width + 1, '-') + '+\n';
-      };
-    
-      if (sortedDiseases.length === 0) {
-        tableContent = '<p class="text-center py-4 text-gray">Aucune donnée correspondante</p>';
-      } else {
-        tableContent += createSeparator();
-        tableContent += '| ' + 'Maladie'.padEnd(col1Width - 1) + '| ' + 'Total'.padEnd(col2Width - 1) + '| ' + 'Service'.padEnd(col3Width - 1) + '| ' + 'Centre'.padEnd(col4Width - 1) + '|\n';
-        tableContent += createSeparator();
-      
-        sortedDiseases.slice(0, 10).forEach(([disease, count]) => {
-          const info = diseaseServiceMap[disease] || {};
-          const maladieDisplay = disease.length > col1Width ? disease.substring(0, col1Width - 2) + '..' : disease.padEnd(col1Width);
-          const countDisplay = String(count).padEnd(col2Width);
-          const serviceDisplay = (info.service || 'N/A').substring(0, col3Width - 2).padEnd(col3Width);
-          const centerDisplay = (info.center || 'N/A').substring(0, col4Width - 2).padEnd(col4Width);
-        
-          tableContent += `| ${maladieDisplay} | ${countDisplay} | ${serviceDisplay} | ${centerDisplay} |\n`;
-        });
-      
-        tableContent += createSeparator();
-      }
-    
-      if (diseaseStatsDiv) {
-        diseaseStatsDiv.innerHTML = `<pre class="font-mono text-sm">${tableContent}</pre>`;
-      }
-    }
-    // ================================
-    // SAUVEGARDE ET CHARGEMENT
-    // ================================
-    function saveData() {
-      const data = { patients, consultations };
-      localStorage.setItem('medicalData', JSON.stringify(data));
-      updateStats();
-      populateRegistryFilters();
-    }
-    function loadData() {
-      const saved = localStorage.getItem('medicalData');
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          patients = data.patients || [];
-          consultations = data.consultations || [];
-        } catch (e) {
-          console.error('Erreur de chargement des données:', e);
-          patients = [];
-          consultations = [];
-        }
-      }
-    }
-    // ================================
-    // EXPORT CSV
-    // ================================
-    function exportData() {
-      const diseaseSearch = document.getElementById('diseaseSearchInput')?.value.toLowerCase() || '';
-      const dateStart = document.getElementById('dateFilterStart')?.value || '';
-      const dateEnd = document.getElementById('dateFilterEnd')?.value || '';
-      const centerFilterValue = document.getElementById('centerFilter')?.value || 'all';
-      const serviceFilterValue = document.getElementById('serviceFilter')?.value || 'all';
-    
-      const filteredConsultations = consultations.filter(c => {
-        if (diseaseSearch && !c.disease.toLowerCase().includes(diseaseSearch)) return false;
-        if (dateStart && new Date(c.date) < new Date(dateStart)) return false;
-        if (dateEnd) {
-          const endDate = new Date(dateEnd);
-          endDate.setDate(endDate.getDate() + 1);
-          if (new Date(c.date) >= endDate) return false;
-        }
-        if (centerFilterValue !== 'all' && c.center !== centerFilterValue) return false;
-        if (serviceFilterValue !== 'all' && c.service !== serviceFilterValue) return false;
-        return true;
-      });
-      if (filteredConsultations.length === 0) {
-        showNotification('Aucune donnée à exporter avec les filtres actuels.', 'warning');
-        return;
-      }
-      let csvContent = 'ID Patient,Nom,Date,Maladie,Service,Centre,Médecin\n';
-    
-      filteredConsultations.forEach(c => {
-        const patient = patients.find(p => p.id === c.patientId);
-        const row = [
-          `"${c.patientId}"`,
-          `"${patient ? patient.name : 'N/A'}"`,
-          `"${c.date}"`,
-          `"${c.disease}"`,
-          `"${c.service}"`,
-          `"${c.center}"`,
-          `"${c.doctorName}"`
-        ].join(',');
-        csvContent += row + '\n';
-      });
-      const BOM = "\uFEFF";
-      const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `export_medical_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    
-      showNotification('Export CSV réussi !', 'success');
-    }
-    // ================================
-    // PARAMÈTRES
-    // ================================
-    function populateProfileForm() {
-      if (!storedUser) return;
-    
-      const editFirstName = document.getElementById('editFirstName');
-      const editLastName = document.getElementById('editLastName');
-      const editUsername = document.getElementById('editUsername');
-      const editEmail = document.getElementById('editEmail');
-      const editPhone = document.getElementById('editPhone');
-      const editRole = document.getElementById('editRole');
-      const editService = document.getElementById('editService');
-    
-      if (editFirstName) editFirstName.value = storedUser.firstName || '';
-      if (editLastName) editLastName.value = storedUser.lastName || '';
-      if (editUsername) editUsername.value = storedUser.username || '';
-      if (editEmail) editEmail.value = storedUser.email || '';
-           if (editPhone) editPhone.value = storedUser.phone || '';
-      if (editRole) editRole.value = storedUser.role || 'Autre';
-      if (editService) editService.value = storedUser.service || 'Non spécifié';
-    
-      const profileAlert = document.getElementById('profileAlert');
-      if (profileAlert) profileAlert.innerHTML = '';
-    }
-    // ================================
-    // INITIALISATION
-    // ================================
-    window.onload = function() {
-      checkAuth();
-    
-      // Initialiser les écouteurs d'événements
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', () => {
-          if (window.debouncedSearch) window.debouncedSearch();
-        });
-      }
-    }
-    
-      const diseaseSearchInput = document.getElementById('diseaseSearchInput');
-      if (diseaseSearchInput) {
-        diseaseSearchInput.addEventListener('input', () => {
-          if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-        });
-      }
-    
-      const dateFilterStart = document.getElementById('dateFilterStart');
-      if (dateFilterStart) {
-        dateFilterStart.addEventListener('input', () => {
-          if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-        });
-      }
-    
-      const dateFilterEnd = document.getElementById('dateFilterEnd');
-      if (dateFilterEnd) {
-        dateFilterEnd.addEventListener('input', () => {
-          if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-        });
-      }
-    
-      const centerFilter = document.getElementById('centerFilter');
-      if (centerFilter) {
-        centerFilter.addEventListener('change', () => {
-          if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-        });
-      }
-    
-      const serviceFilter = document.getElementById('serviceFilter');
-    // ================================
-// INITIALISATION DES FILTRES ET ÉCOUTEURS
-// ================================
+  });
+}
+
 function populateRegistryFilters() {
-  const uniqueCenters = [...new Set(consultations.map(c => c.center).filter(Boolean))];
+  const centers = [...new Set(consultations.map(c => c.center).filter(Boolean))];
   const centerFilter = document.getElementById('centerFilter');
   if (centerFilter) {
-    centerFilter.innerHTML = '<option value="all">Tous les centres</option>';
-    uniqueCenters.forEach(center => {
-      centerFilter.innerHTML += `<option value="${center}">${center}</option>`;
-    });
-  }
-
-  const serviceFilter = document.getElementById('serviceFilter');
-  if (serviceFilter) {
-    serviceFilter.innerHTML = '<option value="all">Tous les services</option>' +
-      servicesList.map(s => `<option value="${s}">${s}</option>`).join('');
+    centerFilter.innerHTML = '<option value="all">Tous les centres</option>' +
+      centers.map(c => `<option value="${c}">${c}</option>`).join('');
   }
 }
 
-// ================================
-// INITIALISATION AU CHARGEMENT DE LA PAGE
-// ================================
-window.onload = function() {
+// ======================== INITIALISATION ========================
+window.onload = () => {
   checkAuth();
 
-  // Écouteurs pour la recherche patient
-  const searchInput = document.getElementById('searchInput');
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      if (window.debouncedSearch) window.debouncedSearch();
-    });
-  }
-
-  // Écouteurs pour les statistiques
-  const diseaseSearchInput = document.getElementById('diseaseSearchInput');
-  if (diseaseSearchInput) {
-    diseaseSearchInput.addEventListener('input', () => {
-      if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-    });
-  }
-
-  const dateFilterStart = document.getElementById('dateFilterStart');
-  if (dateFilterStart) {
-    dateFilterStart.addEventListener('input', () => {
-      if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-    });
-  }
-
-  const dateFilterEnd = document.getElementById('dateFilterEnd');
-  if (dateFilterEnd) {
-    dateFilterEnd.addEventListener('input', () => {
-      if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-    });
-  }
-
-  const centerFilter = document.getElementById('centerFilter');
-  if (centerFilter) {
-    centerFilter.addEventListener('change', () => {
-      if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-    });
-  }
-
-  const serviceFilter = document.getElementById('serviceFilter');
-  if (serviceFilter) {
-    serviceFilter.addEventListener('change', () => {
-      if (window.debouncedUpdateStats) window.debouncedUpdateStats();
-    });
-  }
+  document.getElementById('searchInput')?.addEventListener('input', debouncedSearch);
+  ['diseaseSearchInput', 'dateFilterStart', 'dateFilterEnd', 'centerFilter', 'serviceFilter'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', debouncedUpdateStats);
+    document.getElementById(id)?.addEventListener('change', debouncedUpdateStats);
+  });
 };
-
 </script>
-
 </body>
 </html>
      
