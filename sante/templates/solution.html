@@ -1291,10 +1291,9 @@
             <button class="btn btn-primary" onclick="exportToPDF()">
               <i class="fas fa-file-pdf"></i> Exporter en PDF
             </button>
-            <button onclick="exportToWord()">📄 Word</button>
-
-<textarea id="prescriptionContent" placeholder="Écrire la prescription ici"></textarea>
-
+            <button class="btn btn-primary" onclick="exportToWord()">
+              <i class="fas fa-file-word"></i> Exporter en Word
+            </button>
           </div>
         
           <form id="prescriptionForm">
@@ -1959,47 +1958,27 @@ async function continueWithPatient(id) {
 }
 
 // Fonction pour exporter en Word (utilisant docx.js - ajoutez la lib ci-dessous)
- type="module"
-import { Document, Packer, Paragraph, TextRun } 
-from "https://cdn.jsdelivr.net/npm/docx@8.5.0/+esm";
-
-window.exportToWord = async function () {
-  const content = document.getElementById("prescriptionContent").value;
-
-  if (!content.trim()) {
-    alert("Veuillez écrire une prescription");
-    return;
-  }
-
-  const doc = new Document({
+function exportToWord() {
+  const content = document.getElementById('prescriptionContent').value;
+  const doc = new docx.Document({
     sections: [{
+      properties: {},
       children: [
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: "PRESCRIPTION MÉDICALE",
-              bold: true,
-              size: 28
-            })
-          ]
+        new docx.Paragraph({
+          children: [new docx.TextRun(content)],
         }),
-        new Paragraph(" "),
-        new Paragraph(content)
-      ]
-    }]
+      ],
+    }],
   });
-
-  const blob = await Packer.toBlob(doc);
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "prescription.docx";
-  link.click();
-
-  URL.revokeObjectURL(link.href);
-};
-
-
+  docx.Packer.toBlob(doc).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prescription.docx';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
 window.onload = checkAuth;
 </script>
 </body>
