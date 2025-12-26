@@ -4,15 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MediTrack Pro — Gestion Médicale Intelligente</title>
-  <link rel="icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="module">
-  import { Document, Packer, Paragraph } from "https://cdn.jsdelivr.net/npm/docx@8.5.0/+esm";
-</script>
-
-
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
   <style>
     :root {
       --primary: #4361ee;
@@ -1296,9 +1291,10 @@
             <button class="btn btn-primary" onclick="exportToPDF()">
               <i class="fas fa-file-pdf"></i> Exporter en PDF
             </button>
-            <button class="btn btn-primary" onclick="exportToWord()">
-              <i class="fas fa-file-word"></i> Exporter en Word
-            </button>
+            <button onclick="exportToWord()">📄 Word</button>
+
+<textarea id="prescriptionContent" placeholder="Écrire la prescription ici"></textarea>
+
           </div>
         
           <form id="prescriptionForm">
@@ -1963,27 +1959,47 @@ async function continueWithPatient(id) {
 }
 
 // Fonction pour exporter en Word (utilisant docx.js - ajoutez la lib ci-dessous)
-function exportToWord() {
-  const content = document.getElementById('prescriptionContent').value;
-  const doc = new docx.Document({
+ type="module"
+import { Document, Packer, Paragraph, TextRun } 
+from "https://cdn.jsdelivr.net/npm/docx@8.5.0/+esm";
+
+window.exportToWord = async function () {
+  const content = document.getElementById("prescriptionContent").value;
+
+  if (!content.trim()) {
+    alert("Veuillez écrire une prescription");
+    return;
+  }
+
+  const doc = new Document({
     sections: [{
-      properties: {},
       children: [
-        new docx.Paragraph({
-          children: [new docx.TextRun(content)],
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: "PRESCRIPTION MÉDICALE",
+              bold: true,
+              size: 28
+            })
+          ]
         }),
-      ],
-    }],
+        new Paragraph(" "),
+        new Paragraph(content)
+      ]
+    }]
   });
-  docx.Packer.toBlob(doc).then(blob => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'prescription.docx';
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-}
+
+  const blob = await Packer.toBlob(doc);
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "prescription.docx";
+  link.click();
+
+  URL.revokeObjectURL(link.href);
+};
+
+
 window.onload = checkAuth;
 </script>
 </body>
