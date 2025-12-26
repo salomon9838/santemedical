@@ -1191,15 +1191,22 @@
         <div class="glass p-6 rounded-xl shadow hover-lift">
           <form id="newPatientForm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="form-group">
-                <label>Nom complet du patient *</label>
-                <input type="text" id="patientName" class="form-control uppercase-input" required />
-              </div>
-              <div class="form-group">
-                <label>Âge *</label>
-                <input type="text" id="patientAge" class="form-control" required placeholder="Ex: 0.5 pour 6 mois ou <1 pour <1 an" />
-              </div>
-            </div>
+  <div class="form-group">
+    <label>Prénom du patient *</label>
+    <input type="text" id="patientPrenom" class="form-control uppercase-input" required placeholder="Ex: Fatoumata" />
+  </div>
+  <div class="form-group">
+    <label>Nom du patient *</label>
+    <input type="text" id="patientNom" class="form-control uppercase-input" required placeholder="Ex: Diallo" />
+  </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+  <div class="form-group">
+    <label>Âge *</label>
+    <input type="number" step="0.1" id="patientAge" class="form-control" required placeholder="Ex: 25 ou 0.5" />
+  </div>
+  
+</div>
           
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group">
@@ -1719,7 +1726,8 @@ function showSection(sectionId) {
 // ======================== NOUVELLE CONSULTATION ========================
 document.getElementById('newPatientForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const nom = document.getElementById('patientName').value.trim().toUpperCase();
+ const prenom = document.getElementById('patientPrenom').value.trim().toUpperCase();
+const nom = document.getElementById('patientNom').value.trim().toUpperCase();
   const age = document.getElementById('patientAge').value.trim() || null;  // Envoie age directement (string ou number)
   const sexe = document.getElementById('patientGender').value;
   const telephone = document.getElementById('patientPhone').value || null;
@@ -1731,15 +1739,33 @@ document.getElementById('newPatientForm')?.addEventListener('submit', async (e) 
     : document.getElementById('serviceType').value;
   const { data, error } = await supabaseClient
     .from('sante_patient')
-    .insert([{ nom, age, sexe, telephone, adresse, groupe_sanguin, rhesus, service }])
+    .insert([{
+      prenom: prenom,
+      nom: nom,
+      age: age,
+      sexe: sexe,
+      telephone: telephone,
+      adresse: adresse,
+      groupe_sanguin: groupe_sanguin,
+      rhesus: rhesus,
+      service: service
+    }])
     .select();
+
   if (error) {
     showNotification('Erreur : ' + error.message, 'error');
+    console.error(error);
   } else {
     currentPatient = data[0];
-    showNotification('Patient créé !', 'success');
+    // Affichage du nom complet dans l'app (prénom + nom)
+    const nomComplet = `${currentPatient.prenom} ${currentPatient.nom}`;
+    document.getElementById('currentPatientNameDisplay2').textContent = nomComplet;
+    document.getElementById('currentPatientNameDisplay3').textContent = nomComplet;
+
+    showNotification('Patient créé avec succès !', 'success');
     showSection('prescriptionEditor');
   }
+
   e.target.reset();
 });
 
