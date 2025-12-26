@@ -25,23 +25,14 @@
       --danger: #e63946;
       --danger-light: #ffe6e9;
       --warning: #ffb703;
-      --card-bg: #ffffff;
-      --sidebar-bg: #f1f5f9;
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       --shadow-hover: 0 10px 30px rgba(67, 97, 238, 0.15);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-fast: all 0.2s ease;
-      --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       --radius: 16px;
       --radius-sm: 8px;
       --glass: rgba(255, 255, 255, 0.9);
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
@@ -50,15 +41,9 @@
       position: relative;
     }
     body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(circle at 20% 80%, rgba(67, 97, 238, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
+      content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(67, 97, 238, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
       z-index: -1;
     }
     .hidden { display: none !important; }
@@ -67,60 +52,24 @@
     .items-center { align-items: center; }
     .justify-center { justify-content: center; }
     .justify-between { justify-content: space-between; }
-    .gap-2 { gap: 0.5rem; }
-    .gap-3 { gap: 0.75rem; }
     .gap-4 { gap: 1rem; }
     .gap-6 { gap: 1.5rem; }
-    .p-3 { padding: 0.75rem; }
-    .p-4 { padding: 1rem; }
-    .p-5 { padding: 1.25rem; }
     .p-6 { padding: 1.5rem; }
-    .px-4 { padding-left: 1rem; padding-right: 1rem; }
-    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-    .rounded-lg { border-radius: var(--radius-sm); }
-    .rounded-xl { border-radius: var(--radius); }
-    .rounded-2xl { border-radius: 1.5rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .w-full { width: 100%; }
     .text-center { text-align: center; }
-    .text-right { text-align: right; }
     .font-bold { font-weight: 700; }
-    .font-semibold { font-weight: 600; }
-    .text-sm { font-size: 0.875rem; }
-    .text-base { font-size: 1rem; }
-    .text-lg { font-size: 1.125rem; }
     .text-xl { font-size: 1.25rem; }
     .text-2xl { font-size: 1.5rem; }
-    .text-3xl { font-size: 1.875rem; }
-    .cursor-pointer { cursor: pointer; }
-    .w-full { width: 100%; }
-    .w-auto { width: auto; }
-    .max-w-4xl { max-width: 80rem; }
-    .overflow-auto { overflow: auto; }
-    .transition-all { transition: var(--transition); }
-    .relative { position: relative; }
-    .absolute { position: absolute; }
-    .mt-4 { margin-top: 1rem; }
-    .mt-6 { margin-top: 1.5rem; }
-    .mb-4 { margin-bottom: 1rem; }
-    .mb-6 { margin-bottom: 1.5rem; }
-    .my-6 { margin: 1.5rem 0; }
     .uppercase-input { text-transform: uppercase; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    @keyframes glow { 0%, 100% { box-shadow: 0 0 5px rgba(67, 97, 238, 0.5); } 50% { box-shadow: 0 0 20px rgba(67, 97, 238, 0.8); } }
-    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-    @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.8); } 70% { opacity: 1; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
-    .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
+    .animate-fadeIn { animation: fadeIn 0.6s ease-out; }
     .animate-slideUp { animation: slideUp 0.5s ease-out; }
-    .animate-slideDown { animation: slideDown 0.4s ease-out; }
-    .animate-slideIn { animation: slideIn 0.4s ease-out; }
-    .animate-pulse { animation: pulse 2s infinite; }
-    .animate-glow { animation: glow 2s infinite; }
     .animate-float { animation: float 3s ease-in-out infinite; }
-    .animate-bounceIn { animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .animate-pulse { animation: pulse 2s infinite; }
     .btn {
       padding: 0.75rem 1.5rem;
       border: none;
@@ -130,478 +79,322 @@
       transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       gap: 0.5rem;
-      font-size: 0.95rem;
-      position: relative;
-      overflow: hidden;
       backdrop-filter: blur(10px);
     }
-    .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left 0.5s; }
-    .btn:hover::before { left: 100%; }
     .btn-primary { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3); }
     .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
-    .btn-secondary { background: var(--secondary-gradient); color: white; box-shadow: 0 4px 12px rgba(114, 9, 183, 0.3); }
-    .btn-secondary:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(114, 9, 183, 0.25); }
     .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
-    .btn-outline:hover { background: var(--primary); color: white; transform: translateY(-3px); }
-    .btn-back { background: var(--gray-light); color: var(--gray); padding: 0.6rem 1.2rem; }
+    .btn-outline:hover { background: var(--primary); color: white; }
+    .btn-back { background: var(--gray-light); color: var(--gray); }
     .btn-back:hover { background: #dee2e6; transform: translateX(-3px); }
-    .btn-shimmer { background: linear-gradient(90deg, var(--primary) 0%, #4cc9f0 25%, var(--primary) 50%, #4cc9f0 75%, var(--primary) 100%); background-size: 200% auto; animation: shimmer 3s infinite linear; }
-    .alert { padding: 0.875rem 1rem; border-radius: var(--radius-sm); margin: 1rem 0; font-weight: 500; display: flex; align-items: center; gap: 0.75rem; animation: slideIn 0.4s ease-out; border-left: 4px solid; backdrop-filter: blur(10px); }
-    .alert-success { background: linear-gradient(90deg, #d1e7dd, #c3e6cb); color: #0f5132; border-left-color: #198754; }
-    .alert-error { background: linear-gradient(90deg, #f8d7da, #f5c6cb); color: #842029; border-left-color: #dc3545; }
-    .form-group { margin-bottom: 1.25rem; position: relative; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark); font-size: 0.9rem; }
-    .form-control { width: 100%; padding: 0.875rem 1rem; border: 2px solid #e2e8f0; border-radius: var(--radius-sm); font-size: 1rem; transition: var(--transition); background: white; backdrop-filter: blur(10px); }
-    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15); transform: translateY(-2px); }
-    select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 16px 12px; padding-right: 2.5rem; }
-    .auth-container { background: var(--glass); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2.5rem; max-width: 500px; width: 100%; margin: 0 auto; animation: slideUp 0.5s ease-out; backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); }
-    .app-header { background: var(--glass); padding: 1rem 2rem; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; z-index: 100; position: sticky; top: 0; backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+    .form-control {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      background: white;
+      backdrop-filter: blur(10px);
+    }
+    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15); }
+    .auth-container {
+      background: var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .app-header {
+      background: var(--glass);
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
     .logo { font-size: 1.75rem; font-weight: 800; display: flex; align-items: center; gap: 0.75rem; color: var(--primary); }
-    .user-info { font-weight: 600; color: var(--gray); background: var(--primary-light); padding: 0.5rem 1rem; border-radius: 50px; display: flex; align-items: center; gap: 0.5rem; backdrop-filter: blur(10px); }
-    .nav-controls { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
-    .menu-card { background: var(--glass); border-radius: var(--radius); padding: 2rem 1.5rem; box-shadow: var(--shadow); text-align: center; transition: var(--transition); cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.3); position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+    .user-info { font-weight: 600; color: var(--gray); background: var(--primary-light); padding: 0.5rem 1rem; border-radius: 50px; backdrop-filter: blur(10px); }
+    .nav-controls { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .menu-card {
+      background: var(--glass);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+    }
+    .menu-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-hover); }
+    .menu-card i { font-size: 3rem; margin-bottom: 1rem; color: var(--primary); animation: float 3s ease-in-out infinite; }
     .content-area { display: none; }
     .content-area.active { display: block; animation: slideUp 0.5s ease-out; }
-    .content-header { margin-bottom: 2rem; background: var(--glass); padding: 1.5rem; border-radius: var(--radius); box-shadow: 0 2px 8px rgba(0,0,0,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
-    .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); }
-    .notification { position: fixed; top: 20px; right: 20px; padding: 1rem 1.5rem; border-radius: var(--radius); color: white; font-weight: 500; z-index: 1000; animation: slideIn 0.3s ease-out; backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 0.75rem; max-width: 400px; }
+    .content-header {
+      margin-bottom: 2rem;
+      background: var(--glass);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: var(--radius); }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      color: white;
+      font-weight: 500;
+      z-index: 1000;
+      animation: slideUp 0.3s ease-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      max-width: 400px;
+    }
     .notification.success { background: linear-gradient(135deg, #198754 0%, #146c43 100%); }
     .notification.error { background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%); }
-    .patient-search-card { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-light); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
-    .patient-search-card:hover { background: var(--primary-light); transform: translateX(5px); border-radius: var(--radius-sm); }
+    .patient-search-card {
+      background: var(--glass);
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition);
+    }
+    .patient-search-card:hover { background: var(--primary-light); transform: translateX(5px); }
+    .loading-spinner {
+      width: 40px; height: 40px; border: 3px solid var(--gray-light); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin 1s linear infinite; margin: 2rem auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div id="notificationContainer"></div>
 
-  <!-- Auth Screen -->
-  <div id="authScreen" class="flex items-center justify-center">
-    <div class="auth-container">
-      <div class="app-logo">
-        <h1><i class="fas fa-heartbeat"></i> <span class="gradient-text">MediTrack Pro</span></h1>
-        <p>Système de gestion médicale intelligent et sécurisé</p>
+  <!-- Auth -->
+  <div id="authScreen" class="flex items-center justify-center min-h-screen">
+    <div class="auth-container animate-slideUp">
+      <div class="app-logo text-center mb-8">
+        <h1><i class="fas fa-heartbeat animate-pulse"></i> <span style="background:var(--primary-gradient);-webkit-background-clip:text;background-clip:text;color:transparent;">MediTrack Pro</span></h1>
+        <p>Système de gestion médicale sécurisé</p>
       </div>
+
+      <div id="loginView">
+        <h2 class="text-2xl font-bold mb-6 text-center">Connexion</h2>
+        <form id="loginForm">
+          <div class="form-group mb-4"><label>Email</label><input type="email" id="userEmail" class="form-control" required /></div>
+          <div class="form-group mb-6"><label>Mot de passe</label><input type="password" id="userPassword" class="form-control" required /></div>
+          <button type="submit" class="btn btn-primary w-full">Connexion</button>
+          <p class="text-center mt-4"><a href="#" onclick="toggleAuthView('register')" class="text-primary hover:underline">Créer un compte</a></p>
+        </form>
+      </div>
+
       <div id="registerView" class="hidden">
-        <h2 class="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
+        <h2 class="text-2xl font-bold mb-6 text-center">Inscription</h2>
         <form id="registerForm">
-          <!-- Ton formulaire d'inscription reste identique -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="form-group"><label>Prénom *</label><input type="text" id="regFirstName" class="form-control uppercase-input" required /></div>
-            <div class="form-group"><label>Nom *</label><input type="text" id="regLastName" class="form-control uppercase-input" required /></div>
+            <div class="form-group"><label>Prénom</label><input type="text" id="regFirstName" class="form-control uppercase-input" required /></div>
+            <div class="form-group"><label>Nom</label><input type="text" id="regLastName" class="form-control uppercase-input" required /></div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="form-group"><label>Nom d'utilisateur *</label><input type="text" id="regUsername" class="form-control" required /></div>
-            <div class="form-group"><label>Email *</label><input type="email" id="regEmail" class="form-control" required /></div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div class="form-group"><label>Téléphone</label><input type="text" id="regPhone" class="form-control" /></div>
-            <div class="form-group"><label>Rôle *</label><select id="regRole" class="form-control"><option>Professeur</option><option>Médecin</option><option>Infirmier(ère)</option><option>TSO</option><option>TAR</option><option>TRIM</option><option>Sage-femme</option><option>Orthophoniste</option><option>Kiné</option><option>Opticien</option><option>Administrateur</option></select></div>
-          </div>
-          <div class="form-group mb-4">
-            <label>Service *</label>
-            <select id="regService" class="form-control"></select>
-            <div id="otherServiceGroup" class="form-group hidden mt-2"><label>Précisez le service *</label><input type="text" id="regOtherService" class="form-control uppercase-input" /></div>
-          </div>
+          <div class="form-group mb-4"><label>Email *</label><input type="email" id="regEmail" class="form-control" required /></div>
+          <div class="form-group mb-4"><label>Rôle</label><select id="regRole" class="form-control">
+            <option>Médecin</option><option>Infirmier</option><option>Sage-femme</option><option>Kiné</option><option>Autre</option>
+          </select></div>
+          <div class="form-group mb-4"><label>Service *</label><select id="regService" class="form-control"></select></div>
+          <div id="otherServiceGroup" class="form-group hidden mb-4"><label>Précisez</label><input type="text" id="regOtherService" class="form-control uppercase-input" /></div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="form-group"><label>Mot de passe *</label><input type="password" id="regPassword" class="form-control" required minlength="6" /></div>
             <div class="form-group"><label>Confirmer *</label><input type="password" id="regConfirmPassword" class="form-control" required /></div>
           </div>
-          <div id="authAlert"></div>
-          <button type="submit" class="btn btn-primary w-full animate-pulse"><i class="fas fa-user-plus"></i> S'inscrire</button>
-          <div class="text-center mt-4"><a href="#" onclick="toggleAuthView('login')" class="text-primary font-semibold hover:underline transition-all"><i class="fas fa-sign-in-alt"></i> Déjà inscrit ? Se connecter</a></div>
-        </form>
-      </div>
-      <div id="loginView">
-        <h2 class="text-2xl font-bold mb-6 text-center animate-bounceIn">Se connecter</h2>
-        <form id="loginForm">
-          <div class="form-group mb-4"><label>Email ou Nom d'utilisateur *</label><input type="text" id="userEmail" class="form-control" required /></div>
-          <div class="form-group mb-6"><label>Mot de passe *</label><input type="password" id="userPassword" class="form-control" required /></div>
-          <div id="authAlert"></div>
-          <button type="submit" class="btn btn-primary w-full animate-pulse"><i class="fas fa-sign-in-alt"></i> Connexion</button>
-          <div class="text-center mt-4"><a href="#" onclick="toggleAuthView('register')" class="text-primary font-semibold hover:underline transition-all"><i class="fas fa-user-plus"></i> Pas encore de compte ? S'inscrire</a></div>
+          <button type="submit" class="btn btn-primary w-full">S'inscrire</button>
+          <p class="text-center mt-4"><a href="#" onclick="toggleAuthView('login')" class="text-primary hover:underline">Déjà inscrit ?</a></p>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- App Container -->
-  <div id="appContainer" class="hidden flex-col">
-    <div class="app-header animate-slideDown">
-      <div class="logo"><i class="fas fa-heartbeat"></i><span>MediTrack Pro</span></div>
+  <!-- App -->
+  <div id="appContainer" class="hidden flex-col min-h-screen">
+    <div class="app-header">
+      <div class="logo"><i class="fas fa-heartbeat"></i> MediTrack Pro</div>
       <div class="user-info" id="currentUserInfo"></div>
     </div>
+
     <div class="p-6 flex-1">
       <div id="navControls" class="nav-controls hidden">
         <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
         <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
       </div>
+
       <div id="mainMenu">
-        <div class="menu-card animate-bounceIn" onclick="showSection('newConsultation')">
-          <i class="fas fa-user-plus"></i>
-          <h3>Nouvelle Consultation</h3>
-          <p>Créer un dossier patient</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="menu-card" onclick="showSection('newConsultation')"><i class="fas fa-user-plus"></i><h3>Nouvelle Consultation</h3></div>
+          <div class="menu-card" onclick="showSection('oldConsultation')"><i class="fas fa-history"></i><h3>Ancienne Consultation</h3></div>
+          <div class="menu-card" onclick="showSection('registry')"><i class="fas fa-chart-bar"></i><h3>Registre</h3></div>
+          <div class="menu-card" onclick="supabase.auth.signOut().then(() => location.reload())"><i class="fas fa-sign-out-alt"></i><h3>Déconnexion</h3></div>
         </div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.1s" onclick="showSection('oldConsultation')">
-          <i class="fas fa-history"></i>
-          <h3>Ancienne Consultation</h3>
-          <p>Rechercher un patient</p>
-        </div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.2s" onclick="showSection('registry')">
-          <i class="fas fa-chart-bar"></i>
-          <h3>Registre & Statistiques</h3>
-          <p>Données agrégées</p>
-        </div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.3s" onclick="showSection('settings')">
-          <i class="fas fa-cog"></i>
-          <h3>Paramètres</h3>
-          <p>Gérer votre profil</p>
-        </div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.4s" onclick="clearAuthData()">
-          <i class="fas fa-sign-out-alt"></i>
-          <h3>Déconnexion</h3>
-          <p>Quitter la session</p>
-        </div>
-      </div>
-        <!-- Ton menu principal reste identique -->
-        <div class="menu-card animate-bounceIn" onclick="showSection('newConsultation')"><i class="fas fa-user-plus"></i><h3>Nouvelle Consultation</h3><p>Créer un dossier patient</p></div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.1s" onclick="showSection('oldConsultation')"><i class="fas fa-history"></i><h3>Ancienne Consultation</h3><p>Rechercher un patient</p></div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.2s" onclick="showSection('registry')"><i class="fas fa-chart-bar"></i><h3>Registre & Statistiques</h3><p>Données agrégées</p></div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.3s" onclick="showSection('settings')"><i class="fas fa-cog"></i><h3>Paramètres</h3><p>Gérer votre profil</p></div>
-        <div class="menu-card animate-bounceIn" style="animation-delay: 0.4s" onclick="clearAuthData()"><i class="fas fa-sign-out-alt"></i><h3>Déconnexion</h3><p>Quitter la session</p></div>
       </div>
 
       <!-- Nouvelle Consultation -->
       <div id="newConsultation" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
-        </div>
-        <div class="content-header"><h2><i class="fas fa-user-plus"></i> Nouvelle Consultation</h2><p>Créez un nouveau dossier patient</p></div>
-        <div class="glass p-6 rounded-xl shadow hover-lift">
+        <div class="content-header"><h2><i class="fas fa-user-plus"></i> Nouvelle Consultation</h2></div>
+        <div class="glass p-6">
           <form id="newPatientForm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="form-group"><label>Nom complet du patient *</label><input type="text" id="patientName" class="form-control uppercase-input" required /></div>
+              <div class="form-group"><label>Nom complet *</label><input type="text" id="patientName" class="form-control uppercase-input" required /></div>
               <div class="form-group"><label>Date de naissance</label><input type="date" id="patientBirthDate" class="form-control" /></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group"><label>Sexe *</label><select id="patientGender" class="form-control" required><option value="M">Masculin</option><option value="F">Féminin</option></select></div>
-              <div class="form-group"><label>Profession</label><input type="text" id="patientProfession" class="form-control" /></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="form-group"><label>Téléphone</label><input type="text" id="patientPhone" class="form-control" /></div>
-              <div class="form-group"><label>Adresse</label><input type="text" id="patientAddress" class="form-control" /></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="form-group"><label>Groupe sanguin</label><input type="text" id="patientBloodGroup" class="form-control uppercase-input" placeholder="Ex: A, B, AB, O" /></div>
+              <div class="form-group"><label>Groupe sanguin</label><input type="text" id="patientBloodGroup" class="form-control uppercase-input" /></div>
               <div class="form-group"><label>Rhésus</label><select id="patientRhesus" class="form-control"><option value="">Non spécifié</option><option value="+">+</option><option value="-">-</option></select></div>
             </div>
-            <div class="form-group mb-6">
-              <label>Service d'enregistrement initial *</label>
-              <select id="serviceType" class="form-control" required></select>
-              <div id="otherServiceGroupNew" class="form-group hidden mt-2"><label>Précisez le service *</label><input type="text" id="otherServiceNew" class="form-control uppercase-input" /></div>
-            </div>
-            <div id="newConsultAlert"></div>
-            <div class="flex gap-4">
-              <button type="submit" class="btn btn-primary animate-glow"><i class="fas fa-arrow-right"></i> Continuer vers la prescription</button>
-            </div>
+            <div class="form-group mb-6"><label>Service *</label><select id="serviceType" class="form-control" required></select></div>
+            <div id="otherServiceGroupNew" class="form-group hidden mb-6"><label>Précisez</label><input type="text" id="otherServiceNew" class="form-control uppercase-input" /></div>
+            <button type="submit" class="btn btn-primary">Continuer vers prescription</button>
           </form>
         </div>
       </div>
 
-      <!-- Prescription Editor -->
+      <!-- Éditeur Prescription -->
       <div id="prescriptionEditor" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
-        </div>
-        <div class="content-header"><h2><i class="fas fa-file-medical"></i> Éditeur de Prescription</h2><p id="currentPatientNameDisplay2" class="text-gray"></p></div>
-        <div id="prescriptionHeader" class="mb-4 p-4 bg-light rounded border"></div>
-        <div class="glass p-6 rounded-xl shadow hover-lift">
-          <div class="editor-toolbar">
-            <button class="btn btn-secondary animate-pulse" onclick="addSection()"><i class="fas fa-plus"></i> Ajouter Section</button>
-            <button class="btn btn-secondary animate-pulse" onclick="addTable()"><i class="fas fa-table"></i> Ajouter Tableau</button>
-            <button class="btn btn-outline" onclick="showSection('newConsultation')"><i class="fas fa-edit"></i> Modifier Patient</button>
-            <button class="btn btn-primary" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> Exporter en PDF</button>
-            <button class="btn btn-primary" onclick="exportToWord()"><i class="fas fa-file-word"></i> Exporter en Word</button>
+        <div class="content-header"><h2><i class="fas fa-file-medical"></i> Prescription</h2><p id="currentPatientNameDisplay2"></p></div>
+        <div class="glass p-6">
+          <div class="flex gap-4 mb-4">
+            <button class="btn btn-secondary" onclick="addSection()">Ajouter Section</button>
+            <button class="btn btn-secondary" onclick="addTable()">Ajouter Tableau</button>
+            <button class="btn btn-primary" onclick="exportToPDF()">PDF</button>
           </div>
-          <form id="prescriptionForm">
-            <textarea id="prescriptionContent" class="w-full" placeholder="Commencez à rédiger la prescription ici..."></textarea>
-            <div id="editorAlert" class="mt-3"></div>
-            <div class="flex gap-3 mt-4">
-              <button type="submit" class="btn btn-primary btn-shimmer"><i class="fas fa-arrow-right"></i> Suivant : Résumé Médical</button>
-            </div>
-          </form>
+          <textarea id="prescriptionContent" class="w-full p-4 border-2 rounded-lg" rows="15"></textarea>
+          <div class="mt-6"><button onclick="goToSummary()" class="btn btn-primary">Suivant → Résumé</button></div>
         </div>
       </div>
 
-      <!-- Résumé Médical -->
+      <!-- Résumé -->
       <div id="medicalSummary" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
-        </div>
-        <div class="content-header"><h2><i class="fas fa-clipboard-list"></i> Résumé Médical</h2><p id="currentPatientNameDisplay3" class="text-gray"></p></div>
-        <div class="glass p-6 rounded-xl shadow hover-lift">
+        <div class="content-header"><h2><i class="fas fa-clipboard-list"></i> Résumé</h2><p id="currentPatientNameDisplay3"></p></div>
+        <div class="glass p-6">
           <form onsubmit="event.preventDefault(); saveConsultation();">
-            <div class="form-group mb-6"><label>Type de maladie *</label><input type="text" id="diseaseType" class="form-control uppercase-input" required /></div>
-            <div class="form-group mb-6"><label>Observations utiles</label><textarea id="summaryText" class="form-control" rows="3" placeholder="Notes additionnelles..."></textarea></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="form-group"><label>Nom du soignant *</label><input type="text" id="doctorName" class="form-control" required readonly /></div>
-              <div class="form-group"><label>Contact du soignant</label><input type="text" id="doctorContact" class="form-control" /></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-              <div class="form-group"><label>Service (Consultation) *</label><input type="text" id="doctorService" class="form-control" required readonly /></div>
-              <div class="form-group"><label>Centre de consultation *</label><input type="text" id="consultationCenter" class="form-control" required /></div>
-            </div>
-            <div class="flex gap-3 mt-4">
-              <button type="submit" class="btn btn-primary animate-glow"><i class="fas fa-save"></i> Enregistrer Consultation</button>
-            </div>
+            <div class="form-group mb-6"><label>Maladie *</label><input type="text" id="diseaseType" class="form-control uppercase-input" required /></div>
+            <div class="form-group mb-6"><label>Centre *</label><input type="text" id="consultationCenter" class="form-control" required /></div>
+            <button type="submit" class="btn btn-primary">Enregistrer Consultation</button>
           </form>
         </div>
       </div>
 
       <!-- Ancienne Consultation -->
       <div id="oldConsultation" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
+        <div class="content-header"><h2><i class="fas fa-history"></i> Ancienne Consultation</h2></div>
+        <div class="glass p-6 mb-6">
+          <input type="text" id="searchInput" class="form-control" placeholder="Rechercher patient..." oninput="searchPatients()" />
         </div>
-        <div class="content-header"><h2><i class="fas fa-history"></i> Ancienne Consultation</h2><p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p></div>
-        <div class="filters-container mb-6 animate-slideIn">
-          <div class="form-group"><label><i class="fas fa-search"></i> Rechercher un patient (nom, téléphone)</label><input type="text" id="searchInput" class="form-control" oninput="debouncedSearch()" placeholder="Entrez au moins 2 caractères..." /></div>
-        </div>
-        <div id="searchLoader" class="hidden text-center"><div class="loading-spinner"></div><p class="text-gray mt-2">Recherche en cours...</p></div>
-        <div id="patientsListContainer" class="patients-list-container hidden"><div id="patientListContent"></div></div>
-        <div id="noResults" class="hidden text-center py-12"><i class="fas fa-user-md text-5xl text-gray-300 mb-4 animate-float"></i><h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun patient trouvé</h3><p class="text-gray-500">Aucun patient ne correspond à votre recherche.</p></div>
+        <div id="patientsListContainer"><div id="patientListContent"></div></div>
       </div>
 
-      <!-- Registre & Statistiques -->
+      <!-- Registre -->
       <div id="registry" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
-        </div>
-        <div class="content-header"><h2><i class="fas fa-chart-bar"></i> Registre & Statistiques</h2><p>Filtrez et analysez les données médicales</p></div>
-        <!-- Ton contenu registre reste identique -->
-      </div>
-
-      <!-- Paramètres -->
-      <div id="settings" class="content-area">
-        <div class="nav-controls">
-          <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Retour</button>
-          <button class="btn btn-outline" onclick="showMainMenu()"><i class="fas fa-home"></i> Accueil</button>
-        </div>
-
-        <div id="settingsMenu" class="content-header">
-          <h2><i class="fas fa-cog"></i> Paramètres</h2>
-          <p>Gérez votre compte et vos préférences</p>
-          <div class="flex gap-3 mt-4 flex-wrap">
-            <button class="btn btn-secondary" onclick="showSettingsSubSection('profileSection')">
-              <i class="fas fa-user"></i> Profil
-            </button>
-            <button class="btn btn-secondary" onclick="showSettingsSubSection('passwordSection')">
-              <i class="fas fa-lock"></i> Mot de passe
-            </button>
-            <button class="btn btn-outline" onclick="goBack()">
-              <i class="fas fa-arrow-left"></i> Retour
-            </button>
-          </div>
-        </div>
-        <div id="profileSection" class="hidden">
-          <div class="glass p-6 rounded-xl shadow hover-lift mt-4">
-            <h3 class="font-bold text-xl mb-4">Modifier votre profil</h3>
-            <form id="profileForm">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="form-group">
-                  <label>Prénom</label>
-                  <input type="text" id="editFirstName" class="form-control" disabled />
-                </div>
-                <div class="form-group">
-                  <label>Nom</label>
-                  <input type="text" id="editLastName" class="form-control" disabled />
-                </div>
-              </div>
-            
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="form-group">
-                  <label>Nom d'utilisateur</label>
-                  <input type="text" id="editUsername" class="form-control" disabled />
-                </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input type="email" id="editEmail" class="form-control" required />
-                </div>
-              </div>
-            
-              <div class="form-group mb-6">
-                <label>Téléphone</label>
-                <input type="text" id="editPhone" class="form-control" />
-              </div>
-            
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="form-group">
-                  <label>Rôle</label>
-                  <input type="text" id="editRole" class="form-control" disabled />
-                </div>
-                <div class="form-group">
-                  <label>Service</label>
-                  <input type="text" id="editService" class="form-control" disabled />
-                </div>
-              </div>
-            
-              <div id="profileAlert"></div>
-              <div class="flex gap-3">
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-save"></i> Mettre à jour
-                </button>
-                <button type="button" class="btn btn-outline" onclick="showSettingsSubSection('')">
-                  <i class="fas fa-times"></i> Annuler
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div id="passwordSection" class="hidden">
-          <div class="glass p-6 rounded-xl shadow hover-lift mt-4">
-            <h3 class="font-bold text-xl mb-4">Changer le mot de passe</h3>
-            <form id="passwordForm">
-              <div class="form-group mb-6">
-                <label>Ancien mot de passe</label>
-                <input type="password" id="oldPassword" class="form-control" required />
-              </div>
-            
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div class="form-group">
-                  <label>Nouveau mot de passe</label>
-                  <input type="password" id="newPassword" class="form-control" required minlength="6" />
-                </div>
-                <div class="form-group">
-                  <label>Confirmer</label>
-                  <input type="password" id="confirmNewPassword" class="form-control" required />
-                </div>
-              </div>
-            
-              <div id="securityAlert"></div>
-              <div class="flex gap-3">
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-key"></i> Changer le mot de passe
-                </button>
-                <button type="button" class="btn btn-outline" onclick="showSettingsSubSection('')">
-                  <i class="fas fa-times"></i> Annuler
-                </button>
-              </div>
-            </form>
-          </div>
+        <div class="content-header"><h2><i class="fas fa-chart-bar"></i> Registre</h2></div>
+        <div class="glass p-6 text-center">
+          <p class="text-xl">Patients totaux : <span id="totalPatients" class="font-bold text-primary">0</span></p>
+          <p class="text-xl">Consultations : <span id="totalConsultations" class="font-bold text-primary">0</span></p>
         </div>
       </div>
     </div>
-    <div class="app-footer">
-      <p><i class="fas fa-heartbeat text-primary"></i> MediTrack Pro © 2025 — Système de gestion médicale sécurisé</p>
-      <p class="text-sm mt-2 text-gray-500">Version 2.0 • <span id="currentYear"></span></p>
+
+    <div class="app-footer p-4 text-center text-sm text-gray-600">
+      MediTrack Pro © 2025 — Données synchronisées sur Supabase
     </div>
   </div>
-        
 
   <script>
     const { createClient } = supabase;
-    const supabaseUrl = 'https://huhckdnnekiglhwetili.supabase.co';
-    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1aGNrZG5uZWtpZ2xod2V0aWxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NTU3MjYsImV4cCI6MjA4MjIzMTcyNn0.tyFb-ICxAZmw8ktpzb8MPjw0Bwb5-2a82CCSYgS9QEU';
-    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+    const supabase = createClient('https://huhckdnnekiglhwetili.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1aGNrZG5uZWtpZ2xod2V0aWxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NTU3MjYsImV4cCI6MjA4MjIzMTcyNn0.tyFb-ICxAZmw8ktpzb8MPjw0Bwb5-2a82CCSYgS9QEU');
 
-    let currentSupabaseUser = null;
-    let storedUser = null;
-    let patients = [];
-    let consultations = [];
+    let currentUser = null;
     let currentPatient = null;
     let currentPrescription = '';
+    let userService = '';
 
-    const servicesList = ['Administration','Anatomo-pathologie','Anesthésie-Réanimation','Cardiologie','Chirurgie générale','Chirurgie pédiatrique','Chirurgie Viscérale','Consultation générale','Dermatologie','Gastroentérologie','Gynécologie','Hématologie','Infertilité','Kinésithérapie','Laboratoire','Médecine Interne','Néphrologie','Neurochirurgie','Neurologie','Odontologie/Stomatologie','Ophtalmologie','Optométrie','ORL','Pédiatrie','Pneumologie','Psychiatrie','Radiologie/Imagerie médicale','Réanimation médicale et polysalle','Rhumatologie','Sage-femme/Obstétrique','Scanner','Traumatologie','Transfusion sanguine','Urgences','Urologie','Autre'].sort();
+    const servicesList = ['Cardiologie','Pédiatrie','Urgences','Consultation générale','Gynécologie','Médecine Interne','Autre'].sort();
 
-    function showNotification(message, type = 'success') {
-      const container = document.getElementById('notificationContainer');
-      const notif = document.createElement('div');
-      notif.className = `notification ${type}`;
-      notif.innerHTML = `<span>${message}</span>`;
-      container.appendChild(notif);
-      setTimeout(() => notif.remove(), 5000);
+    function showNotification(msg, type = 'success') {
+      const n = document.createElement('div');
+      n.className = `notification ${type}`;
+      n.textContent = msg;
+      document.getElementById('notificationContainer').appendChild(n);
+      setTimeout(() => n.remove(), 4000);
     }
 
-    function toggleAuthView(view) {
-      document.getElementById('authAlert').innerHTML = '';
-      document.getElementById('registerView').classList.toggle('hidden', view !== 'register');
-      document.getElementById('loginView').classList.toggle('hidden', view !== 'login');
+    function toggleAuthView(v) {
+      document.getElementById('loginView').classList.toggle('hidden', v !== 'login');
+      document.getElementById('registerView').classList.toggle('hidden', v !== 'register');
     }
 
-    // Auth
-    document.getElementById('loginForm').addEventListener('submit', async e => {
+    document.getElementById('loginForm').onsubmit = async e => {
       e.preventDefault();
-      const email = document.getElementById('userEmail').value.trim();
-      const password = document.getElementById('userPassword').value;
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: document.getElementById('userEmail').value,
+        password: document.getElementById('userPassword').value
+      });
       if (error) showNotification(error.message, 'error');
-      else {
-        currentSupabaseUser = data.user;
-        await loadUserProfileAndStart();
-      }
-    });
+      else await startApp(data.user);
+    };
 
-    document.getElementById('registerForm').addEventListener('submit', async e => {
+    document.getElementById('registerForm').onsubmit = async e => {
       e.preventDefault();
-      const email = document.getElementById('regEmail').value.trim();
-      const password = document.getElementById('regPassword').value;
-      if (password !== document.getElementById('regConfirmPassword').value) {
-        showNotification('Mots de passe différents', 'error');
-        return;
-      }
-      const service = document.getElementById('regService').value === 'Autre' ? document.getElementById('regOtherService').value.trim().toUpperCase() : document.getElementById('regService').value;
-      const { data, error } = await supabaseClient.auth.signUp({ email, password });
+      const pwd = document.getElementById('regPassword').value;
+      if (pwd !== document.getElementById('regConfirmPassword').value) return showNotification('Mots de passe différents', 'error');
+      const service = document.getElementById('regService').value === 'Autre' ? document.getElementById('regOtherService').value.toUpperCase() : document.getElementById('regService').value;
+      const { data, error } = await supabase.auth.signUp({ email: document.getElementById('regEmail').value, password: pwd });
       if (error) showNotification(error.message, 'error');
       else {
+        await supabase.from('sante_utilisateur').insert({ user_id: data.user.id, role: document.getElementById('regRole').value, service });
         showNotification('Inscription réussie ! Connectez-vous.', 'success');
-        if (data.user) {
-          await supabaseClient.from('sante_utilisateur').insert({ user_id: data.user.id, role: document.getElementById('regRole').value, service });
-        }
         toggleAuthView('login');
       }
-    });
+    };
 
-    async function loadUserProfileAndStart() {
-      const { data } = await supabaseClient.from('sante_utilisateur').select('role, service').eq('user_id', currentSupabaseUser.id).single();
-      storedUser = { role: data?.role || 'Médecin', service: data?.service || 'Consultation générale', email: currentSupabaseUser.email };
-      await loadAllData();
-      startApp();
-    }
-
-    async function loadAllData() {
-      const { data: p } = await supabaseClient.from('sante_patient').select('*');
-      patients = p || [];
-      const { data: c } = await supabaseClient.from('sante_consultation').select('*');
-      consultations = c || [];
-    }
-
-    function startApp() {
+    async function startApp(user) {
+      currentUser = user;
+      const { data } = await supabase.from('sante_utilisateur').select('service').eq('user_id', user.id).single();
+      userService = data.service;
+      document.getElementById('currentUserInfo').textContent = `${user.email} (${userService})`;
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
-      document.getElementById('currentUserInfo').textContent = `${storedUser.email} (${storedUser.role} - ${storedUser.service})`;
-      document.getElementById('listServiceDisplay').textContent = storedUser.service;
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
-      showMainMenu();
       populateServiceSelects();
+      showMainMenu();
+      updateStats();
     }
 
     function showMainMenu() {
-      document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.content-area').forEach(s => s.classList.remove('active'));
       document.getElementById('mainMenu').classList.remove('hidden');
       document.getElementById('navControls').classList.add('hidden');
     }
 
     function showSection(id) {
-      document.querySelectorAll('.content-area').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.content-area').forEach(s => s.classList.remove('active'));
       document.getElementById('mainMenu').classList.add('hidden');
       document.getElementById(id).classList.add('active');
       document.getElementById('navControls').classList.remove('hidden');
-      if (id === 'prescriptionEditor' && currentPatient) loadPrescriptionTemplate();
+      if (id === 'prescriptionEditor') loadPrescriptionTemplate();
     }
 
     function goBack() {
@@ -610,177 +403,113 @@
       else showMainMenu();
     }
 
-    // Nouvelle consultation
-    document.getElementById('newPatientForm').addEventListener('submit', async e => {
+    document.getElementById('newPatientForm').onsubmit = async e => {
       e.preventDefault();
-      const nomComplet = document.getElementById('patientName').value.trim().toUpperCase();
-      const date_naissance = document.getElementById('patientBirthDate').value || null;
-      const sexe = document.getElementById('patientGender').value;
-      const telephone = document.getElementById('patientPhone').value.trim() || null;
-      const adresse = document.getElementById('patientAddress').value.trim() || null;
-      const groupe_sanguin = document.getElementById('patientBloodGroup').value.toUpperCase() || null;
-      const rhesus = document.getElementById('patientRhesus').value || null;
-      const service = document.getElementById('serviceType').value === 'Autre' ? document.getElementById('otherServiceNew').value.trim().toUpperCase() : document.getElementById('serviceType').value;
-
-      const { data, error } = await supabaseClient.from('sante_patient').insert([{
-        nom: nomComplet,
-        date_naissance,
-        sexe,
-        telephone,
-        adresse,
-        groupe_sanguin,
-        rhesus,
+      const birth = document.getElementById('patientBirthDate').value;
+      const age = birth ? Math.floor((Date.now() - new Date(birth)) / (31557600000)) : null;
+      const service = document.getElementById('serviceType').value === 'Autre' ? document.getElementById('otherServiceNew').value.toUpperCase() : document.getElementById('serviceType').value;
+      const { data, error } = await supabase.from('sante_patient').insert([{
+        nom: document.getElementById('patientName').value.toUpperCase(),
+        date_naissance: birth || null,
+        sexe: document.getElementById('patientGender').value,
+        telephone: document.getElementById('patientPhone').value || null,
+        groupe_sanguin: document.getElementById('patientBloodGroup').value.toUpperCase() || null,
+        rhesus: document.getElementById('patientRhesus').value || null,
         service
       }]).select();
-
-      if (error) showNotification('Erreur création patient : ' + error.message, 'error');
+      if (error) showNotification(error.message, 'error');
       else {
         currentPatient = data[0];
-        document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
-        showNotification('Patient créé avec succès !', 'success');
+        currentPatient.age = age;
+        document.getElementById('currentPatientNameDisplay2').textContent = currentPatient.nom;
         showSection('prescriptionEditor');
       }
-    });
+    };
 
     function loadPrescriptionTemplate() {
-      if (!currentPatient) return;
-      const age = currentPatient.date_naissance ? ((new Date() - new Date(currentPatient.date_naissance)) / (365.25 * 24 * 60 * 60 * 1000)).toFixed(1) : 'N/A';
+      const age = currentPatient.age || 'N/A';
       const template = `=== CONSULTATION ===
-Patient: ${currentPatient.nom} Âge: ${age} ans Sexe: ${currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin'}
+Patient: ${currentPatient.nom} | Âge: ${age} ans | Sexe: ${currentPatient.sexe === 'M' ? 'Masculin' : 'Féminin'}
 Groupe sanguin: ${currentPatient.groupe_sanguin || ''}${currentPatient.rhesus || ''}
-+---------------+---------------+---------------+
-| Symptômes     | Diagnostic    | Traitement    |
-+---------------+---------------+---------------+
-|               |               |               |
-+---------------+---------------+---------------+
+
++-----------------------------------+-----------------------------------+-----------------------------------+
+| Symptômes                         | Diagnostic                        | Traitement                        |
++-----------------------------------+-----------------------------------+-----------------------------------+
+|                                   |                                   |                                   |
++-----------------------------------+-----------------------------------+-----------------------------------+
+
 Observations:`;
       document.getElementById('prescriptionContent').value = template;
-      document.getElementById('prescriptionHeader').innerHTML = `<p><strong>Patient :</strong> ${currentPatient.nom}</p><p><strong>Âge :</strong> ${age} ans</p><p><strong>Service :</strong> ${storedUser.service}</p>`;
     }
 
-    document.querySelector('#prescriptionForm button[type="submit"]').addEventListener('click', e => {
-      e.preventDefault();
+    function goToSummary() {
       currentPrescription = document.getElementById('prescriptionContent').value;
-      document.getElementById('currentPatientNameDisplay3').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
-      document.getElementById('doctorName').value = storedUser.email;
-      document.getElementById('doctorService').value = storedUser.service;
+      document.getElementById('currentPatientNameDisplay3').textContent = currentPatient.nom;
       showSection('medicalSummary');
-    });
+    }
 
     async function saveConsultation() {
-      const diagnostic = document.getElementById('diseaseType').value.trim();
-      const center = document.getElementById('consultationCenter').value.trim();
-      if (!diagnostic || !center) {
-        showNotification('Veuillez remplir le type de maladie et le centre', 'error');
-        return;
-      }
-      const { error } = await supabaseClient.from('sante_consultation').insert([{
+      const { error } = await supabase.from('sante_consultation').insert([{
         patient_id: currentPatient.id,
-        diagnostic,
+        diagnostic: document.getElementById('diseaseType').value.toUpperCase(),
         symptomes: currentPrescription,
-        center,
-        service: storedUser.service,
-        personnel_responsable_id: currentSupabaseUser.id,
+        center: document.getElementById('consultationCenter').value,
+        service: userService,
+        personnel_responsable_id: currentUser.id,
         date: new Date().toISOString().split('T')[0]
       }]);
-      if (error) showNotification('Erreur enregistrement : ' + error.message, 'error');
+      if (error) showNotification(error.message, 'error');
       else {
-        showNotification('Consultation enregistrée avec succès !', 'success');
+        showNotification('Consultation enregistrée !', 'success');
         currentPatient = null;
         showMainMenu();
+        updateStats();
       }
     }
 
-    // Recherche patients
-    const debouncedSearch = debounce(async () => {
-      const query = document.getElementById('searchInput').value.trim().toLowerCase();
-      await loadAllData();
-      let filtered = patients;
-      if (query.length >= 2) {
-        filtered = patients.filter(p => p.nom.toLowerCase().includes(query) || (p.telephone && p.telephone.includes(query)));
-      }
-      const content = document.getElementById('patientListContent');
-      if (filtered.length === 0) {
-        document.getElementById('noResults').classList.remove('hidden');
-        document.getElementById('patientsListContainer').classList.add('hidden');
-      } else {
-        document.getElementById('noResults').classList.add('hidden');
-        content.innerHTML = filtered.map(p => `
-          <div class="patient-search-card">
-            <div class="patient-info">
-              <h4>${p.nom}</h4>
-              <p>Tél: ${p.telephone || 'N/A'} • Service: ${p.service}</p>
-            </div>
-            <div class="patient-actions">
-              <button class="btn btn-primary" onclick="continueWithPatient(${p.id})"><i class="fas fa-edit"></i> Continuer</button>
-            </div>
-          </div>
-        `).join('');
-        document.getElementById('patientsListContainer').classList.remove('hidden');
-      }
-    }, 500);
+    async function searchPatients() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      let { data: patients } = await supabase.from('sante_patient').select('*').ilike('service', userService);
+      if (query) patients = patients.filter(p => p.nom.toLowerCase().includes(query) || (p.telephone && p.telephone.includes(query)));
+      const html = patients.map(p => `
+        <div class="patient-search-card" onclick="continueWithPatient(${p.id})">
+          <div><h4>${p.nom}</h4><p>${p.telephone || 'N/A'}</p></div>
+          <button class="btn btn-primary">Continuer</button>
+        </div>
+      `).join('');
+      document.getElementById('patientListContent').innerHTML = html || '<p class="text-center text-gray-500">Aucun patient</p>';
+    }
 
-    async function continueWithPatient(patientId) {
-      const { data } = await supabaseClient.from('sante_patient').select('*').eq('id', patientId).single();
+    async function continueWithPatient(id) {
+      const { data } = await supabase.from('sante_patient').select('*').eq('id', id).single();
       currentPatient = data;
-      document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
+      currentPatient.age = data.date_naissance ? Math.floor((Date.now() - new Date(data.date_naissance)) / 31557600000) : 'N/A';
+      document.getElementById('currentPatientNameDisplay2').textContent = currentPatient.nom;
       showSection('prescriptionEditor');
+    }
+
+    async function updateStats() {
+      const { count: patients } = await supabase.from('sante_patient').select('*', { count: 'exact' });
+      const { count: consultations } = await supabase.from('sante_consultation').select('*', { count: 'exact' });
+      document.getElementById('totalPatients').textContent = patients || 0;
+      document.getElementById('totalConsultations').textContent = consultations || 0;
     }
 
     function populateServiceSelects() {
       ['regService', 'serviceType'].forEach(id => {
-        const select = document.getElementById(id);
-        if (select) select.innerHTML = servicesList.map(s => `<option value="${s}">${s}</option>`).join('');
+        const s = document.getElementById(id);
+        s.innerHTML = servicesList.map(v => `<option>${v}</option>`).join('');
       });
-    }
-
-    function addTable() {
-      const ta = document.getElementById('prescriptionContent');
-      ta.value += '\n+---------------+---------------+---------------+\n|               |               |               |\n+---------------+---------------+---------------+\n';
-    }
-
-    function addSection() {
-      const title = prompt('Titre de la section :');
-      if (title) document.getElementById('prescriptionContent').value += `\n\n=== ${title.toUpperCase()} ===\n\n`;
-    }
-
-    function exportToPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text(document.getElementById('prescriptionContent').value, 10, 10);
-      doc.save('prescription.pdf');
-    }
-
-    function clearAuthData() {
-      supabaseClient.auth.signOut();
-      location.reload();
-    }
-
-    function debounce(func, delay) {
-      let timeout;
-      return (...args) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), delay);
-      };
-    }
-
-    async function checkAuth() {
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if (session) {
-        currentSupabaseUser = session.user;
-        await loadUserProfileAndStart();
-      } else {
-        document.getElementById('authScreen').classList.remove('hidden');
-        toggleAuthView('login');
-      }
-    }
-
-    window.onload = () => {
-      checkAuth();
-      populateServiceSelects();
       document.getElementById('regService').onchange = () => document.getElementById('otherServiceGroup').classList.toggle('hidden', document.getElementById('regService').value !== 'Autre');
       document.getElementById('serviceType').onchange = () => document.getElementById('otherServiceGroupNew').classList.toggle('hidden', document.getElementById('serviceType').value !== 'Autre');
-    };
+    }
+
+    function addTable() { document.getElementById('prescriptionContent').value += '\n+-----------------------------------+-----------------------------------+-----------------------------------+\n|                                   |                                   |                                   |\n+-----------------------------------+-----------------------------------+-----------------------------------+\n'; }
+    function addSection() { const t = prompt('Titre'); if(t) document.getElementById('prescriptionContent').value += `\n\n=== ${t.toUpperCase()} ===\n\n`; }
+    function exportToPDF() { const { jsPDF } = window.jspdf; new jsPDF().text(document.getElementById('prescriptionContent').value, 10, 10).save('prescription.pdf'); }
+
+    supabase.auth.onAuthStateChange((_, session) => { if (session) startApp(session.user); });
+    populateServiceSelects();
   </script>
 </body>
 </html>
