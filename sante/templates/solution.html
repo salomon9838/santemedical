@@ -1602,16 +1602,6 @@ const servicesList = [
   'Traumatologie','Transfusion sanguine','Urgences','Urologie','Autre'
 ].sort();
 
-// ======================== FONCTION CALCUL ÂGE ========================
-function calculateAge(birthDate) {
-  if (!birthDate) return 'N/A';
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const m = today.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
-  return age;
-}
 
 // ======================== BASCULE INSCRIPTION / CONNEXION ========================
 function toggleAuthView(view) {
@@ -1691,8 +1681,6 @@ async function loadUserProfileAndStart() {
 async function loadAllData() {
   const { data: p } = await supabaseClient.from('sante_patient').select('*');
   patients = p || [];
-  patients.forEach(p => p.age = calculateAge(p.date_naissance));
-
   const { data: c } = await supabaseClient.from('sante_consultation').select('*');
   consultations = c || [];
 }
@@ -1732,29 +1720,23 @@ function showSection(sectionId) {
 document.getElementById('newPatientForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const nom = document.getElementById('patientName').value.trim().toUpperCase();
-  const date_naissance = document.getElementById('patientBirthDate')?.value || null; // Ajoute un input id="patientBirthDate" type="date" dans ton HTML si tu veux
-  const age = date_naissance ? calculateAge(date_naissance) : document.getElementById('patientAge').value.trim();
+  const age = document.getElementById('patientAge').value.trim() || null;  // Envoie age directement (string ou number)
   const sexe = document.getElementById('patientGender').value;
   const telephone = document.getElementById('patientPhone').value || null;
   const adresse = document.getElementById('patientAddress').value || null;
   const groupe_sanguin = document.getElementById('patientBloodGroup').value.toUpperCase() || null;
   const rhesus = document.getElementById('patientRhesus').value || null;
-  const service = document.getElementById('serviceType').value === 'Autre' 
-    ? document.getElementById('otherServiceNew').value.trim().toUpperCase() 
+  const service = document.getElementById('serviceType').value === 'Autre'
+    ? document.getElementById('otherServiceNew').value.trim().toUpperCase()
     : document.getElementById('serviceType').value;
-
   const { data, error } = await supabaseClient
     .from('sante_patient')
-    .insert([{ nom, date_naissance, age, sexe, telephone, adresse, groupe_sanguin, rhesus, service }])
+    .insert([{ nom, age, sexe, telephone, adresse, groupe_sanguin, rhesus, service }])
     .select();
-
   if (error) {
     showNotification('Erreur : ' + error.message, 'error');
   } else {
     currentPatient = data[0];
-    currentPatient.age = calculateAge(currentPatient.date_naissance);
-    patients.push(currentPatient);
-    document.getElementById('currentPatientNameDisplay2').textContent = `${currentPatient.nom} (ID: ${currentPatient.id})`;
     showNotification('Patient créé !', 'success');
     showSection('prescriptionEditor');
   }
@@ -1774,9 +1756,7 @@ Tableau:
 | ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `;
-
   document.getElementById('prescriptionContent').value = template;
-
   document.getElementById('prescriptionHeader').innerHTML = `
     <p><strong>Patient :</strong> ${currentPatient.nom}</p>
     <p><strong>Âge :</strong> ${currentPatient.age || 'N/A'}</p>
