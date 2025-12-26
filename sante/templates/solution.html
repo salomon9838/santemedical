@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
   <style>
     :root {
       --primary: #4361ee;
@@ -1362,36 +1363,34 @@
       </div>
       <!-- Old Consultation -->
       <div id="oldConsultation" class="content-area">
-        <div class="content-header">
-          <h2><i class="fas fa-history"></i> Ancienne Consultation</h2>
-          <p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p>
-        </div>
-      
-        <div class="filters-container mb-6 animate-slideIn">
-          <div class="form-group">
-            <label><i class="fas fa-search"></i> Rechercher un patient (nom, ID, téléphone)</label>
-            <input type="text" id="searchInput" class="form-control" oninput="debouncedSearch()"
-                   placeholder="Entrez au moins 2 caractères..." />
-          </div>
-        </div>
-      
-        <div id="searchLoader" class="hidden text-center">
-          <div class="loading-spinner"></div>
-          <p class="text-gray mt-2">Recherche en cours...</p>
-        </div>
-      
-        <div id="patientsListContainer" class="hidden">
-          <div id="patientListContent"></div>
-        </div>
-      
-        <div id="patientDetails" class="hidden"></div>
-      
-        <div id="noResults" class="hidden text-center py-12">
-          <i class="fas fa-user-md text-5xl text-gray-300 mb-4 animate-float"></i>
-          <h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun patient trouvé</h3>
-          <p class="text-gray-500">Aucun patient ne correspond à votre recherche dans ce service.</p>
-        </div>
-      </div>
+  <div class="content-header">
+    <h2><i class="fas fa-history"></i> Ancienne Consultation</h2>
+    <p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p>
+  </div>
+
+  <div class="filters-container mb-6 animate-slideIn">
+    <div class="form-group">
+      <label><i class="fas fa-search"></i> Rechercher un patient (nom, ID, téléphone)</label>
+      <input type="text" id="searchInput" class="form-control" oninput="debouncedSearch()"
+             placeholder="Entrez au moins 2 caractères..." />
+    </div>
+  </div>
+
+  <div id="searchLoader" class="hidden text-center">
+    <div class="loading-spinner"></div>
+    <p class="text-gray mt-2">Recherche en cours...</p>
+  </div>
+
+  <div id="patientsListContainer" class="patients-list-container">
+    <div id="patientListContent"></div>
+  </div>
+
+  <div id="noResults" class="hidden text-center py-12">
+    <i class="fas fa-user-md text-5xl text-gray-300 mb-4 animate-float"></i>
+    <h3 class="text-xl font-semibold text-gray-600 mb-2">Aucun patient trouvé</h3>
+    <p class="text-gray-500">Aucun patient ne correspond à votre recherche dans ce service.</p>
+  </div>
+</div>
       <!-- Registry -->
       <div id="registry" class="content-area">
         <div class="content-header">
@@ -1885,7 +1884,101 @@ async function checkAuth() {
     toggleAuthView('login');
   }
 }
+// Ajoutez ces fonctions à la fin de votre script JS (avant window.onload = checkAuth;)
 
+// Fonction pour débouncer la recherche (éviter trop d'appels)
+function debouncedSearch() {
+  clearTimeout(window.searchTimeout);
+  window.searchTimeout = setTimeout(searchPatients, 300);
+}
+
+// Fonction de recherche des patients
+async function searchPatients() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (query.length < 2) return;
+
+  document.getElementById('searchLoader').classList.remove('hidden');
+  document.getElementById('patientsListContainer').classList.add('hidden');
+  document.getElementById('noResults').classList.add('hidden');
+
+  const { data: patients, error } = await supabaseClient
+    .from('sante_patient')
+    .select('*')
+    .ilike('nom', `%${query}%`)
+    .or(`telephone.ilike.%${query}%,prenom.ilike.%${query}%`)
+    .order('nom', { ascending: true });
+
+  document.getElementById('searchLoader').classList.add('hidden');
+
+  if (error) {
+    showNotification('Erreur de recherche : ' + error.message, 'error');
+    return;
+  }
+
+  if (patients.length === 0) {
+    document.getElementById('noResults').classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('patientsListContainer').classList.remove('hidden');
+
+  const html = patients.map(p => `
+    <div class="patient-search-card">
+      <div class="patient-info">
+        <h4>${p.prenom || ''} ${p.nom}</h4>
+        <p>Âge: ${p.age || 'N/A'} ans | Sexe: ${p.sexe === 'M' ? 'Masculin' : 'Féminin'}</p>
+        <p>Téléphone: ${p.telephone || 'N/A'} | Adresse: ${p.adresse || 'N/A'}</p>
+        <p>Groupe sanguin: ${p.groupe_sanguin || 'N/A'}${p.rhesus || ''}</p>
+        <p>Service: ${p.service || 'N/A'}</p>
+      </div>
+      <div class="patient-actions">
+        <button class="btn btn-primary" onclick="continueWithPatient(${p.id})">
+          <i class="fas fa-arrow-right"></i> Continuer
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('patientListContent').innerHTML = html;
+}
+
+// Fonction pour continuer avec un patient (charger et aller à la prescription)
+async function continueWithPatient(id) {
+  const { data, error } = await supabaseClient.from('sante_patient').select('*').eq('id', id).single();
+  if (error) {
+    showNotification('Erreur : ' + error.message, 'error');
+    return;
+  }
+  currentPatient = data;
+  const nomComplet = `${currentPatient.prenom || ''} ${currentPatient.nom}`;
+  document.getElementById('currentPatientNameDisplay2').textContent = nomComplet;
+  document.getElementById('currentPatientNameDisplay3').textContent = nomComplet;
+  loadPrescriptionTemplate();  // Charge le template avec les infos du patient
+  showSection('prescriptionEditor');  // Passe à la page de prescription
+}
+
+// Fonction pour exporter en Word (utilisant docx.js - ajoutez la lib ci-dessous)
+function exportToWord() {
+  const content = document.getElementById('prescriptionContent').value;
+  const doc = new docx.Document({
+    sections: [{
+      properties: {},
+      children: [
+        new docx.Paragraph({
+          children: [new docx.TextRun(content)],
+        }),
+      ],
+    }],
+  });
+  docx.Packer.toBlob(doc).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prescription.docx';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
 window.onload = checkAuth;
 </script>
 </body>
