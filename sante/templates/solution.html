@@ -1589,6 +1589,15 @@ const supabaseUrl = 'https://huhckdnnekiglhwetili.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1aGNrZG5uZWtpZ2xod2V0aWxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NTU3MjYsImV4cCI6MjA4MjIzMTcyNn0.tyFb-ICxAZmw8ktpzb8MPjw0Bwb5-2a82CCSYgS9QEU';
 
 const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+// Exemple pour récupérer l'ID utilisateur :
+(async () => {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (user) {
+    console.log('Ton user_id est :', user.id);
+  } else {
+    console.log('Aucun utilisateur connecté');
+  }
+})();
 
 let currentSupabaseUser = null;
 let storedUser = null;
@@ -1865,7 +1874,7 @@ function clearAuthData() {
 
 // Vérification session
 async function checkAuth() {
-  const { data: { session } } = await supabaseClient.auth.getSession();
+  const { data: { session } } = await supabaseClient.auth.getSession()
   if (session) {
     currentSupabaseUser = session.user;
     await loadUserProfileAndStart();
