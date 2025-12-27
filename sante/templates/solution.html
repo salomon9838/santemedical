@@ -1853,64 +1853,17 @@ function saveConsultation() {
 function addTable() {
   const editor = document.getElementById('prescriptionContent');
   if (!editor) return;
-
-  // Créer un vrai tableau HTML éditable
-  const table = document.createElement('table');
-  table.style.width = '100%';
-  table.style.borderCollapse = 'collapse';
-  table.style.margin = '20px 0';
-  table.style.border = '2px solid #4361ee';
-
-  // En-tête
-  const headerRow = table.insertRow();
-  ['Symptômes', 'Diagnostic', 'Traitement'].forEach(text => {
-    const th = document.createElement('th');
-    th.textContent = text;
-    th.style.border = '2px solid #4361ee';
-    th.style.padding = '12px';
-    th.style.backgroundColor = '#eef2ff';
-    th.style.textAlign = 'left';
-    th.style.fontWeight = 'bold';
-    th.contentEditable = 'true';
-    headerRow.appendChild(th);
-  });
-
-  // 2 lignes vides pour commencer
-  for (let i = 0; i < 2; i++) {
-    const row = table.insertRow();
-    for (let j = 0; j < 3; j++) {
-      const td = document.createElement('td');
-      td.innerHTML = '<br>';
-      td.style.border = '2px solid #4361ee';
-      td.style.padding = '12px';
-      td.style.minHeight = '40px';
-      td.style.fontWeight = 'bold';
-      td.contentEditable = 'true';
-      row.appendChild(td);
-    }
-  }
-
-  editor.appendChild(table);
-  editor.appendChild(document.createElement('br'));
-
-  // Placer le curseur à la fin
-  const range = document.createRange();
-  const sel = window.getSelection();
-  range.selectNodeContents(editor);
-  range.collapse(false);
-  sel.removeAllRanges();
-  sel.addRange(range);
-}
-
-// Ajouter une ligne au tableau actif (celui où le curseur est, ou le dernier)
+  // Ajouter une ligne au dernier tableau créé
 function addRowToLastTable() {
-  const table = getCurrentTable();
-  if (!table) {
-    showNotification('Aucun tableau trouvé. Cliquez dans un tableau ou créez-en un d\'abord.', 'warning');
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé. Créez d\'abord un tableau.', 'warning');
     return;
   }
-  const row = table.insertRow();
-  const colCount = table.rows[0].cells.length;
+  const lastTable = tables[tables.length - 1];
+  const row = lastTable.insertRow();
+  const colCount = lastTable.rows[0].cells.length; // Nombre de colonnes actuel
   for (let i = 0; i < colCount; i++) {
     const cell = row.insertCell();
     cell.innerHTML = '<br>';
@@ -1920,67 +1873,60 @@ function addRowToLastTable() {
     cell.style.minHeight = '40px';
     cell.style.fontWeight = 'bold';
   }
-  showNotification('Ligne ajoutée au tableau !', 'success');
+  showNotification('Ligne ajoutée !', 'success');
 }
 
-// Ajouter une colonne au tableau actif
+// Ajouter une colonne au dernier tableau
 function addColumnToLastTable() {
-  const table = getCurrentTable();
-  if (!table) {
-    showNotification('Aucun tableau trouvé. Cliquez dans un tableau ou créez-en un d\'abord.', 'warning');
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé.', 'warning');
     return;
   }
-  for (let i = 0; i < table.rows.length; i++) {
-    const cell = table.rows[i].insertCell();
-    if (i === 0) {
-      cell.textContent = 'Nouvelle colonne';
-      cell.style.backgroundColor = '#eef2ff';
-    } else {
-      cell.innerHTML = '<br>';
-    }
+  const lastTable = tables[tables.length - 1];
+  // Ajouter une cellule à chaque ligne
+  for (let i = 0; i < lastTable.rows.length; i++) {
+    const cell = lastTable.rows[i].insertCell();
+    cell.innerHTML = i === 0 ? 'Nouvelle colonne' : '<br>';
     cell.contentEditable = 'true';
     cell.style.border = '1px solid #4361ee';
     cell.style.padding = '12px';
     cell.style.minHeight = '40px';
     cell.style.fontWeight = 'bold';
+    if (i === 0) {
+      cell.style.backgroundColor = '#eef2ff';
+      cell.style.fontWeight = 'bold';
+    }
   }
-  showNotification('Colonne ajoutée au tableau !', 'success');
+  showNotification('Colonne ajoutée !', 'success');
 }
 
-// Supprimer la dernière ligne du tableau actif
+// Supprimer la dernière ligne du dernier tableau
 function deleteLastRow() {
-  const table = getCurrentTable();
-  if (!table) {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
     showNotification('Aucun tableau trouvé.', 'warning');
     return;
   }
-  if (table.rows.length <= 2) { // Garde l'en-tête + au moins 1 ligne de données
-    showNotification('Impossible : vous devez conserver au moins une ligne de données.', 'warning');
+  const lastTable = tables[tables.length - 1];
+  if (lastTable.rows.length <= 2) { // On garde au moins en-tête + 1 ligne
+    showNotification('Impossible : vous devez garder au moins une ligne de données.', 'warning');
     return;
   }
-  table.deleteRow(-1);
+  lastTable.deleteRow(-1); // Supprime la dernière ligne
   showNotification('Dernière ligne supprimée.', 'success');
 }
 
-// Supprimer la dernière colonne du tableau actif
+// Supprimer la dernière colonne du dernier tableau
 function deleteLastColumn() {
-  const table = getCurrentTable();
-  if (!table) {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
     showNotification('Aucun tableau trouvé.', 'warning');
     return;
   }
-  const colCount = table.rows[0].cells.length;
-  if (colCount <= 2) {
-    showNotification('Impossible : vous devez conserver au moins 2 colonnes.', 'warning');
-    return;
-  }
-  for (let i = 0; i < table.rows.length; i++) {
-    table.rows[i].deleteCell(-1);
-  }
-  showNotification('Dernière colonne supprimée.', 'success');
-}
-// Ajouter une colonne au dernier tableau
-
   const lastTable = tables[tables.length - 1];
   const colCount = lastTable.rows[0].cells.length;
   if (colCount <= 2) {
@@ -2532,4 +2478,3 @@ window.onload = checkAuth;
 </body>
 </html>
      
-
