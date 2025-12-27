@@ -7,8 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.min.js"></script>
-
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
   <style>
     :root {
       --primary: #4361ee;
@@ -1078,11 +1077,14 @@
             </div>
           </div>
         
-        <div class="form-group mb-4">
-  <label>Service *</label>
-  <input type="text" id="regServiceInput" class="form-control uppercase-input" required placeholder="Ex: URGENCES, PÉDIATRIE..." />
-  <small class="text-gray-500">Champ obligatoire – indiquez votre service exact</small>
-</div>
+          <div class="form-group mb-4">
+            <label>Service</label>
+            <select id="regService" class="form-control"></select>
+            <div id="otherServiceGroup" class="form-group hidden mt-2">
+              <label>Précisez le service</label>
+              <input type="text" id="regOtherService" class="form-control uppercase-input" />
+            </div>
+          </div>
         
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="form-group">
@@ -1184,14 +1186,6 @@
       <!-- New Consultation -->
       <div id="newConsultation" class="content-area">
         <div class="content-header">
-          <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
           <h2><i class="fas fa-user-plus"></i> Nouvelle Consultation</h2>
           <p>Créez un nouveau dossier patient</p>
         </div>
@@ -1279,14 +1273,6 @@
       <!-- Prescription Editor -->
       <div id="prescriptionEditor" class="content-area">
         <div class="content-header">
-          <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
           <h2><i class="fas fa-file-medical"></i> Éditeur de Prescription</h2>
           <p id="currentPatientNameDisplay2" class="text-gray"></p>
         </div>
@@ -1327,14 +1313,6 @@
       <!-- Medical Summary -->
       <div id="medicalSummary" class="content-area">
         <div class="content-header">
-          <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
           <h2><i class="fas fa-clipboard-list"></i> Résumé Médical</h2>
           <p id="currentPatientNameDisplay3" class="text-gray"></p>
         </div>
@@ -1386,14 +1364,6 @@
       <!-- Old Consultation -->
       <div id="oldConsultation" class="content-area">
   <div class="content-header">
-    <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
     <h2><i class="fas fa-history"></i> Ancienne Consultation</h2>
     <p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p>
   </div>
@@ -1424,14 +1394,6 @@
       <!-- Registry -->
       <div id="registry" class="content-area">
         <div class="content-header">
-          <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
           <h2><i class="fas fa-chart-bar"></i> Registre & Statistiques</h2>
           <p>Filtrez et analysez les données médicales</p>
         </div>
@@ -1510,14 +1472,6 @@
       <!-- Settings -->
       <div id="settings" class="content-area">
         <div id="settingsMenu" class="content-header">
-          <div class="nav-controls mt-4">
-  <button class="btn btn-back" onclick="goBack()">
-    <i class="fas fa-arrow-left"></i> Retour
-  </button>
-  <button class="btn btn-outline" onclick="showMainMenu()">
-    <i class="fas fa-home"></i> Accueil
-  </button>
-</div>
           <h2><i class="fas fa-cog"></i> Paramètres</h2>
           <p>Gérez votre compte et vos préférences</p>
           <div class="flex gap-3 mt-4 flex-wrap">
@@ -1625,17 +1579,24 @@
       <p class="text-sm mt-2 text-gray-500">Version 2.0 • <span id="currentYear"></span></p>
     </div>
   </div>
-<!-- ... Le reste du HTML reste inchangé, je ne fournis que la partie <script> mise à jour à la fin du body. Remplacez l'ancien script par celui-ci. -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <script>
 // ======================== SUPABASE (sans conflit global) ========================
 const { createClient } = supabase; // Récupère createClient depuis la globale du CDN
 const supabaseUrl = 'https://huhckdnnekiglhwetili.supabase.co';
 const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh1aGNrZG5uZWtpZ2xod2V0aWxpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2NTU3MjYsImV4cCI6MjA4MjIzMTcyNn0.tyFb-ICxAZmw8ktpzb8MPjw0Bwb5-2a82CCSYgS9QEU';
+
 const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+// Exemple pour récupérer l'ID utilisateur :
+(async () => {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (user) {
+    console.log('Ton user_id est :', user.id);
+  } else {
+    console.log('Aucun utilisateur connecté');
+  }
+})();
 
 let currentSupabaseUser = null;
 let storedUser = null;
@@ -1644,6 +1605,7 @@ let consultations = [];
 let currentPatient = null;
 let currentPrescription = '';
 let currentSection = 'mainMenu';
+
 // Liste des services
 const servicesList = [
   'Administration','Anatomo-pathologie','Anesthésie-Réanimation','Cardiologie','Chirurgie générale',
@@ -1654,6 +1616,7 @@ const servicesList = [
   'Réanimation médicale et polysalle','Rhumatologie','Sage-femme/Obstétrique','Scanner',
   'Traumatologie','Transfusion sanguine','Urgences','Urologie','Autre'
 ].sort();
+
 
 // ======================== BASCULE INSCRIPTION / CONNEXION ========================
 function toggleAuthView(view) {
@@ -1682,6 +1645,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('userEmail').value.trim();
   const password = document.getElementById('userPassword').value;
+
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if (error) {
     showNotification('Erreur connexion : ' + error.message, 'error');
@@ -1693,49 +1657,12 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   const role = document.getElementById('regRole').value;
-  const service = document.getElementById('regServiceInput').value.trim().toUpperCase();
+  const serviceSelect = document.getElementById('regService');
+  const service = serviceSelect.value === 'Autre' ? document.getElementById('regOtherService').value.trim().toUpperCase() : serviceSelect.value;
 
-  if (!service) {
-    showNotification('Le champ Service est obligatoire', 'error');
-    return;
-  }
-
-  const { data, error } = await supabaseClient.auth.signUp({ email, password });
-
-  if (error) {
-    showNotification('Erreur inscription : ' + error.message, 'error');
-  } else {
-    showNotification('Inscription réussie ! Connexion automatique...', 'success');
-    
-    if (data.user) {
-      // Insère le profil avec le service personnalisé
-      await supabaseClient.from('sante_utilisateur').insert({
-        user_id: data.user.id,
-        role: role,
-        service: service
-      });
-    }
-
-    // Connexion automatique après inscription
-    const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
-      email, password
-    });
-
-    if (signInError) {
-      showNotification('Inscription OK mais connexion auto échouée. Connectez-vous manuellement.', 'warning');
-      toggleAuthView('login');
-    } else {
-      currentSupabaseUser = signInData.user;
-      await loadUserProfileAndStart();
-    }
-  }
-  
-  e.target.reset();
-});
   const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) {
     showNotification('Erreur inscription : ' + error.message, 'error');
@@ -1755,11 +1682,13 @@ async function loadUserProfileAndStart() {
     .select('role, service')
     .eq('user_id', currentSupabaseUser.id)
     .single();
+
   storedUser = {
     role: profile?.role || 'Médecin',
     service: profile?.service || 'Consultation générale',
     email: currentSupabaseUser.email
   };
+
   await loadAllData();
   startApp();
 }
@@ -1775,15 +1704,13 @@ async function loadAllData() {
 function startApp() {
   document.getElementById('authScreen').classList.add('hidden');
   document.getElementById('appContainer').classList.remove('hidden');
+
   document.getElementById('currentUserInfo').textContent = `${storedUser.email} (${storedUser.role} - ${storedUser.service})`;
   document.getElementById('listServiceDisplay').textContent = storedUser.service;
   document.getElementById('currentYear').textContent = new Date().getFullYear();
+
   showMainMenu();
   populateServiceSelects();
-  
-  // NOUVEL AJOUT : Charger les données pour le registre
-  loadRegistryData();
-
   showNotification('Bienvenue dans MediTrack Pro !', 'success');
 }
 
@@ -1800,15 +1727,16 @@ function showSection(sectionId) {
   const target = document.getElementById(sectionId);
   if (target) target.classList.add('active');
   currentSection = sectionId;
+
   if (sectionId === 'prescriptionEditor' && currentPatient) loadPrescriptionTemplate();
 }
 
 // ======================== NOUVELLE CONSULTATION ========================
 document.getElementById('newPatientForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const prenom = document.getElementById('patientPrenom').value.trim().toUpperCase();
-  const nom = document.getElementById('patientNom').value.trim().toUpperCase();
-  const age = document.getElementById('patientAge').value.trim() || null; // Envoie age directement (string ou number)
+ const prenom = document.getElementById('patientPrenom').value.trim().toUpperCase();
+const nom = document.getElementById('patientNom').value.trim().toUpperCase();
+  const age = document.getElementById('patientAge').value.trim() || null;  // Envoie age directement (string ou number)
   const sexe = document.getElementById('patientGender').value;
   const telephone = document.getElementById('patientPhone').value || null;
   const adresse = document.getElementById('patientAddress').value || null;
@@ -1831,6 +1759,7 @@ document.getElementById('newPatientForm')?.addEventListener('submit', async (e) 
       service: service
     }])
     .select();
+
   if (error) {
     showNotification('Erreur : ' + error.message, 'error');
     console.error(error);
@@ -1840,9 +1769,11 @@ document.getElementById('newPatientForm')?.addEventListener('submit', async (e) 
     const nomComplet = `${currentPatient.prenom} ${currentPatient.nom}`;
     document.getElementById('currentPatientNameDisplay2').textContent = nomComplet;
     document.getElementById('currentPatientNameDisplay3').textContent = nomComplet;
+
     showNotification('Patient créé avec succès !', 'success');
     showSection('prescriptionEditor');
   }
+
   e.target.reset();
 });
 
@@ -1854,9 +1785,9 @@ Patient: ${currentPatient.nom} Âge: ${currentPatient.age || 'N/A'} Sexe: ${curr
 Groupe sanguin: ${currentPatient.groupe_sanguin || ''}${currentPatient.rhesus || ''}
 Tableau:
 +---------------+---------------+---------------+
-| Symptômes | Diagnostic | Traitement |
+| Symptômes     | Diagnostic    | Traitement    |
 +---------------+---------------+---------------+
-| ... | ... | ... |
+| ...           | ...           | ...           |
 +---------------+---------------+---------------+
 Observations: `;
   document.getElementById('prescriptionContent').value = template;
@@ -1884,17 +1815,20 @@ document.querySelector('#prescriptionForm button[type="submit"]')?.addEventListe
 function saveConsultation() {
   const diseaseType = document.getElementById('diseaseType').value.trim().toUpperCase();
   const center = document.getElementById('consultationCenter').value.trim();
+
   if (!diseaseType || !center) {
     showNotification('Veuillez remplir le type de maladie et le centre', 'error');
     return;
   }
+
   supabaseClient.from('sante_consultation').insert([{
     symptomes: currentPrescription,
     diagnostic: diseaseType,
     patient_id: currentPatient.id,
+    // On supprime complètement personnel_responsable_id → plus d'erreur de foreign key
     center: center,
     service: storedUser.service,
-    date: new Date().toISOString().split('T')[0] // Format date simple : YYYY-MM-DD
+    date: new Date().toISOString().split('T')[0]  // Format date simple : YYYY-MM-DD
   }]).then(({ error }) => {
     if (error) {
       showNotification('Erreur : ' + error.message, 'error');
@@ -1903,17 +1837,14 @@ function saveConsultation() {
       showNotification('Consultation enregistrée avec succès !', 'success');
       currentPatient = null;
       currentPrescription = '';
-      // NOUVEL AJOUT : Rafraîchir le registre après sauvegarde
-      loadRegistryData(true); // true pour forcer rechargement depuis Supabase
       showMainMenu();
     }
   });
 }
-
 // Outils
 function addTable() {
   const ta = document.getElementById('prescriptionContent');
-  if (ta) ta.value += '\n+---------------+---------------+---------------+\n| | | |\n+---------------+---------------+---------------+\n';
+  if (ta) ta.value += '\n+---------------+---------------+---------------+\n|               |               |               |\n+---------------+---------------+---------------+\n';
 }
 
 function addSection() {
@@ -1927,40 +1858,6 @@ function exportToPDF() {
   const doc = new jsPDF();
   doc.text(document.getElementById('prescriptionContent')?.value || '', 10, 10);
   doc.save('prescription.pdf');
-}
-
-// **FIX pour l'export Word : Ajout de try-catch pour debug, et assurance que docx est chargé. Si ça ne marche pas, vérifiez la console du navigateur pour erreurs.**
-async function exportToWord() {
-  try {
-    if (!window.docx) {
-      showNotification('Erreur : La bibliothèque docx.js n\'est pas chargée. Vérifiez votre connexion.', 'error');
-      return;
-    }
-    const content = document.getElementById('prescriptionContent').value || 'Aucun contenu';
-    const doc = new window.docx.Document({
-      sections: [{
-        properties: {},
-        children: [
-          new window.docx.Paragraph({
-            children: [new window.docx.TextRun(content)],
-          }),
-        ],
-      }],
-    });
-    const blob = await window.docx.Packer.toBlob(doc);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'prescription.docx';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showNotification('Export Word réussi !', 'success');
-  } catch (error) {
-    console.error('Erreur export Word:', error);
-    showNotification('Erreur lors de l\'export Word : ' + error.message, 'error');
-  }
 }
 
 // Services
@@ -1987,42 +1884,34 @@ async function checkAuth() {
     toggleAuthView('login');
   }
 }
+// Ajoutez ces fonctions à la fin de votre script JS (avant window.onload = checkAuth;)
 
-// ======================== FONCTIONS AJOUTÉES/MISES À JOUR POUR LA RECHERCHE DANS "ANCIENNE CONSULTATION" ========================
-// Débouncer pour la recherche (évite trop d'appels API)
+// Fonction pour débouncer la recherche (éviter trop d'appels)
 function debouncedSearch() {
   clearTimeout(window.searchTimeout);
   window.searchTimeout = setTimeout(searchPatients, 300);
 }
 
-// Recherche patients avec support ID (si query est numérique), nom, prénom, téléphone. Interopérabilité avec Supabase pour récupération immédiate.
+// Fonction de recherche des patients
 async function searchPatients() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
-  if (query.length < 2) {
-    document.getElementById('patientListContent').innerHTML = '';
-    return;
-  }
+  if (query.length < 2) return;
+
   document.getElementById('searchLoader').classList.remove('hidden');
   document.getElementById('patientsListContainer').classList.add('hidden');
   document.getElementById('noResults').classList.add('hidden');
 
-  let supabaseQuery = supabaseClient.from('sante_patient').select('*');
-  
-  // Si query est un nombre, recherche par ID exact
-  if (!isNaN(query)) {
-    supabaseQuery = supabaseQuery.eq('id', parseInt(query));
-  } else {
-    // Sinon, recherche par nom, prénom ou téléphone (insensible à la casse avec ilike)
-    supabaseQuery = supabaseQuery.or(`nom.ilike.%${query}%,prenom.ilike.%${query}%,telephone.ilike.%${query}%`);
-  }
-
-  const { data: patients, error } = await supabaseQuery.order('nom', { ascending: true });
+  const { data: patients, error } = await supabaseClient
+    .from('sante_patient')
+    .select('*')
+    .ilike('nom', `%${query}%`)
+    .or(`telephone.ilike.%${query}%,prenom.ilike.%${query}%`)
+    .order('nom', { ascending: true });
 
   document.getElementById('searchLoader').classList.add('hidden');
 
   if (error) {
     showNotification('Erreur de recherche : ' + error.message, 'error');
-    console.error(error);
     return;
   }
 
@@ -2033,11 +1922,10 @@ async function searchPatients() {
 
   document.getElementById('patientsListContainer').classList.remove('hidden');
 
-  // Affichage des résultats avec toutes les infos du patient (interopérabilité : récupération complète des données stockées)
   const html = patients.map(p => `
     <div class="patient-search-card">
       <div class="patient-info">
-        <h4>${p.prenom || ''} ${p.nom} (ID: ${p.id})</h4>
+        <h4>${p.prenom || ''} ${p.nom}</h4>
         <p>Âge: ${p.age || 'N/A'} ans | Sexe: ${p.sexe === 'M' ? 'Masculin' : 'Féminin'}</p>
         <p>Téléphone: ${p.telephone || 'N/A'} | Adresse: ${p.adresse || 'N/A'}</p>
         <p>Groupe sanguin: ${p.groupe_sanguin || 'N/A'}${p.rhesus || ''}</p>
@@ -2045,269 +1933,52 @@ async function searchPatients() {
       </div>
       <div class="patient-actions">
         <button class="btn btn-primary" onclick="continueWithPatient(${p.id})">
-          <i class="fas fa-arrow-right"></i> Continuer la consultation
+          <i class="fas fa-arrow-right"></i> Continuer
         </button>
       </div>
     </div>
   `).join('');
+
   document.getElementById('patientListContent').innerHTML = html;
 }
 
-// Continuer avec le patient : Récupère les données complètes du patient + consultations passées pour interopérabilité
+// Fonction pour continuer avec un patient (charger et aller à la prescription)
 async function continueWithPatient(id) {
-  const { data: patientData, error: patientError } = await supabaseClient.from('sante_patient').select('*').eq('id', id).single();
-  if (patientError) {
-    showNotification('Erreur chargement patient : ' + patientError.message, 'error');
-    console.error(patientError);
+  const { data, error } = await supabaseClient.from('sante_patient').select('*').eq('id', id).single();
+  if (error) {
+    showNotification('Erreur : ' + error.message, 'error');
     return;
   }
-
-  // Récupération des consultations passées pour ce patient (interopérabilité : échange de données entre tables)
-  const { data: pastConsultations, error: consultError } = await supabaseClient
-    .from('sante_consultation')
-    .select('*')
-    .eq('patient_id', id)
-    .order('date', { ascending: false });
-
-  if (consultError) {
-    showNotification('Erreur chargement consultations passées : ' + consultError.message, 'error');
-    console.error(consultError);
-  }
-
-  currentPatient = patientData;
+  currentPatient = data;
   const nomComplet = `${currentPatient.prenom || ''} ${currentPatient.nom}`;
   document.getElementById('currentPatientNameDisplay2').textContent = nomComplet;
   document.getElementById('currentPatientNameDisplay3').textContent = nomComplet;
-
-  // Chargement du template avec ajout des consultations passées pour continuité
-  loadPrescriptionTemplate();
-
-  // Ajout des consultations passées au template (pour continuer sur l'ancien)
-  if (pastConsultations && pastConsultations.length > 0) {
-    const ta = document.getElementById('prescriptionContent');
-    ta.value += '\n\n=== CONSULTATIONS PASSÉES ===\n';
-    pastConsultations.forEach(consult => {
-      ta.value += `\nDate: ${consult.date}\nDiagnostic: ${consult.diagnostic}\nSymptômes: ${consult.symptomes}\nCentre: ${consult.center}\nService: ${consult.service}\n---\n`;
-    });
-    showNotification('Consultations passées chargées pour continuité.', 'success');
-  } else {
-    showNotification('Aucune consultation passée trouvée. Commencez une nouvelle.', 'info');
-  }
-
-  showSection('prescriptionEditor');
+  loadPrescriptionTemplate();  // Charge le template avec les infos du patient
+  showSection('prescriptionEditor');  // Passe à la page de prescription
 }
 
-// Ajoutez ces fonctions si nécessaire pour les autres sections (registry, settings, etc.) - mais elles ne sont pas modifiées ici.
-  // ======================== FONCTIONS POUR LA SECTION REGISTRE & STATISTIQUES ========================
-
-let allConsultations = []; // Stockera toutes les consultations pour les stats
-let allPatients = [];      // Stockera tous les patients pour éviter doublons
-
-// Charger toutes les données nécessaires pour les stats (appelée au démarrage)
-async function loadRegistryData() {
-  const { data: patientsData, error: pError } = await supabaseClient.from('sante_patient').select('id');
-  const { data: consultationsData, error: cError } = await supabaseClient
-    .from('sante_consultation')
-    .select('id, diagnostic, center, service, date, patient_id');
-
-  if (pError || cError) {
-    showNotification('Erreur chargement données registre', 'error');
-    return;
-  }
-
-  allPatients = patientsData || [];
-  allConsultations = consultationsData || [];
-
-  // Centres uniques pour le filtre
-  const centers = [...new Set(allConsultations.map(c => c.center).filter(Boolean))].sort();
-  const centerSelect = document.getElementById('centerFilter');
-  centerSelect.innerHTML = '<option value="all">Tous les centres</option>';
-  centers.forEach(c => {
-    centerSelect.innerHTML += `<option value="${c}">${c}</option>`;
+// Fonction pour exporter en Word (utilisant docx.js - ajoutez la lib ci-dessous)
+function exportToWord() {
+  const content = document.getElementById('prescriptionContent').value;
+  const doc = new docx.Document({
+    sections: [{
+      properties: {},
+      children: [
+        new docx.Paragraph({
+          children: [new docx.TextRun(content)],
+        }),
+      ],
+    }],
   });
-
-  // Services déjà remplis via populateServiceSelects()
-
-  updateStats(); // Première mise à jour des stats
-}
-
-// Fonction principale de mise à jour des statistiques avec filtres
-async function updateStats() {
-  let filtered = allConsultations;
-
-  // Filtre Maladie
-  const diseaseQuery = document.getElementById('diseaseSearchInput').value.trim().toLowerCase();
-  if (diseaseQuery) {
-    filtered = filtered.filter(c => c.diagnostic?.toLowerCase().includes(diseaseQuery));
-  }
-
-  // Filtre Date début
-  const startDate = document.getElementById('dateFilterStart').value;
-  if (startDate) {
-    filtered = filtered.filter(c => c.date >= startDate);
-  }
-
-  // Filtre Date fin
-  const endDate = document.getElementById('dateFilterEnd').value;
-  if (endDate) {
-    filtered = filtered.filter(c => c.date <= endDate);
-  }
-
-  // Filtre Centre
-  const center = document.getElementById('centerFilter').value;
-  if (center && center !== 'all') {
-    filtered = filtered.filter(c => c.center === center);
-  }
-
-  // Filtre Service
-  const service = document.getElementById('serviceFilter').value;
-  if (service && service !== '') {
-    filtered = filtered.filter(c => c.service === service);
-  }
-
-  // Calcul des stats
-  const patientIds = [...new Set(filtered.map(c => c.patient_id))];
-  const uniquePatients = patientIds.length;
-
-  const totalConsultations = filtered.length;
-
-  const urgencesCount = filtered.filter(c => c.service?.toLowerCase().includes('urgence')).length;
-
-  const diseases = filtered.map(c => c.diagnostic?.trim()).filter(Boolean);
-  const uniqueDiseases = [...new Set(diseases)].length;
-
-  // Mise à jour des cartes
-  document.getElementById('totalPatients').textContent = uniquePatients;
-  document.getElementById('totalConsultations').textContent = totalConsultations;
-  document.getElementById('urgencesCount').textContent = urgencesCount;
-  document.getElementById('diseaseCount').textContent = uniqueDiseases;
-
-  // Top 10 Maladies
-  const diseaseCountMap = {};
-  diseases.forEach(d => {
-    diseaseCountMap[d] = (diseaseCountMap[d] || 0) + 1;
+  docx.Packer.toBlob(doc).then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prescription.docx';
+    a.click();
+    URL.revokeObjectURL(url);
   });
-
-  const sortedDiseases = Object.entries(diseaseCountMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10);
-
-  let tableHTML = `
-    <table style="width:100%; border-collapse: collapse; margin-top: 1rem;">
-      <thead>
-        <tr style="background: var(--primary-light);">
-          <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--primary);">Rang</th>
-          <th style="padding: 0.75rem; text-align: left; border-bottom: 2px solid var(--primary);">Maladie</th>
-          <th style="padding: 0.75rem; text-align: center; border-bottom: 2px solid var(--primary);">Nombre de cas</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  if (sortedDiseases.length === 0) {
-    tableHTML += `<tr><td colspan="3" style="text-align:center; padding:1.5rem; color:var(--gray);">Aucune donnée pour les filtres sélectionnés</td></tr>`;
-  } else {
-    sortedDiseases.forEach(([disease, count], index) => {
-      tableHTML += `
-        <tr style="border-bottom: 1px solid var(--gray-light);">
-          <td style="padding: 0.75rem;">${index + 1}</td>
-          <td style="padding: 0.75rem; font-weight: 600;">${disease}</td>
-          <td style="padding: 0.75rem; text-align: center; color: var(--primary); font-weight: bold;">${count}</td>
-        </tr>
-      `;
-    });
-  }
-
-  tableHTML += `</tbody></table>`;
-  document.getElementById('diseaseStats').innerHTML = tableHTML;
 }
-
-// Débouncer pour éviter trop d'appels lors de la saisie
-function debouncedUpdateStats() {
-  clearTimeout(window.statsTimeout);
-  window.statsTimeout = setTimeout(updateStats, 400);
-}
-
-// Export CSV des consultations filtrées
-function exportData() {
-  let filtered = allConsultations;
-
-  // Appliquer les mêmes filtres que pour les stats
-  const diseaseQuery = document.getElementById('diseaseSearchInput').value.trim().toLowerCase();
-  if (diseaseQuery) filtered = filtered.filter(c => c.diagnostic?.toLowerCase().includes(diseaseQuery));
-
-  const startDate = document.getElementById('dateFilterStart').value;
-  if (startDate) filtered = filtered.filter(c => c.date >= startDate);
-
-  const endDate = document.getElementById('dateFilterEnd').value;
-  if (endDate) filtered = filtered.filter(c => c.date <= endDate);
-
-  const center = document.getElementById('centerFilter').value;
-  if (center && center !== 'all') filtered = filtered.filter(c => c.center === center);
-
-  const service = document.getElementById('serviceFilter').value;
-  if (service) filtered = filtered.filter(c => c.service === service);
-
-  if (filtered.length === 0) {
-    showNotification('Aucune donnée à exporter avec ces filtres', 'warning');
-    return;
-  }
-
-  let csv = 'ID Consultation,Date,Patient ID,Maladie,Centre,Service\n';
-  filtered.forEach(c => {
-    csv += `${c.id},${c.date},${c.patient_id},"${c.diagnostic || ''}","${c.center || ''}","${c.service || ''}"\n`;
-  });
-
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `registre_medtrack_${new Date().toISOString().split('T')[0]}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showNotification('Export CSV réussi !', 'success');
-}
-
-
-  // Amélioration pour rafraîchir à chaque chargement
-async function loadRegistryData(forceRefresh = false) {
-  if (forceRefresh) {
-    // Recharger depuis Supabase pour stats fraîches
-    const { data: patientsData, error: pError } = await supabaseClient.from('sante_patient').select('id');
-    const { data: consultationsData, error: cError } = await supabaseClient
-      .from('sante_consultation')
-      .select('id, diagnostic, center, service, date, patient_id');
-
-    if (pError || cError) {
-      showNotification('Erreur chargement données registre', 'error');
-      return;
-    }
-
-    allPatients = patientsData || [];
-    allConsultations = consultationsData || [];
-  }
-
-  // Centres uniques
-  const centers = [...new Set(allConsultations.map(c => c.center).filter(Boolean))].sort();
-  const centerSelect = document.getElementById('centerFilter');
-  centerSelect.innerHTML = '<option value="all">Tous les centres</option>' + centers.map(c => `<option value="${c}">${c}</option>`).join('');
-
-  // Initialiser filtres pour tout inclure
-  document.getElementById('serviceFilter').value = '';  // Tous services
-  document.getElementById('centerFilter').value = 'all'; // Tous centres
-
-  updateStats(); // Mise à jour immédiate
-}
-  function goBack() {
-  const history = ['mainMenu', 'newConsultation', 'prescriptionEditor', 'medicalSummary', 'oldConsultation', 'registry', 'settings'];
-  const currentIndex = history.indexOf(currentSection);
-  if (currentIndex > 0) {
-    showSection(history[currentIndex - 1]);
-  } else {
-    showMainMenu();
-  }
-}
-// Initialisation
 window.onload = checkAuth;
 </script>
 </body>
