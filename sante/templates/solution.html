@@ -1078,14 +1078,11 @@
             </div>
           </div>
         
-          <div class="form-group mb-4">
-            <label>Service</label>
-            <select id="regService" class="form-control"></select>
-            <div id="otherServiceGroup" class="form-group hidden mt-2">
-              <label>Précisez le service</label>
-              <input type="text" id="regOtherService" class="form-control uppercase-input" />
-            </div>
-          </div>
+        <div class="form-group mb-4">
+  <label>Service *</label>
+  <input type="text" id="regServiceInput" class="form-control uppercase-input" required placeholder="Ex: URGENCES, PÉDIATRIE..." />
+  <small class="text-gray-500">Champ obligatoire – indiquez votre service exact</small>
+</div>
         
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div class="form-group">
@@ -1187,6 +1184,14 @@
       <!-- New Consultation -->
       <div id="newConsultation" class="content-area">
         <div class="content-header">
+          <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
           <h2><i class="fas fa-user-plus"></i> Nouvelle Consultation</h2>
           <p>Créez un nouveau dossier patient</p>
         </div>
@@ -1274,6 +1279,14 @@
       <!-- Prescription Editor -->
       <div id="prescriptionEditor" class="content-area">
         <div class="content-header">
+          <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
           <h2><i class="fas fa-file-medical"></i> Éditeur de Prescription</h2>
           <p id="currentPatientNameDisplay2" class="text-gray"></p>
         </div>
@@ -1314,6 +1327,14 @@
       <!-- Medical Summary -->
       <div id="medicalSummary" class="content-area">
         <div class="content-header">
+          <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
           <h2><i class="fas fa-clipboard-list"></i> Résumé Médical</h2>
           <p id="currentPatientNameDisplay3" class="text-gray"></p>
         </div>
@@ -1365,6 +1386,14 @@
       <!-- Old Consultation -->
       <div id="oldConsultation" class="content-area">
   <div class="content-header">
+    <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
     <h2><i class="fas fa-history"></i> Ancienne Consultation</h2>
     <p>Service : <span id="listServiceDisplay" class="font-bold text-primary"></span></p>
   </div>
@@ -1395,6 +1424,14 @@
       <!-- Registry -->
       <div id="registry" class="content-area">
         <div class="content-header">
+          <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
           <h2><i class="fas fa-chart-bar"></i> Registre & Statistiques</h2>
           <p>Filtrez et analysez les données médicales</p>
         </div>
@@ -1473,6 +1510,14 @@
       <!-- Settings -->
       <div id="settings" class="content-area">
         <div id="settingsMenu" class="content-header">
+          <div class="nav-controls mt-4">
+  <button class="btn btn-back" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Retour
+  </button>
+  <button class="btn btn-outline" onclick="showMainMenu()">
+    <i class="fas fa-home"></i> Accueil
+  </button>
+</div>
           <h2><i class="fas fa-cog"></i> Paramètres</h2>
           <p>Gérez votre compte et vos préférences</p>
           <div class="flex gap-3 mt-4 flex-wrap">
@@ -1648,11 +1693,49 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 
 document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
+  
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   const role = document.getElementById('regRole').value;
-  const serviceSelect = document.getElementById('regService');
-  const service = serviceSelect.value === 'Autre' ? document.getElementById('regOtherService').value.trim().toUpperCase() : serviceSelect.value;
+  const service = document.getElementById('regServiceInput').value.trim().toUpperCase();
+
+  if (!service) {
+    showNotification('Le champ Service est obligatoire', 'error');
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+  if (error) {
+    showNotification('Erreur inscription : ' + error.message, 'error');
+  } else {
+    showNotification('Inscription réussie ! Connexion automatique...', 'success');
+    
+    if (data.user) {
+      // Insère le profil avec le service personnalisé
+      await supabaseClient.from('sante_utilisateur').insert({
+        user_id: data.user.id,
+        role: role,
+        service: service
+      });
+    }
+
+    // Connexion automatique après inscription
+    const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({
+      email, password
+    });
+
+    if (signInError) {
+      showNotification('Inscription OK mais connexion auto échouée. Connectez-vous manuellement.', 'warning');
+      toggleAuthView('login');
+    } else {
+      currentSupabaseUser = signInData.user;
+      await loadUserProfileAndStart();
+    }
+  }
+  
+  e.target.reset();
+});
   const { data, error } = await supabaseClient.auth.signUp({ email, password });
   if (error) {
     showNotification('Erreur inscription : ' + error.message, 'error');
@@ -2214,6 +2297,15 @@ async function loadRegistryData(forceRefresh = false) {
   document.getElementById('centerFilter').value = 'all'; // Tous centres
 
   updateStats(); // Mise à jour immédiate
+}
+  function goBack() {
+  const history = ['mainMenu', 'newConsultation', 'prescriptionEditor', 'medicalSummary', 'oldConsultation', 'registry', 'settings'];
+  const currentIndex = history.indexOf(currentSection);
+  if (currentIndex > 0) {
+    showSection(history[currentIndex - 1]);
+  } else {
+    showMainMenu();
+  }
 }
 // Initialisation
 window.onload = checkAuth;
