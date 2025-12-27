@@ -1035,6 +1035,11 @@
   background-color: #eef2ff;
   font-weight: bold;
 }
+    /* Texte en gras dans toutes les cellules du tableau */
+#prescriptionContent table td,
+#prescriptionContent table th {
+  font-weight: bold !important;
+}
   </style>
 </head>
 <body>
@@ -1299,6 +1304,18 @@
       <button class="btn btn-secondary animate-pulse" onclick="addTable()">
         <i class="fas fa-table"></i> Ajouter Tableau
       </button>
+      <button class="btn btn-secondary animate-pulse" onclick="addRowToLastTable()">
+  <i class="fas fa-plus"></i> Ajouter Ligne
+</button>
+<button class="btn btn-secondary animate-pulse" onclick="addColumnToLastTable()">
+  <i class="fas fa-plus"></i> Ajouter Colonne
+</button>
+<button class="btn btn-outline" onclick="deleteLastRow()">
+  <i class="fas fa-trash"></i> Suppr. Ligne
+</button>
+<button class="btn btn-outline" onclick="deleteLastColumn()">
+  <i class="fas fa-trash"></i> Suppr. Colonne
+</button>
       <button class="btn btn-outline" onclick="showSection('newConsultation')">
         <i class="fas fa-edit"></i> Modifier Patient
       </button>
@@ -1836,6 +1853,91 @@ function saveConsultation() {
 function addTable() {
   const editor = document.getElementById('prescriptionContent');
   if (!editor) return;
+  // Ajouter une ligne au dernier tableau créé
+function addRowToLastTable() {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé. Créez d\'abord un tableau.', 'warning');
+    return;
+  }
+  const lastTable = tables[tables.length - 1];
+  const row = lastTable.insertRow();
+  const colCount = lastTable.rows[0].cells.length; // Nombre de colonnes actuel
+  for (let i = 0; i < colCount; i++) {
+    const cell = row.insertCell();
+    cell.innerHTML = '<br>';
+    cell.contentEditable = 'true';
+    cell.style.border = '1px solid #4361ee';
+    cell.style.padding = '12px';
+    cell.style.minHeight = '40px';
+    cell.style.fontWeight = 'bold';
+  }
+  showNotification('Ligne ajoutée !', 'success');
+}
+
+// Ajouter une colonne au dernier tableau
+function addColumnToLastTable() {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé.', 'warning');
+    return;
+  }
+  const lastTable = tables[tables.length - 1];
+  // Ajouter une cellule à chaque ligne
+  for (let i = 0; i < lastTable.rows.length; i++) {
+    const cell = lastTable.rows[i].insertCell();
+    cell.innerHTML = i === 0 ? 'Nouvelle colonne' : '<br>';
+    cell.contentEditable = 'true';
+    cell.style.border = '1px solid #4361ee';
+    cell.style.padding = '12px';
+    cell.style.minHeight = '40px';
+    cell.style.fontWeight = 'bold';
+    if (i === 0) {
+      cell.style.backgroundColor = '#eef2ff';
+      cell.style.fontWeight = 'bold';
+    }
+  }
+  showNotification('Colonne ajoutée !', 'success');
+}
+
+// Supprimer la dernière ligne du dernier tableau
+function deleteLastRow() {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé.', 'warning');
+    return;
+  }
+  const lastTable = tables[tables.length - 1];
+  if (lastTable.rows.length <= 2) { // On garde au moins en-tête + 1 ligne
+    showNotification('Impossible : vous devez garder au moins une ligne de données.', 'warning');
+    return;
+  }
+  lastTable.deleteRow(-1); // Supprime la dernière ligne
+  showNotification('Dernière ligne supprimée.', 'success');
+}
+
+// Supprimer la dernière colonne du dernier tableau
+function deleteLastColumn() {
+  const editor = document.getElementById('prescriptionContent');
+  const tables = editor.querySelectorAll('table');
+  if (tables.length === 0) {
+    showNotification('Aucun tableau trouvé.', 'warning');
+    return;
+  }
+  const lastTable = tables[tables.length - 1];
+  const colCount = lastTable.rows[0].cells.length;
+  if (colCount <= 2) {
+    showNotification('Impossible : vous devez garder au moins 2 colonnes.', 'warning');
+    return;
+  }
+  for (let i = 0; i < lastTable.rows.length; i++) {
+    lastTable.rows[i].deleteCell(-1); // Supprime la dernière cellule de chaque ligne
+  }
+  showNotification('Dernière colonne supprimée.', 'success');
+}
 
   // Créer un vrai tableau HTML éditable
   const table = document.createElement('table');
