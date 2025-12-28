@@ -1855,9 +1855,19 @@ const editor = document.getElementById('prescriptionContent');
 function addSection() {
   const title = prompt('Titre de la section (ex: EXAMEN CLINIQUE)');
   if (title) {
-    const text = `\n\n=== ${title.toUpperCase()} ===\n\n`;
-    editor.innerHTML += text;
-    placeCursorAtEnd(editor);
+    const sectionHTML = `
+      <br>
+      <div style="font-weight: bold; margin: 20px 0 10px 0; color: var(--primary);">
+        === ${title.toUpperCase()} ===
+      </div>
+      <div contenteditable="true" style="font-weight: bold; min-height: 40px; margin-bottom: 20px;" class="bold-section-content">
+        <br>
+      </div>
+    `;
+
+    editor.innerHTML += sectionHTML;
+    placeCursorAtEnd(document.querySelector('.bold-section-content:last-child'));
+    showNotification('Nouvelle section ajoutée en gras !', 'success');
   }
 }
 
