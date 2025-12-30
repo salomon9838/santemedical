@@ -2107,24 +2107,30 @@ function debouncedSearch() {
 }
 
 // Recherche patients avec support ID (si query est numérique), nom, prénom, téléphone. Interopérabilité avec Supabase pour récupération immédiate.
+// Recherche patients avec support ID (si query est numérique), nom, prénom, téléphone.
 async function searchPatients() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
   if (query.length < 2) {
     document.getElementById('patientListContent').innerHTML = '';
+    document.getElementById('patientsListContainer').classList.add('hidden');
+    document.getElementById('noResults').classList.add('hidden');
     return;
   }
+
   document.getElementById('searchLoader').classList.remove('hidden');
   document.getElementById('patientsListContainer').classList.add('hidden');
   document.getElementById('noResults').classList.add('hidden');
 
   let supabaseQuery = supabaseClient.from('sante_patient').select('*');
-  
-  // Si query est un nombre, recherche par ID exact
-  if (!isNaN(query)) {
+
+  // Si la recherche est un nombre → on cherche l'ID exact
+  if (!isNaN(query) && query !== '') {
     supabaseQuery = supabaseQuery.eq('id', parseInt(query));
   } else {
-    // Sinon, recherche par nom, prénom ou téléphone (insensible à la casse avec ilike)
-    supabaseQuery = supabaseQuery.or(`nom.ilike.%${query}%,prenom.ilike.%${query}%,telephone.ilike.%${query}%`);
+    // Sinon recherche texte dans prénom, nom ou téléphone
+    supabaseQuery = supabaseQuery.or(
+      `nom.ilike.%${query}%,prenom.ilike.%${query}%,telephone.ilike.%${query}%`
+    );
   }
 
   const { data: patients, error } = await supabaseQuery.order('nom', { ascending: true });
@@ -2142,10 +2148,8 @@ async function searchPatients() {
     return;
   }
 
-  document.getElementById('patientsListContainer').classList.remove('hidden');
-
-  // Affichage des résultats avec toutes les infos du patient (interopérabilité : récupération complète des données stockées)
-    const html = patients.map(p => `
+  // === CORRECTION ICI : on génère correctement le HTML et on l'injecte ===
+  const html = patients.map(p => `
     <div class="patient-search-card hover-lift" onclick="showPatientDetails(${p.id})">
       <div class="patient-info">
         <h4>${p.prenom || ''} ${p.nom} (ID: ${p.id})</h4>
@@ -2158,7 +2162,10 @@ async function searchPatients() {
         </button>
       </div>
     </div>
-  `).join('');
+  `).join(''); // ← C'EST CETTE LIGNE QUI MANQUAIT !
+
+  document.getElementById('patientListContent').innerHTML = html;
+  document.getElementById('patientsListContainer').classList.remove('hidden');
 }
 
 // Continuer avec le patient : Récupère les données complètes du patient + consultations passées pour interopérabilité
